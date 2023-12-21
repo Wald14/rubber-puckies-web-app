@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
     const payload = await getAllSeasons()
     res.status(200).json({ result: "success", payload })
   } catch(err){
-    res.status(500).json({ result: "error", payload: err.message })
+    res.status(500).json({ result: "Error", payload: err.message })
   }
 })
 
@@ -42,7 +42,7 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    const payload = await deleteSampleById(req.params.id)
+    const payload = await deleteSeasonById(req.params.id)
     res.status(200).json({ result: "success", payload })
   } catch(err){
     res.status(500).json({ result: "error", payload: err.message })
