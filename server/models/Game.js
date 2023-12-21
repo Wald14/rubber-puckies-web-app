@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const teamSchema = new Schema({
+const gameSchema = new Schema({
   startTime: {
     type: Date,
     required: [true, "Date and time needed for the game. Format: 'YYYY-MM-DDTHH:mm:ss'"]
@@ -68,5 +68,5 @@ const teamSchema = new Schema({
   timestamps: true
 });
 
-const Team = model('Team', teamSchema);
-module.exports = Team;
+const Game = model('Game', gameSchema);
+module.exports = Game;

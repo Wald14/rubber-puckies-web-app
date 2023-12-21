@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const teamSchema = new Schema({
+const playerSchema = new Schema({
   firstName: {
     type: String,
     required: true
@@ -42,5 +42,5 @@ const teamSchema = new Schema({
   timestamps: true
 });
 
-const Team = model('Team', teamSchema);
-module.exports = Team;
+const Player = model('Player', playerSchema);
+module.exports = Player;

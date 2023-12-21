@@ -10,6 +10,10 @@ const teamSchema = new Schema({
     required: [true, "Team must belong to a season"],
     ref: 'Season'
   },
+  captain: {
+    type: Schema.Types.ObjectId,
+    ref: 'Player'
+  },
   players: [
     {
       type: Schema.Types.ObjectId,
