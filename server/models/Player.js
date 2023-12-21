@@ -28,16 +28,18 @@ const playerSchema = new Schema({
       message: '{VALUE} is not supported. Position must be: lw, c, rw, rd, ld, or g'
     }
   },
-  seasons: {
-    season: {
-      type: Schema.Types.ObjectId,
-      ref: 'Season'
-    },
-    team: {
-      type: Schema.Types.ObjectId,
-      ref: 'Team'
-    },
-  },
+  seasons: [
+    {
+      season: {
+        type: Schema.Types.ObjectId,
+        ref: 'Season'
+      },
+      team: {
+        type: Schema.Types.ObjectId,
+        ref: 'Team'
+      },
+    }
+  ],
 }, {
   timestamps: true
 });
