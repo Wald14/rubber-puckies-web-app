@@ -13,7 +13,7 @@ export default function Header() {
         <Container>
           <Navbar.Brand href="/" style={{ color: "white", fontSize: "42px", textDecoration: "none" }}>
             <img
-              alt=""
+              alt="Rubber Puckie Logo "
               src="/assets/images/rubber_puckie_logo.png"
               width="60"
               height="60"

@@ -6,13 +6,12 @@ export default function UncontrolledExample() {
 
     <Carousel>
       <Carousel.Item>
-        <img src="/assets/images/championship_fall_2023"/>
+        <img src="/assets/images/championship_fall_2023.jpeg" style={{width: "100vw"}}/>
         <Carousel.Caption>
-          <h3>First slide label</h3>
-          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+          <h3>Fall 2023 Champions</h3>
         </Carousel.Caption>
       </Carousel.Item>
-      <Carousel.Item>
+      {/* <Carousel.Item>
         <Carousel.Caption>
           <h3>Second slide label</h3>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
@@ -25,7 +24,7 @@ export default function UncontrolledExample() {
             Praesent commodo cursus magna, vel scelerisque nisl consectetur.
           </p>
         </Carousel.Caption>
-      </Carousel.Item>
+      </Carousel.Item> */}
     </Carousel>
     
   );
