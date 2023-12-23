@@ -39,16 +39,17 @@ export default function Header() {
               </NavDropdown>
               <Nav.Link>Season Log</Nav.Link>
               <Nav.Link>Records</Nav.Link>
+              <Nav.Link href="/private">Admin Controls</Nav.Link>
 
-              {user?._id !== undefined && (
+              {/* {user?._id !== undefined && (
                 <Nav.Link href="/private">Admin Controls</Nav.Link>
-              )}
+              )} */}
 
-              {user?._id !== undefined ? (
+              {/* {user?._id !== undefined ? (
                 <Nav.Link href="/logout">Logout</Nav.Link>
               ) : (
                 <Nav.Link href="/auth">Login</Nav.Link>
-              )}
+              )} */}
 
             </Nav>
           </Navbar.Collapse>
