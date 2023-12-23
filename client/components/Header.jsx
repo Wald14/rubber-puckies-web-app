@@ -9,14 +9,14 @@ export default function Header() {
 
   return (
     <>
-      <Navbar expand="lg" className="bg-body-tertiary">
+      <Navbar expand="lg" className="bg-body-tertiary" style={{ padding: "8px 0px 0px 0px" }}>
         <Container>
-          <Navbar.Brand href="/">
+          <Navbar.Brand href="/" style={{ color: "white", fontSize: "42px", textDecoration: "none" }}>
             <img
               alt=""
               src="/assets/images/rubber_puckie_logo.png"
-              width="30"
-              height="30"
+              width="60"
+              height="60"
               className="d-inline-block align-top"
             />{' '}
             RUBBER PUCKIES
@@ -24,7 +24,7 @@ export default function Header() {
         </Container>
       </Navbar>
 
-      <Navbar expand="lg" className="bg-body-tertiary">
+      <Navbar expand="lg" className="bg-body-tertiary" style={{ padding: "0px 0px 8px 0px" }}>
         <Container>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -32,7 +32,11 @@ export default function Header() {
 
               <Nav.Link>Roster</Nav.Link>
               <Nav.Link>Team History</Nav.Link>
-              <Nav.Link>Players</Nav.Link>
+              <NavDropdown title="Players" id="navbarScrollingDropdown">
+                <NavDropdown.Item href="#bretta">Brett A</NavDropdown.Item>
+                <NavDropdown.Item href="#lukew">Luke W</NavDropdown.Item>
+                <NavDropdown.Item href="#zachd">Zach D</NavDropdown.Item>
+              </NavDropdown>
               <Nav.Link>Season Log</Nav.Link>
               <Nav.Link>Records</Nav.Link>
 
