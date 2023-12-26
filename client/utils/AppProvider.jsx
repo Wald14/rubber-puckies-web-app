@@ -14,9 +14,12 @@ export default function AppProvider(props){
   async function verifyUser(){
     const cookie = Cookie.get("auth-cookie")
 
-    if(!cookie && window.location.pathname !== "/" && !window.location.pathname.includes("/auth")){
-      window.location.href = "/auth"
-    }
+    //-----------------------------------------------------------------------
+    // Uncommented to allow user to access other pages that don't need login
+    //-----------------------------------------------------------------------
+    // if(!cookie && window.location.pathname !== "/" && !window.location.pathname.includes("/auth")){
+    //   window.location.href = "/auth"
+    // }
     
     try {
       const query = await fetch("/api/user/verify")

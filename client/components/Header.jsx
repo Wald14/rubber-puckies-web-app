@@ -31,7 +31,7 @@ export default function Header() {
             <Nav className="me-auto">
 
               <Nav.Link>Roster</Nav.Link>
-              <Nav.Link>Team History</Nav.Link>
+              <Nav.Link href="/teamhistory">Team History</Nav.Link>
               <NavDropdown title="Players" id="navbarScrollingDropdown">
                 <NavDropdown.Item href="#bretta">Brett A</NavDropdown.Item>
                 <NavDropdown.Item href="#lukew">Luke W</NavDropdown.Item>
