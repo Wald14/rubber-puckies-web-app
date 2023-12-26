@@ -6,7 +6,7 @@ export default function UncontrolledExample() {
 
     <Carousel>
       <Carousel.Item>
-        <img src="/assets/images/championship_fall_2023.jpeg" style={{width: "100vw"}}/>
+        <img src="/assets/images/championship_fall_2023.jpeg" style={{width: "100%"}}/>
         <Carousel.Caption>
           <h3>Fall 2023 Champions</h3>
         </Carousel.Caption>
