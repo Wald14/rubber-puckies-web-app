@@ -21,25 +21,30 @@ const playerSchema = new Schema({
       message: '{VALUE} is not supported. Handedness must be: left or right'
     }
   },
-  positions: {
+  positions: [{
     type: String,
     enum: {
       values: ['lw', 'c', 'rw', 'ld', 'rd', 'g'],
       message: '{VALUE} is not supported. Position must be: lw, c, rw, rd, ld, or g'
     }
-  },
-  seasons: [
+  }],
+  teams: [
     {
-      season: {
-        type: Schema.Types.ObjectId,
-        ref: 'Season'
-      },
-      team: {
-        type: Schema.Types.ObjectId,
-        ref: 'Team'
-      },
+      type: Schema.Types.ObjectId,
+      ref: "Team"
     }
-  ],
+  ]
+  // seasons: [
+  //   {
+  //   season: {
+  //     type: Schema.Types.ObjectId,
+  //     ref: 'Season'
+  //   },
+  //   team: {
+  //     type: Schema.Types.ObjectId,
+  //     ref: 'Team'
+  //   },
+  // }],
 }, {
   timestamps: true
 });

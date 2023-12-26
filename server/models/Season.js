@@ -13,12 +13,12 @@ const seasonSchema = new Schema({
     },
     required: [true, "Season type needed"],
   },
-  teams: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Team'
-    },
-  ]
+  // teams: [
+  //   {
+  //     type: Schema.Types.ObjectId,
+  //     ref: 'Team'
+  //   },
+  // ]
 
 }, {
   timestamps: true
