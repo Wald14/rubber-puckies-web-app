@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 // Import any controllers needed here
-const { getAllTeams, getTeamById, createTeam, updateTeamById, deleteTeamById } = require('../../controllers/team.controller');
+const { getAllTeams, getAllTeamsbyName, getTeamById, createTeam, updateTeamById, deleteTeamById } = require('../../controllers/team.controller');
 
 // Declare the routes that point to the controllers above
 router.get("/", async (req, res) => {
@@ -12,6 +12,16 @@ router.get("/", async (req, res) => {
     res.status(500).json({ result: "Error", payload: err.message })
   }
 })
+
+router.get("/name/:teamName", async (req, res) => {
+  try {
+    const payload = await getAllTeamsbyName(req.params.teamName)
+    res.status(200).json({ result: "success", payload })
+  } catch (err) {
+    res.status(500).json({ result: "Error", payload: err.message })
+  }
+})
+
 
 router.get("/:id", async (req, res) => {
   try {

@@ -3,17 +3,19 @@ import {useEffect, useState} from "react"
 import Table from 'react-bootstrap/Table';
 
 export default function TeamHistoryBySeason() {
+  const [teamArr, setTeamArr] = useState(null)  
 
 
   async function getRegSeaInfo() {
-    const query = await fetch("/api/team/Rubber Puckies");
+    const query = await fetch("/api/team/name/Rubber Puckies");
     const result = await query.json();
     const payload = result.payload;
+    setTeamArr(payload)
     console.log(payload)
   }
 
   useEffect(() => {
-    getRegSeaInfo
+    getRegSeaInfo()
   }, [])
 
 
@@ -42,6 +44,9 @@ export default function TeamHistoryBySeason() {
             <th>Rink</th>
           </tr>
         </thead>
+        <tbody>
+
+        </tbody>
       </Table>
     </>
     

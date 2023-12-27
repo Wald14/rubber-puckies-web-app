@@ -9,6 +9,20 @@ async function getAllGames() {
   }
 }
 
+async function getAllGamesByTeamId(teamId) {
+  try {
+    return await Game.find({
+      $or: [
+        {awayTeam: teamId},
+        {homeTeam: teamId}
+      ]
+    }).populate({path: "homeTeam awayTeam", select: "-_id name"}).select("-_id completed homeTeam awayTeam homeGoals awayGoals season gameType");
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
+
 async function getGameById(id) {
   try {
     return await Game.findById(id);
@@ -47,6 +61,7 @@ async function deleteGameById(id) {
 
 module.exports = {
   getAllGames,
+  getAllGamesByTeamId,
   getGameById,
   createGame,
   updateGameById,
