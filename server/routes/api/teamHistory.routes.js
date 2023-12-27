@@ -76,6 +76,15 @@ router.get("/:teamName", async (req, res) => {
             playoffGoalsFor += isHomeTeam ? homeGoals : awayGoals;
             playoffGoalsAgainst += isHomeTeam ? awayGoals : homeGoals;
 
+            if (gameType === "championship") {
+              championshipOpp = isHomeTeam ? game.awayTeam.name : game.homeTeam.name,
+              championshipScore = isHomeTeam ? `${homeGoals} - ${awayGoals}` : `${awayGoals} - ${homeGoals}`
+            }
+
+            if (gameType === "semi-round") {
+              semiRoundOpp = isHomeTeam ? game.awayTeam.name : game.homeTeam.name
+            }
+
 
             if ((isHomeTeam && homeGoals > awayGoals) || (isAwayTeam && awayGoals > homeGoals)) {
               playoffWins++;
@@ -123,7 +132,7 @@ router.get("/:teamName", async (req, res) => {
       })
     )
 
-    res.status(200).json({ result: "success", payload })
+    res.status(200).json({ result: "success", payload, teamSeasonInfo })
   } catch (err) {
     res.status(500).json({ result: "Error", payload: err.message })
   }

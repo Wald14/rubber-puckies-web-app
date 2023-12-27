@@ -72,7 +72,7 @@ export default function TeamHistoryBySeason() {
       </Table>
 
 
-      <h3>Playoffs</h3>
+      <h3 className="mt-4">Playoffs</h3>
       <Table responsive striped hover variant="dark">
         <thead>
           <tr style={{ textAlign: "center" }}>
@@ -93,6 +93,8 @@ export default function TeamHistoryBySeason() {
         <tbody>
           {teamArr &&
             teamArr.map((season, key) => {
+              if (season.playoff.gamesPlayed === 0) return
+
               return (
                 <tr key={key} style={{ textAlign: "center" }}>
                   <td style={{ textAlign: "left" }}>{season.season}</td>
@@ -103,9 +105,9 @@ export default function TeamHistoryBySeason() {
                   <td>{season.playoff.sol}</td>
                   <td>{season.playoff.gf}</td>
                   <td>{season.playoff.ga}</td>
-                  <td>{season.playoff.semiRoundOpp}</td>
-                  <td>{season.playoff.championshipOpp}</td>
-                  <td>{season.playoff.championshipScore}</td>
+                  <td>{season.playoff.semiRoundOpp === null ? "N/A" : season.playoff.semiRoundOpp}</td>
+                  <td>{season.playoff.championshipOpp === null ? "N/A" : season.playoff.championshipOpp}</td>
+                  <td>{season.playoff.championshipOpp === null ? "N/A" : season.playoff.championshipScore}</td>
                   <td>{season.playoff.champion}</td>
                 </tr>
               )
