@@ -1,13 +1,22 @@
 const router = require('express').Router();
 
 // Import any controllers needed here
-const { getAllGames, getAllGamesByTeamId, getGameById, createGame, updateGameById, deleteGameById, } = require('../../controllers/game.controller');
+const { getAllGames, getAllGamesByPlayerId, getAllGamesByTeamId, getGameById, createGame, updateGameById, deleteGameById, } = require('../../controllers/game.controller');
 
 
 // Declare the routes that point to the controllers above
 router.get("/", async (req, res) => {
   try {
     const payload = await getAllGames()
+    res.status(200).json({ result: "success", payload })
+  } catch (err) {
+    res.status(500).json({ result: "Error", payload: err.message })
+  }
+})
+
+router.get("/player/:playerId", async (req, res) => {
+  try {
+    const payload = await getAllGamesByPlayerId(req.params.playerId)
     res.status(200).json({ result: "success", payload })
   } catch (err) {
     res.status(500).json({ result: "Error", payload: err.message })

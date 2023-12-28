@@ -1,9 +1,17 @@
-const { Team } = require('../models');
+const { Team, Season } = require('../models');
 
 
 async function getAllTeams() {
   try {
     return await Team.find();
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
+async function getTeamsbyNameAndSeasonId(teamName, seasonId) {
+  try {
+    return await Team.findOne({ name: teamName, season: seasonId}).populate({path: "season", select: "startDate seasonType"}).populate({path: "captain", select: "firstName lastName -_id"});
   } catch (err) {
     throw new Error(err)
   }
@@ -16,6 +24,7 @@ async function getAllTeamsbyName(teamName) {
     throw new Error(err)
   }
 }
+
 
 async function getTeamById(id) {
   try {
@@ -55,6 +64,7 @@ async function deleteTeamById(id) {
 
 module.exports = {
   getAllTeams,
+  getTeamsbyNameAndSeasonId,
   getAllTeamsbyName,
   getTeamById,
   createTeam,

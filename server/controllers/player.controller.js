@@ -9,6 +9,15 @@ async function getAllPlayers() {
   }
 }
 
+async function getAllPlayersByTeamId(teamId) {
+  try {
+    return await Player.find({ teams: teamId})
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
+
 async function getPlayerById(id) {
   try {
     return await Player.findById(id);
@@ -47,6 +56,7 @@ async function deletePlayerById(id) {
 
 module.exports = {
   getAllPlayers,
+  getAllPlayersByTeamId,
   getPlayerById,
   createPlayer,
   updatePlayerById,

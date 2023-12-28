@@ -22,6 +22,17 @@ async function getAllGamesByTeamId(teamId) {
   }
 }
 
+async function getAllGamesByPlayerId(playerId) {
+  try {
+    return await Game.find({
+      completed: true,
+      "players.player": playerId
+    });
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
 
 async function getGameById(id) {
   try {
@@ -61,6 +72,7 @@ async function deleteGameById(id) {
 
 module.exports = {
   getAllGames,
+  getAllGamesByPlayerId,
   getAllGamesByTeamId,
   getGameById,
   createGame,
