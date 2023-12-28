@@ -9,6 +9,14 @@ async function getAllSeasons() {
   }
 }
 
+async function getCurrentSeason() {
+  try {
+    return await Season.findOne().sort({ startDate: -1 });
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
 async function getSeasonById(id) {
   try {
     return await Season.findById(id);
@@ -47,6 +55,7 @@ async function deleteSeasonById(id) {
 
 module.exports = {
   getAllSeasons,
+  getCurrentSeason,
   getSeasonById,
   createSeason,
   updateSeasonById,

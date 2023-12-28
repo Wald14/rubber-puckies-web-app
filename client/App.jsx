@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AppProvider from './utils/AppProvider';
 import { Header, ProtectedRoute } from './components';
-import { HomePage, AuthPage, Logout, PrivatePage, TeamHistory } from './pages/'
+import { HomePage, AuthPage, Logout, PrivatePage, TeamHistory, Roster } from './pages/'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function App(){
@@ -13,6 +13,7 @@ export default function App(){
         <div className="container pt-5">
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/roster" element={<Roster />} />
             <Route path="/teamhistory" element={<TeamHistory />} />
             
             <Route path="/auth" element={<AuthPage />} />

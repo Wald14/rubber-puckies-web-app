@@ -30,7 +30,7 @@ export default function Header() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
 
-              <Nav.Link>Roster</Nav.Link>
+              <Nav.Link href="/roster">Roster</Nav.Link>
               <Nav.Link href="/teamhistory">Team History</Nav.Link>
               <NavDropdown title="Players" id="navbarScrollingDropdown">
                 <NavDropdown.Item href="#bretta">Brett A</NavDropdown.Item>

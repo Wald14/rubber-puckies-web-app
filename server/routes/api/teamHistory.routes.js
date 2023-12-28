@@ -1,7 +1,6 @@
 // Import any controllers needed here
-const { getAllTeams, getAllTeamsbyName, getTeamById, createTeam, updateTeamById, deleteTeamById } = require('../../controllers/team.controller');
-
-const { getAllGames, getAllGamesByTeamId, getGameById, createGame, updateGameById, deleteGameById, } = require('../../controllers/game.controller');
+const {getAllTeamsbyName} = require('../../controllers/team.controller');
+const {getAllGamesByTeamId} = require('../../controllers/game.controller');
 
 // Declare the routes that point to the controllers above
 const router = require('express').Router();
