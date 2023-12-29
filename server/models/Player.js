@@ -24,8 +24,8 @@ const playerSchema = new Schema({
   positions: [{
     type: String,
     enum: {
-      values: ['lw', 'c', 'rw', 'ld', 'rd', 'g'],
-      message: '{VALUE} is not supported. Position must be: lw, c, rw, rd, ld, or g'
+      values: ['F', 'D', 'G'],
+      message: '{VALUE} is not supported. Position must be: F, D, or G'
     }
   }],
   teams: [

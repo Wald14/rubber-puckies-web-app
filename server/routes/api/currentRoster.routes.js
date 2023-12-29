@@ -44,11 +44,15 @@ router.get("/:teamName", async (req, res) => {
         const playerId = player._id.toString()
 
         let gp = 0,
-            goals = 0,
-            hat = 0,
-            tg = 0
+          goals = 0,
+          hat = 0,
+          tg = 0
 
         let playedSeasonArr = []
+
+        const handedness = player.handedness === "left" ? "L" : player.handedness === "right" ? "R" : null
+
+        const positions = player.positions.join(" / ")
 
         const gamesArr = await getAllGamesByPlayerId(player._id)
 
@@ -61,7 +65,7 @@ router.get("/:teamName", async (req, res) => {
 
             if (playedSeasonArr.indexOf(gamesSeaon) === -1) {
               playedSeasonArr.push(gamesSeaon)
-            } 
+            }
 
             game.players.forEach((playerInGame) => {
               const playerInGameId = playerInGame.player.toString();
@@ -71,7 +75,7 @@ router.get("/:teamName", async (req, res) => {
                 gp++;
                 goals += playerInGame.goals;
 
-                if(playerInGame.goals > 2){
+                if (playerInGame.goals > 2) {
                   hat++;
                 }
 
@@ -80,16 +84,18 @@ router.get("/:teamName", async (req, res) => {
           }
         });
 
+        const goalsPerGamePlayed = !goals ? (0.00).toFixed(2) : (goals/gp).toFixed(2)
+
         return {
           firstName: player.firstName,
           lastName: player.lastName,
           jerseyNumber: player.jerseyNumber,
-          pos: player.positions,
-          handedness: player.handedness,
+          pos: positions,
+          handedness: handedness,
           sp: playedSeasonArr.length,
           gp: gp,
           goals: goals,
-          goalsPerGamePlayed: (goals/gp).toFixed(2),
+          goalsPerGamePlayed: goalsPerGamePlayed,
           hat: hat,
           tg: tg
         }

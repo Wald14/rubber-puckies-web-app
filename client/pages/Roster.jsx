@@ -1,10 +1,11 @@
+import { CurrentRosterTable } from '../components';
 
 
 export default function Roster(){
 
   return (
     <>
-      <h3>Current Roster</h3>
+      <CurrentRosterTable />
     </>
   )
 }
