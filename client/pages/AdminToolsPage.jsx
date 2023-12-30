@@ -5,7 +5,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import { CustomModal, SeasonForm, DropDown } from '../components'
+import { CustomModal, SeasonForm, TeamForm } from '../components'
 import { useState } from 'react';
 
 export default function AdminTools() {
@@ -68,14 +68,55 @@ export default function AdminTools() {
               <Card.Title>Team Controls</Card.Title>
             </Card.Body>
             <ListGroup className="list-group-flush">
-              <ListGroup.Item>
-                <Card.Link href="#" style={{ textDecoration: "none" }}>Update Team</Card.Link>
+            <ListGroup.Item>
+                <Card.Link onClick={() => setShownModal("updateTeam")} style={{ textDecoration: "none", cursor: "pointer" }}>Update Team</Card.Link>
+                <CustomModal
+                  title="Update Team"
+                  open={shownModal === "updateTeam"}
+                  close={handleClose}
+                  enterFunction={() => console.log("Updating Team")}
+                  closeBtnTitle="Cancel"
+                  enterBtnTitle="Update Team"
+                >
+                  <TeamForm
+                    adminController="updateTeam"
+                    handleClose={handleClose}
+                  />
+                </CustomModal>
               </ListGroup.Item>
+
               <ListGroup.Item>
-                <Card.Link href="#" style={{ textDecoration: "none" }}>Create Team</Card.Link>
+                <Card.Link onClick={() => {setShownModal("createTeam")}} style={{ textDecoration: "none", cursor: "pointer" }}>Create Team</Card.Link>
+                <CustomModal
+                  open={shownModal === "createTeam"}
+                  title="Create Team"
+                  close={handleClose}
+                  enterFunction={() => console.log("Creating Team")}
+                  closeBtnTitle="Cancel"
+                  enterBtnTitle="Create Team"
+                >
+                  <TeamForm
+                    adminController="createTeam"
+                    handleClose={handleClose}
+                  />
+                </CustomModal>
               </ListGroup.Item>
+
               <ListGroup.Item>
-                <Card.Link href="#" style={{ textDecoration: "none" }}>Delete Team</Card.Link>
+                <Card.Link onClick={() => setShownModal("deleteTeam")} style={{ textDecoration: "none", cursor: "pointer" }}>Delete Team</Card.Link>
+                <CustomModal
+                  title="Delete Team"
+                  open={shownModal === "deleteTeam"}
+                  close={handleClose}
+                  enterFunction={() => console.log("Deleting Team")}
+                  closeBtnTitle="Cancel"
+                  enterBtnTitle="Delete Team"
+                >
+                  <TeamForm
+                    adminController="deleteTeam"
+                    handleClose={handleClose}
+                  />
+                </CustomModal>
               </ListGroup.Item>
             </ListGroup>
           </Card>
@@ -86,13 +127,12 @@ export default function AdminTools() {
             <Card.Body>
               <Card.Title>Season Controls</Card.Title>
             </Card.Body>
+
             <ListGroup className="list-group-flush">
 
               <ListGroup.Item>
-
                 <Card.Link onClick={() => setShownModal("updateSeason")} style={{ textDecoration: "none", cursor: "pointer" }}>Update Season</Card.Link>
                 <CustomModal
-
                   title="Update Season"
                   open={shownModal === "updateSeason"}
                   close={handleClose}
@@ -103,12 +143,7 @@ export default function AdminTools() {
                   <SeasonForm
                     adminController="updateSeason"
                     handleClose={handleClose}
-                    // rink="Roseville"
-                    // seasonType="Summer"
-                    // startDate="2015-06-12"
-                    // playoffRounds={1}
                   />
-
                 </CustomModal>
               </ListGroup.Item>
 
@@ -126,7 +161,6 @@ export default function AdminTools() {
                     adminController="createSeason"
                     handleClose={handleClose}
                   />
-
                 </CustomModal>
               </ListGroup.Item>
 

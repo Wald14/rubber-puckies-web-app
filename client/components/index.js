@@ -9,4 +9,4 @@ export { default as TeamHistoryBySeason } from "./TeamHistoryBySeason";
 export { default as CurrentRosterTable } from "./CurrentRosterTable";
 export { default as CustomModal } from "./CustomModal";
 export { default as SeasonForm } from "./SeasonForm";
-export { default as DropDown } from "./DropDown";
+export { default as TeamForm } from "./TeamForm";

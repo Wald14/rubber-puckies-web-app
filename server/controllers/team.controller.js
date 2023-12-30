@@ -3,7 +3,7 @@ const { Team, Season } = require('../models');
 
 async function getAllTeams() {
   try {
-    return await Team.find();
+    return await Team.find().populate({path: "season", select: "startDate seasonType"});
   } catch (err) {
     throw new Error(err)
   }

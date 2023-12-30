@@ -1,7 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useState, useEffect } from 'react';
-import { DropDown } from '../components';
 
 export default function CreateSeasonForm(props) {
 
@@ -200,7 +199,7 @@ export default function CreateSeasonForm(props) {
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label>Start Date</Form.Label>
+        <Form.Label>Start Date (YYYY-MM-DD)</Form.Label>
         <Form.Control type="startDate" placeholder="YYYY-MM-DD" value={selectedStartDate} onChange={handleStartDateChange} disabled={isDisabled} />
       </Form.Group>
 
