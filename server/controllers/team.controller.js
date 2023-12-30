@@ -11,7 +11,7 @@ async function getAllTeams() {
 
 async function getTeamsbyNameAndSeasonId(teamName, seasonId) {
   try {
-    return await Team.findOne({ name: teamName, season: seasonId}).populate({path: "season", select: "startDate seasonType"}).populate({path: "captain", select: "firstName lastName -_id"});
+    return await Team.findOne({ name: teamName, season: seasonId}).populate({path: "season", select: "startDate seasonType playoffRounds rink"}).populate({path: "captain", select: "firstName lastName -_id"});
   } catch (err) {
     throw new Error(err)
   }
@@ -19,7 +19,7 @@ async function getTeamsbyNameAndSeasonId(teamName, seasonId) {
 
 async function getAllTeamsbyName(teamName) {
   try {
-    return await Team.find({ name: teamName }).populate({path: "season", select: "startDate seasonType"}).populate({path: "captain", select: "firstName lastName -_id"});
+    return await Team.find({ name: teamName }).populate({path: "season", select: "startDate seasonType playoffRounds rink"}).populate({path: "captain", select: "firstName lastName -_id"});
   } catch (err) {
     throw new Error(err)
   }

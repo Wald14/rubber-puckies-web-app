@@ -21,7 +21,7 @@ router.get("/:teamName", async (req, res) => {
             gamesPlayed = 0
 
         let playoffWins = 0, 
-            playoffLoses = 0, 
+            playoffLoses = 0,
             sow = 0, 
             sol = 0,  
             playoffGamesPlayed = 0, 
@@ -34,6 +34,9 @@ router.get("/:teamName", async (req, res) => {
 
         const seasonName = season.season.seasonType.charAt(0).toUpperCase() + season.season.seasonType.slice(1);
         const year = new Date(season.season.startDate).getFullYear();
+
+        const playoffRounds = season.season.playoffRounds
+        const rink = season.season.rink
 
         const seasonGameInfo = await getAllGamesByTeamId(season._id)
 
@@ -95,7 +98,7 @@ router.get("/:teamName", async (req, res) => {
 
         return {
           captain: season.captain.firstName + " " + season.captain.lastName,
-          rink: "",
+          rink: rink,
           season: `${seasonName} ${year}`,
 
           regular: {
@@ -121,7 +124,7 @@ router.get("/:teamName", async (req, res) => {
             gamesPlayed: playoffGamesPlayed,
             gf: playoffGoalsFor,
             record: `${playoffWins} - ${playoffLoses}`,
-            rounds: "",
+            rounds: playoffRounds,
             semiRoundOpp: semiRoundOpp,
             sol: sol,
             sow: sow,
