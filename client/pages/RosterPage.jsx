@@ -1,7 +1,7 @@
 import { CurrentRosterTable } from '../components';
 
 
-export default function Roster(){
+export default function RosterPage(){
 
   return (
     <>

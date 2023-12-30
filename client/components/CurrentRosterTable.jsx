@@ -21,12 +21,12 @@ export default function CurrentRosterTable() {
   return (
 
     <>
-      <h2>{curRosInfo.seasonInfo.seasonName} Roster</h2>
+      <h2 className="mb-4">Active Roster</h2>
       <h3>Skaters</h3>
       <Table responsive striped hover variant="dark">
         <thead>
           <tr style={{ textAlign: "center" }}>
-            <th style={{ textAlign: "left" }}>Player</th>
+            <th style={{ textAlign: "left"}}>Player</th>
             <th>#</th>
             <th>POS</th>
             <th>Sh</th>
@@ -44,7 +44,7 @@ export default function CurrentRosterTable() {
             curRosInfo.playerInfo.map((player, key) => {
               return (
                 <tr key={key} style={{ textAlign: "center" }}>
-                  <td style={{ textAlign: "left" }}>{player.firstName} {player.lastName}</td>
+                  <td style={{ textAlign: "left"}}>{player.firstName} {player.lastName}</td>
                   <td>{player.jerseyNumber}</td>
                   <td>{player.pos}</td>
                   <td>{player.handedness}</td>

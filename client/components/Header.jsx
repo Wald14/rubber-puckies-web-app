@@ -39,7 +39,8 @@ export default function Header() {
               </NavDropdown>
               <Nav.Link>Season Log</Nav.Link>
               <Nav.Link>Records</Nav.Link>
-              <Nav.Link href="/private">Admin Controls</Nav.Link>
+              <Nav.Link href="/admintools">Admin Tools</Nav.Link>
+              
 
               {/* {user?._id !== undefined && (
                 <Nav.Link href="/private">Admin Controls</Nav.Link>

@@ -14,10 +14,11 @@ export default function AppProvider(props){
   async function verifyUser(){
     const cookie = Cookie.get("auth-cookie")
 
-    //-----------------------------------------------------------------------
-    // Uncommented to allow user to access other pages that don't need login
-    //-----------------------------------------------------------------------
-    // if(!cookie && window.location.pathname !== "/" && !window.location.pathname.includes("/auth")){
+    //-----------------------------------------------------------------------------
+    // Currently needs you to add the pages that the user can access without login
+    // Should be refactored to only block certain pages
+    //-----------------------------------------------------------------------------
+    // if(!cookie && window.location.pathname !== "/" && !window.location.pathname.includes("/auth") && !window.location.pathname.includes("/roster") && !window.location.pathname.includes("/teamhistory")){
     //   window.location.href = "/auth"
     // }
     

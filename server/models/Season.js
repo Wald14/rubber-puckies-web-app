@@ -13,13 +13,16 @@ const seasonSchema = new Schema({
     },
     required: [true, "Season type needed"],
   },
-  // teams: [
-  //   {
-  //     type: Schema.Types.ObjectId,
-  //     ref: 'Team'
-  //   },
-  // ]
-
+  playoffRounds: {
+    type: Number,
+    min: 1,
+    default: 1,
+    required: true
+  },
+  rink: {
+    type: String,
+    required: true
+  }
 }, {
   timestamps: true
 });
