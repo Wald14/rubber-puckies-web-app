@@ -27,5 +27,14 @@ const seasonSchema = new Schema({
   timestamps: true
 });
 
+
+// Virtual getter to convert startDate to Central Time (UTC-5)
+seasonSchema.virtual('startDateCentralTime').get(function () {
+  const startDateUTC = this.startDate;
+  const startDateCentralTime = new Date(startDateUTC.toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+  return startDateCentralTime;
+});
+
+
 const Season = model('Season', seasonSchema);
 module.exports = Season;

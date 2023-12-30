@@ -103,10 +103,10 @@ export default function AdminTools() {
                   <SeasonForm
                     adminController="updateSeason"
                     handleClose={handleClose}
-                    rink="Roseville"
-                    seasonType="Summer"
-                    startDate="2015-06-12"
-                    playoffRounds={1}
+                    // rink="Roseville"
+                    // seasonType="Summer"
+                    // startDate="2015-06-12"
+                    // playoffRounds={1}
                   />
 
                 </CustomModal>

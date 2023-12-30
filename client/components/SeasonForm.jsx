@@ -5,51 +5,104 @@ import { DropDown } from '../components';
 
 export default function CreateSeasonForm(props) {
 
+  // Set fields to be disabled based on if the delete modal is opened
   const isDisabled = props.adminController === "deleteSeason" ? true : false
 
-  const [selectedRink, setSelectedRink] = useState(props.rink || '')
-  const [selectedSeasonType, setSelectedSeasonType] = useState(props.seasonType || '')
-  const [selectedStartDate, setSelectedStartDate] = useState(props.startDate || '')
-  const [selectedPlayoffRounds, setSelectedPlayoffRounds] = useState(props.playoffRounds || 1)
+  // Set Default values 
+  const defaultValues = {
+    seasonId: '',
+    rink: '',
+    seasonType: '',
+    startDate: '',
+    playoffRounds: 1
+  }
 
+  // useState for forum values
+  const [selectedSeasonId, setSelectedSeasonId] = useState(defaultValues.seasonId)
+  const [selectedRink, setSelectedRink] = useState(defaultValues.rink)
+  const [selectedSeasonType, setSelectedSeasonType] = useState(defaultValues.seasonType)
+  const [selectedStartDate, setSelectedStartDate] = useState(defaultValues.startDate)
+  const [selectedPlayoffRounds, setSelectedPlayoffRounds] = useState(defaultValues.playoffRounds)
+  // Handlers for forum value changes
   const handleRinkChange = (e) => { setSelectedRink(e.target.value) }
   const handleSeasonTypeChange = (e) => { setSelectedSeasonType(e.target.value) }
   const handleStartDateChange = (e) => { setSelectedStartDate(e.target.value) }
   const handlePlayoffRoundsChange = (e) => { setSelectedPlayoffRounds(e.target.value) }
+  // Handler for selectedSeason change
+  const handleSeasonChange = (e) => {
+    setSelectedSeasonId(e.target.value)
+    const curSeason = seasonsOptions.find(season => season._id === e.target.value)
+    setSelectedRink(curSeason.rink)
+    setSelectedSeasonType(curSeason.seasonType)
+    setSelectedStartDate(curSeason.startDate)
+    setSelectedPlayoffRounds(curSeason.playoffRounds)
+  }
 
-  const [seasonsOptions, setSeasonsOptions] = useState([])
+  // useState for handling fetched seasons for Update or Delete Season modals
+  const [seasonsOptions, setSeasonsOptions] = useState(null)
 
 
-
+  // Handles form submition
   async function handleFormSubmit(e) {
     e.preventDefault()
-    console.log({
-      rink: selectedRink,
-      seasonType: selectedSeasonType,
-      startDate: selectedStartDate,
-      playoffRounds: selectedPlayoffRounds,
-      adminController: props.control
-    })
-    if (props.adminController === "createSeason") {
-      await createSeason()
+    switch (props.adminController) {
+      case "updateSeason":
+        await updateSeason(selectedSeasonId)
+        break;
+      case "createSeason":
+        await createSeason()
+        break;
+      case "deleteSeason":
+        console.log("Season Deleting Not Functional At This Time")
+        break;
     }
     props.handleClose(false)
   }
 
 
+  // Fetches All Seasons for Update and Delete Modals
   async function getSeasonsOptions() {
     const query = await fetch('/api/season')
     const result = await query.json()
-    console.log(result)
-    await result.payload.forEach( (season) => {
 
-      const year = new Date(season.startDate).getFullYear()
-      setSeasonsOptions(seasonsOptions.concat(`${season.seasonType} ${year}`))
+    const seasons = []
+    await result.payload.forEach((season) => {
+      const date = new Date(season.startDate)
+      const year = date.getFullYear()
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      seasons.push({
+        ...season,
+        startDate: `${year}-${month}-${day}`,
+        seasonName: `${season.seasonType.charAt(0).toUpperCase() + season.seasonType.slice(1)} ${year}`
+      })
     })
-    console.log(seasonsOptions)
+    setSeasonsOptions(seasons)
   }
 
 
+  // Handles updating a season
+  async function updateSeason(seasonId) {
+    try {
+      const query = await fetch(`/api/season/${seasonId}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          rink: selectedRink,
+          seasonType: selectedSeasonType,
+          startDate: convertToUTC(selectedStartDate),
+          playoffRounds: selectedPlayoffRounds
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return query
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  // Handles creating a new season
   async function createSeason() {
     try {
       const query = await fetch('/api/season', {
@@ -57,14 +110,13 @@ export default function CreateSeasonForm(props) {
         body: JSON.stringify({
           rink: selectedRink,
           seasonType: selectedSeasonType,
-          startDate: selectedStartDate,
+          startDate: convertToUTC(selectedStartDate),
           playoffRounds: selectedPlayoffRounds
         }),
         headers: {
           "Content-Type": "application/json",
         },
       });
-      console.log(query)
       return query
     } catch (err) {
       console.log(err.message)
@@ -72,23 +124,64 @@ export default function CreateSeasonForm(props) {
   }
 
 
+  // convert data to UTC time
+  function convertToUTC(date) {
+    const enteredDate = new Date(date)
+    const utcDate = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'UTC',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+    }).format(enteredDate);
+    const convertedDate = new Date(utcDate).toISOString()
+    return (convertedDate)
+  }
+
+  // useEffect for initiating the fecth for getting all seasons
   useEffect(() => {
-    if (props.adminController === "updateSeason") {
+    if (props.adminController !== "createSeason") {
       getSeasonsOptions()
     }
   }, [])
 
+  // useEffect for setting values to the first fetched season for Update and Delete Modals
+  useEffect(() => {
+    if (seasonsOptions !== null) {
+      setSelectedSeasonId(seasonsOptions[0]._id)
+      setSelectedRink(seasonsOptions[0].rink)
+      setSelectedSeasonType(seasonsOptions[0].seasonType)
+      setSelectedStartDate(seasonsOptions[0].startDate)
+      setSelectedPlayoffRounds(seasonsOptions[0].playoffRounds)
+    }
+  }, [seasonsOptions])
+
+
   return (
     <Form>
-      {props.adminController === "updateSeason" &&
-        <DropDown label={"Select Season"} options={seasonsOptions}/>
+
+      {props.adminController !== "createSeason" &&
+        <Form.Group className="mb-3">
+          <Form.Label>Select Season</Form.Label>
+          <Form.Select value={selectedSeasonId} onChange={handleSeasonChange}>
+            {seasonsOptions &&
+              seasonsOptions.map((season, key) => {
+                return (
+                  <option key={key} value={season._id}>{season.seasonName}</option>
+                )
+              })
+            }
+          </Form.Select>
+        </Form.Group>
       }
 
       <Form.Group className="mb-3">
         <Form.Label>Rink</Form.Label>
         <Form.Select value={selectedRink} onChange={handleRinkChange} disabled={isDisabled}>
           <option>Select Rink</option>
-          <option value="Doog Wood">Doug Woog</option>
+          <option value="Doug Woog">Doug Woog</option>
           <option value="Roseville">Roseville</option>
           <option value="Eden Prairie">Eden Prairie</option>
           <option value="Roseville/Tartan">Roseville/Tartan</option>
