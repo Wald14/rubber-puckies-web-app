@@ -12,10 +12,14 @@ export default function TeamForm(props) {
   const [selectedTeamId, setSelectedTeamId] = useState()
   const [selectedSeasonId, setSelectedSeasonId] = useState()
   const [selectedPlayerId, setSelectedPlayerId] = useState()
+  const [selectedSeasonPlace, setSelectedSeasonPlace] = useState('')
+  const [selectedPlayoffPlace, setSelectedPlayoffPlace] = useState('')
   // Handlers for forum value changes
   const handleNameChange = (e) => { setSelectedName(e.target.value) }
   const handleSeasonChange = (e) => { setSelectedSeasonId(e.target.value) }
   const handlePlayerChange = (e) => { setSelectedPlayerId(e.target.value) }
+  const handleSeasonPlaceChange = (e) => { setSelectedSeasonPlace(e.target.value) }
+  const handlePlayoffPlaceChange = (e) => { setSelectedPlayoffPlace(e.target.value) }
 
 
   const handleTeamChange = (e) => {
@@ -24,6 +28,8 @@ export default function TeamForm(props) {
     setSelectedName(curTeam.teamName)
     setSelectedSeasonId(curTeam.seasonId)
     setSelectedPlayerId(curTeam.captain ? curTeam.captain : '')
+    setSelectedSeasonPlace(curTeam.seasonPlace ? curTeam.seasonPlace : '')
+    setSelectedPlayoffPlace(curTeam.playoffPlace ? curTeam.playoffPlace : '')
   }
 
 
@@ -39,7 +45,9 @@ export default function TeamForm(props) {
     // console.log({
     //   name: selectedName,
     //   season: selectedSeasonId,
-    //   captain: selectedPlayerId
+    //   captain: selectedPlayerId,
+    //   seasonPlace: selectedSeasonPlace,
+    //   playoffPlace: selectedPlayoffPlace
     // })
     switch (props.adminController) {
       case "updateTeam":
@@ -49,7 +57,7 @@ export default function TeamForm(props) {
         await createTeam()
         break;
       case "deleteTeam":
-        console.log("Team Deleteing is not optional at this time")
+        console.log("Team Deleteing is not operational at this time")
         break;
     }
     props.handleClose(false)
@@ -77,7 +85,9 @@ export default function TeamForm(props) {
         selectorTeamName: teamName,
         teamName: team.name,
         seasonId: team.season._id,
-        captain: team.captain
+        captain: team.captain,
+        seasonPlace: team.seasonPlace,
+        playoffPlace: team.playoffPlace
       })
     })
     setTeamOptions(teams)
@@ -134,7 +144,9 @@ export default function TeamForm(props) {
         body: JSON.stringify({
           name: selectedName,
           season: selectedSeasonId,
-          captain: selectedPlayerId
+          captain: selectedPlayerId,
+          seasonPlace: selectedSeasonPlace,
+          playoffPlace: selectedPlayoffPlace
         }),
         headers: {
           "Content-Type": "application/json",
@@ -154,7 +166,9 @@ export default function TeamForm(props) {
         body: JSON.stringify({
           name: selectedName,
           season: selectedSeasonId,
-          captain: selectedPlayerId !== "" ? selectedPlayerId : null
+          captain: selectedPlayerId !== "" ? selectedPlayerId : null,
+          seasonPlace: selectedSeasonPlace !== "" ? selectedSeasonPlace : null,
+          playoffPlace: selectedPlayoffPlace !== "" ? selectedPlayoffPlace : null,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -187,6 +201,8 @@ export default function TeamForm(props) {
       setSelectedName(teamOptions[0].teamName)
       setSelectedSeasonId(teamOptions[0].seasonId)
       setSelectedPlayerId(teamOptions[0].captain ? teamOptions[0].captain : '')
+      setSelectedSeasonPlace(teamOptions[0].seasonPlace ? teamOptions[0].seasonPlace : '')
+      setSelectedPlayoffPlace(teamOptions[0].PlayoffPlace ? teamOptions[0].PlayoffPlace : '')
     }
   }, [teamOptions])
 
@@ -241,6 +257,17 @@ export default function TeamForm(props) {
           }
         </Form.Select>
       </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>Set Season Place (Number)</Form.Label>
+        <Form.Control type="name" value={selectedSeasonPlace} onChange={handleSeasonPlaceChange} disabled={isDisabled} />
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>Set Playoff Place (Number)</Form.Label>
+        <Form.Control type="name" value={selectedPlayoffPlace} onChange={handlePlayoffPlaceChange} disabled={isDisabled} />
+      </Form.Group>
+
 
       {props.adminController === "updateTeam" &&
         <Button variant="primary" type="submit" onClick={handleFormSubmit}>

@@ -14,12 +14,12 @@ const teamSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Player'
   },
-  // players: [
-  //   {
-  //     type: Schema.Types.ObjectId,
-  //     ref: 'Player'
-  //   }
-  // ],
+  seasonPlace: {
+    type: Number,
+  },
+  playoffPlace: {
+    type: Number,
+  }
 }, {
   timestamps: true
 });

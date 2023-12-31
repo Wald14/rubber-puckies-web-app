@@ -18,7 +18,8 @@ router.get("/:teamName", async (req, res) => {
             ties = 0, 
             goalsFor = 0, 
             goalsAgainst = 0, 
-            gamesPlayed = 0
+            gamesPlayed = 0,
+            seasonFinish = season.seasonPlace ? season.seasonPlace : null
 
         let playoffWins = 0, 
             playoffLoses = 0,
@@ -30,7 +31,9 @@ router.get("/:teamName", async (req, res) => {
             champion = null,
             championshipOpp = null,
             championshipScore = null,
-            semiRoundOpp = null
+            semiRoundOpp = null,
+            playoffFinish = season.playoffPlace ? season.playoffPlace : null
+
 
         const seasonName = season.season.seasonType.charAt(0).toUpperCase() + season.season.seasonType.slice(1);
         const year = new Date(season.season.startDate).getFullYear();
@@ -104,7 +107,7 @@ router.get("/:teamName", async (req, res) => {
           regular: {
             diff: goalsFor - goalsAgainst,
             diff_per_game: ((goalsFor - goalsAgainst) / gamesPlayed).toFixed(1),
-            finish: "",
+            finish: seasonFinish,
             gamesPlayed: gamesPlayed,
             goals_against: goalsAgainst,
             goals_for: goalsFor,
@@ -119,7 +122,7 @@ router.get("/:teamName", async (req, res) => {
             champion: champion,
             championshipOpp: championshipOpp,
             championshipScore: championshipScore,
-            finish: "",
+            finish: playoffFinish,
             ga: playoffGoalsAgainst,
             gamesPlayed: playoffGamesPlayed,
             gf: playoffGoalsFor,
