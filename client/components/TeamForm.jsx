@@ -32,15 +32,33 @@ export default function TeamForm(props) {
   const [seasonsOptions, setSeasonsOptions] = useState(null)
   const [playerOptions, setPlayerOptions] = useState(null)
 
-  const handleFormSubmit = (e) => {
+
+  // Handles form submit
+  async function handleFormSubmit(e) {
     e.preventDefault()
-    console.log({
-      name: selectedName,
-      season: selectedSeasonId,
-      captain: selectedPlayerId
-    })
+    // console.log({
+    //   name: selectedName,
+    //   season: selectedSeasonId,
+    //   captain: selectedPlayerId
+    // })
+    switch (props.adminController) {
+      case "updateTeam":
+        await updateTeam(selectedTeamId)
+        break;
+      case "createTeam":
+        await createTeam()
+        break;
+      case "deleteTeam":
+        console.log("Team Deleteing is not optional at this time")
+        break;
+    }
     props.handleClose(false)
   }
+
+
+
+
+
 
   // Fetches All Teams for updating and deleting
   async function getTeamOptions() {
@@ -106,6 +124,46 @@ export default function TeamForm(props) {
       return 0;
     })
     setPlayerOptions(players)
+  }
+
+  // Handles Creating a New Team
+  async function createTeam() {
+    try {
+      const query = await fetch('/api/team', {
+        method: "POST",
+        body: JSON.stringify({
+          name: selectedName,
+          season: selectedSeasonId,
+          captain: selectedPlayerId
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      return query;
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  // Handles Updating a Team
+  async function updateTeam(teamId) {
+    try {
+      const query = await fetch(`/api/team/${teamId}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          name: selectedName,
+          season: selectedSeasonId,
+          captain: selectedPlayerId !== "" ? selectedPlayerId : null
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      return query;
+    } catch (err) {
+      console.log(err.message)
+    }
   }
 
 
