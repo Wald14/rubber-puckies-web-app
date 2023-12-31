@@ -5,7 +5,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import { CustomModal, SeasonForm, TeamForm } from '../components'
+import { CustomModal, SeasonForm, TeamForm, PlayerForm } from '../components'
 import { useState } from 'react';
 
 export default function AdminTools() {
@@ -19,8 +19,10 @@ export default function AdminTools() {
   return (
     <>
       <h1>Admin Tools</h1>
-      <p>This is the admin tools page.</p>
 
+      {/* ------------------------------------------------------------------------
+            GAME CONTROLS
+      ------------------------------------------------------------------------ */}
       <Row xs={1} md={2} lg={4} className="g-4">
         <Col>
           <Card>
@@ -43,32 +45,80 @@ export default function AdminTools() {
           </Card>
         </Col>
 
+        {/* ------------------------------------------------------------------------
+              PLAYER CONTROLS
+        ------------------------------------------------------------------------ */}
         <Col>
           <Card>
             <Card.Body>
               <Card.Title>Player Controls</Card.Title>
             </Card.Body>
             <ListGroup className="list-group-flush">
-              <ListGroup.Item>
-                <Card.Link href="#" style={{ textDecoration: "none" }}>Update Player</Card.Link>
+            <ListGroup.Item>
+                <Card.Link onClick={() => setShownModal("updatePlayer")} style={{ textDecoration: "none", cursor: "pointer" }}>Update Player</Card.Link>
+                <CustomModal
+                  title="Update Player"
+                  open={shownModal === "updatePlayer"}
+                  close={handleClose}
+                  enterFunction={() => console.log("Updating Player")}
+                  closeBtnTitle="Cancel"
+                  enterBtnTitle="Update Player"
+                >
+                  <PlayerForm
+                    adminController="updatePlayer"
+                    handleClose={handleClose}
+                  />
+                </CustomModal>
               </ListGroup.Item>
+
               <ListGroup.Item>
-                <Card.Link href="#" style={{ textDecoration: "none" }}>Create Player</Card.Link>
+                <Card.Link onClick={() => { setShownModal("createPlayer") }} style={{ textDecoration: "none", cursor: "pointer" }}>Create Player</Card.Link>
+                <CustomModal
+                  open={shownModal === "createPlayer"}
+                  title="Create Player"
+                  close={handleClose}
+                  enterFunction={() => console.log("Creating Player")}
+                  closeBtnTitle="Cancel"
+                  enterBtnTitle="Create Player"
+                >
+                  <PlayerForm
+                    adminController="createPlayer"
+                    handleClose={handleClose}
+                  />
+                </CustomModal>
               </ListGroup.Item>
+
               <ListGroup.Item>
-                <Card.Link href="#" style={{ textDecoration: "none" }}>Delete Player</Card.Link>
+                <Card.Link onClick={() => setShownModal("deletePlayer")} style={{ textDecoration: "none", cursor: "pointer" }}>Delete Player</Card.Link>
+                <CustomModal
+                  title="Delete Player"
+                  open={shownModal === "deletePlayer"}
+                  close={handleClose}
+                  enterFunction={() => console.log("Deleting Player")}
+                  closeBtnTitle="Cancel"
+                  enterBtnTitle="Delete Player"
+                >
+                  <PlayerForm
+                    adminController="deletePlayer"
+                    handleClose={handleClose}
+                  />
+                </CustomModal>
               </ListGroup.Item>
             </ListGroup>
           </Card>
         </Col>
 
+
+        {/* ------------------------------------------------------------------------
+              TEAM CONTROLS
+        ------------------------------------------------------------------------ */}
         <Col>
           <Card>
             <Card.Body>
               <Card.Title>Team Controls</Card.Title>
             </Card.Body>
             <ListGroup className="list-group-flush">
-            <ListGroup.Item>
+              <ListGroup.Item>
                 <Card.Link onClick={() => setShownModal("updateTeam")} style={{ textDecoration: "none", cursor: "pointer" }}>Update Team</Card.Link>
                 <CustomModal
                   title="Update Team"
@@ -86,7 +136,7 @@ export default function AdminTools() {
               </ListGroup.Item>
 
               <ListGroup.Item>
-                <Card.Link onClick={() => {setShownModal("createTeam")}} style={{ textDecoration: "none", cursor: "pointer" }}>Create Team</Card.Link>
+                <Card.Link onClick={() => { setShownModal("createTeam") }} style={{ textDecoration: "none", cursor: "pointer" }}>Create Team</Card.Link>
                 <CustomModal
                   open={shownModal === "createTeam"}
                   title="Create Team"
@@ -122,6 +172,10 @@ export default function AdminTools() {
           </Card>
         </Col>
 
+
+        {/* ------------------------------------------------------------------------
+              SEASON CONTROLS
+        ------------------------------------------------------------------------ */}
         <Col>
           <Card>
             <Card.Body>
@@ -148,7 +202,7 @@ export default function AdminTools() {
               </ListGroup.Item>
 
               <ListGroup.Item>
-                <Card.Link onClick={() => {setShownModal("createSeason")}} style={{ textDecoration: "none", cursor: "pointer" }}>Create Season</Card.Link>
+                <Card.Link onClick={() => { setShownModal("createSeason") }} style={{ textDecoration: "none", cursor: "pointer" }}>Create Season</Card.Link>
                 <CustomModal
                   open={shownModal === "createSeason"}
                   title="Create Season"

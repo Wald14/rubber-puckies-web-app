@@ -10,3 +10,4 @@ export { default as CurrentRosterTable } from "./CurrentRosterTable";
 export { default as CustomModal } from "./CustomModal";
 export { default as SeasonForm } from "./SeasonForm";
 export { default as TeamForm } from "./TeamForm";
+export { default as PlayerForm } from "./PlayerForm";

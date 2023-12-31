@@ -34,17 +34,6 @@ const playerSchema = new Schema({
       ref: "Team"
     }
   ]
-  // seasons: [
-  //   {
-  //   season: {
-  //     type: Schema.Types.ObjectId,
-  //     ref: 'Season'
-  //   },
-  //   team: {
-  //     type: Schema.Types.ObjectId,
-  //     ref: 'Team'
-  //   },
-  // }],
 }, {
   timestamps: true
 });
