@@ -17,6 +17,14 @@ async function getTeamsbyNameAndSeasonId(teamName, seasonId) {
   }
 }
 
+async function getTeamsbySeasonId(seasonId) {
+  try {
+    return await Team.find({ season: seasonId}).populate({path: "season", select: "startDate seasonType playoffRounds rink"}).populate({path: "captain", select: "firstName lastName -_id"});
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
 async function getAllTeamsbyName(teamName) {
   try {
     return await Team.find({ name: teamName }).populate({path: "season", select: "startDate seasonType playoffRounds rink"}).populate({path: "captain", select: "firstName lastName -_id"});
@@ -65,6 +73,7 @@ async function deleteTeamById(id) {
 module.exports = {
   getAllTeams,
   getTeamsbyNameAndSeasonId,
+  getTeamsbySeasonId,
   getAllTeamsbyName,
   getTeamById,
   createTeam,

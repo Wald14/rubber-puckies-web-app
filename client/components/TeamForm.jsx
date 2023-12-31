@@ -14,12 +14,14 @@ export default function TeamForm(props) {
   const [selectedPlayerId, setSelectedPlayerId] = useState()
   const [selectedSeasonPlace, setSelectedSeasonPlace] = useState('')
   const [selectedPlayoffPlace, setSelectedPlayoffPlace] = useState('')
+  // const [selectedPlayers, setSelectedPlayers] = useState('')
   // Handlers for forum value changes
   const handleNameChange = (e) => { setSelectedName(e.target.value) }
   const handleSeasonChange = (e) => { setSelectedSeasonId(e.target.value) }
   const handlePlayerChange = (e) => { setSelectedPlayerId(e.target.value) }
   const handleSeasonPlaceChange = (e) => { setSelectedSeasonPlace(e.target.value) }
   const handlePlayoffPlaceChange = (e) => { setSelectedPlayoffPlace(e.target.value) }
+  // const handleSelectedPlayersChange = (e) => { setSelectedPlayers(e.target.value) }
 
 
   const handleTeamChange = (e) => {
@@ -188,7 +190,7 @@ export default function TeamForm(props) {
     }
   }, [])
 
-  // useEffect for initiating the fetch for getting all players
+  // useEffect for initiating the fetch for getting all seasons and players
   useEffect(() => {
     getSeasonsOptions()
     getPlayerOptions()
@@ -245,6 +247,16 @@ export default function TeamForm(props) {
       </Form.Group>
 
       <Form.Group className="mb-3">
+        <Form.Label>Set Season Place (Number)</Form.Label>
+        <Form.Control type="name" value={selectedSeasonPlace} onChange={handleSeasonPlaceChange} disabled={isDisabled} />
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>Set Playoff Place (Number)</Form.Label>
+        <Form.Control type="name" value={selectedPlayoffPlace} onChange={handlePlayoffPlaceChange} disabled={isDisabled} />
+      </Form.Group>
+
+      <Form.Group className="mb-3">
         <Form.Label>Select Captain</Form.Label>
         <Form.Select value={selectedPlayerId} onChange={handlePlayerChange} disabled={isDisabled}>
           <option value={null}></option>
@@ -258,16 +270,19 @@ export default function TeamForm(props) {
         </Form.Select>
       </Form.Group>
 
-      <Form.Group className="mb-3">
-        <Form.Label>Set Season Place (Number)</Form.Label>
-        <Form.Control type="name" value={selectedSeasonPlace} onChange={handleSeasonPlaceChange} disabled={isDisabled} />
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <Form.Label>Set Playoff Place (Number)</Form.Label>
-        <Form.Control type="name" value={selectedPlayoffPlace} onChange={handlePlayoffPlaceChange} disabled={isDisabled} />
-      </Form.Group>
-
+      {/* <Form.Group className="mb-3">
+        <Form.Label>Player 1</Form.Label>
+        <Form.Select value={selectedPlayers} onChange={handleSelectedPlayersChange} disabled={isDisabled}>
+          <option value={null}></option>
+          {playerOptions &&
+            playerOptions.map((player, key) => {
+              return (
+                <option key={key} value={player.playerId}>{player.playerName}</option>
+              )
+            })
+          }
+        </Form.Select>
+      </Form.Group> */}
 
       {props.adminController === "updateTeam" &&
         <Button variant="primary" type="submit" onClick={handleFormSubmit}>

@@ -40,10 +40,19 @@ const gameSchema = new Schema({
   gameType: {
     type: String,
     enum: {
-      values: ['regular', 'semi-finals', 'championship'],
+      values: ['regular', 'semifinal', 'championship'],
       message: '{VALUE} is not supported. Game type must be: regular, semi-finals, championship'
     },
     required: [true, "Game have a type: regular, semi-Finals, playoff"],
+  },
+  endedIn: {
+    type: String,
+    enum: {
+      values: ['regulation', 'overtime', 'shootout'],
+      message: '{VALUE} is not supported. endedIn must be: regular, overtime, shootout'
+    },
+    default: 'regulation',
+    required: true
   },
   players: [
     {

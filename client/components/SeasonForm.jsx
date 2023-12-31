@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useState, useEffect } from 'react';
 
-export default function CreateSeasonForm(props) {
+export default function SeasonForm(props) {
 
   // Set fields to be disabled based on if the delete modal is opened
   const isDisabled = props.adminController === "deleteSeason" ? true : false

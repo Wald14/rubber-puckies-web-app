@@ -5,7 +5,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import { CustomModal, SeasonForm, TeamForm, PlayerForm } from '../components'
+import { CustomModal, SeasonForm, TeamForm, PlayerForm, GameForm } from '../components'
 import { useState } from 'react';
 
 export default function AdminTools() {
@@ -30,16 +30,55 @@ export default function AdminTools() {
               <Card.Title>Game Controls</Card.Title>
             </Card.Body>
             <ListGroup className="list-group-flush">
-              <ListGroup.Item>
-
-                <Card.Link style={{ textDecoration: "none" }}>Update Game</Card.Link>
-
+            <ListGroup.Item>
+                <Card.Link onClick={() => setShownModal("updateGame")} style={{ textDecoration: "none", cursor: "pointer" }}>Update Game</Card.Link>
+                <CustomModal
+                  title="Update Game"
+                  open={shownModal === "updateGame"}
+                  close={handleClose}
+                  enterFunction={() => console.log("Updating Game")}
+                  closeBtnTitle="Cancel"
+                  enterBtnTitle="Update Game"
+                >
+                  <GameForm
+                    adminController="updateGame"
+                    handleClose={handleClose}
+                  />
+                </CustomModal>
               </ListGroup.Item>
+
               <ListGroup.Item>
-                <Card.Link href="#" style={{ textDecoration: "none" }}>Create Game</Card.Link>
+                <Card.Link onClick={() => { setShownModal("createGame") }} style={{ textDecoration: "none", cursor: "pointer" }}>Create Game</Card.Link>
+                <CustomModal
+                  open={shownModal === "createGame"}
+                  title="Create Game"
+                  close={handleClose}
+                  enterFunction={() => console.log("Creating Game")}
+                  closeBtnTitle="Cancel"
+                  enterBtnTitle="Create Game"
+                >
+                  <GameForm
+                    adminController="createGame"
+                    handleClose={handleClose}
+                  />
+                </CustomModal>
               </ListGroup.Item>
+
               <ListGroup.Item>
-                <Card.Link href="#" style={{ textDecoration: "none" }}>Delete Game</Card.Link>
+                <Card.Link onClick={() => setShownModal("deleteGame")} style={{ textDecoration: "none", cursor: "pointer" }}>Delete Game</Card.Link>
+                <CustomModal
+                  title="Delete Game"
+                  open={shownModal === "deleteGame"}
+                  close={handleClose}
+                  enterFunction={() => console.log("Deleting Game")}
+                  closeBtnTitle="Cancel"
+                  enterBtnTitle="Delete Game"
+                >
+                  <GameForm
+                    adminController="deleteGame"
+                    handleClose={handleClose}
+                  />
+                </CustomModal>
               </ListGroup.Item>
             </ListGroup>
           </Card>

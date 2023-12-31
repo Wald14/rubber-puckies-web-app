@@ -228,7 +228,7 @@ export default function PlayerForm(props) {
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label>Positions:</Form.Label>
+        <Form.Label style={{ marginRight: '10px' }}>Positions:</Form.Label>
         <Form.Check
           inline
           label="Forward"
