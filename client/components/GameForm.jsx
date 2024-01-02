@@ -21,12 +21,27 @@ export default function GameForm(props) {
   // Handlers for forum value changes
   const handleStartTimeChange = (e) => { setSelectedStartTime(e.target.value) }
   const handleGameTypeChange = (e) => { setSelectedGameType(e.target.value) }
-  const handleSeasonChange = (e) => { 
+  const handleSeasonChange = (e) => {
     setSelectedSeasonId(e.target.value)
     getTeamOptions(e.target.value)
+    setSelectedRoster('')
   }
-  const handleHomeTeamChange = (e) => { setSelectedHomeTeam(e.target.value) }
-  const handleAwayTeamChange = (e) => { setSelectedAwayTeam(e.target.value) }
+  const handleHomeTeamChange = async (e) => {
+    setSelectedHomeTeam(e.target.value)
+    if (puckieTeams.find(team => team._id === e.target.value)) {
+      await getTeamRoster(e.target.value)
+    } else if (!puckieTeams.find(team => team._id === selectedAwayTeam)) {
+      setSelectedRoster(null)
+    }
+  }
+  const handleAwayTeamChange = async (e) => {
+    setSelectedAwayTeam(e.target.value)
+    if (puckieTeams.find(team => team._id === e.target.value)) {
+      await getTeamRoster(e.target.value)
+    } else if (!puckieTeams.find(team => team._id === selectedHomeTeam)) {
+      setSelectedRoster(null)
+    }
+  }
   const handleHomeGoalsChange = (e) => { setSelectedHomeGoals(e.target.value) }
   const handleAwayGoalsChange = (e) => { setSelectedAwayGoals(e.target.value) }
   const handleEndedInChange = (e) => { setSelectedEndedIn(e.target.value) }
@@ -35,7 +50,9 @@ export default function GameForm(props) {
   // useState for handling fetched seasons and players for selecting
   const [seasonsOptions, setSeasonsOptions] = useState(null)
   const [teamOptions, setTeamOptions] = useState(null)
-  const [playerOptions, setPlayerOptions] = useState(null)
+  // const [playerOptions, setPlayerOptions] = useState(null)
+  const [puckieTeams, setPuckieTeams] = useState()
+  const [selectedRoster, setSelectedRoster] = useState()
 
 
   // Fetches All Seasons for selecting season
@@ -63,11 +80,33 @@ export default function GameForm(props) {
   async function getTeamOptions(seasonId) {
     const query = await fetch(`/api/team/season/${seasonId}`)
     const result = await query.json()
-    const teams = result.payload    
+    const teams = result.payload
     setTeamOptions(teams)
   }
 
+  // Fetches All Rubber Puckie Teams
+  async function getPuckieTeams() {
+    const query = await fetch('/api/team/name/Rubber Puckies')
+    const result = await query.json()
+    const teams = result.payload
+    setPuckieTeams(teams)
+  }
 
+  // Fetches Team Roster by Od
+  async function getTeamRoster(teamId) {
+    const query = await fetch(`/api/player/team/${teamId}`)
+    const result = await query.json()
+    const roster = result.payload
+    roster.sort(function (a,b){
+      let x = a.firstName.toLowerCase();
+      let y = b.firstName.toLowerCase();
+      if (x < y) { return -1; }
+      if (x > y) { return 1; }
+      return 0;
+    })
+    setSelectedRoster(roster)
+    return roster
+  }
 
   // Handles form submition
   async function handleFormSubmit(e) {
@@ -102,6 +141,7 @@ export default function GameForm(props) {
   // useEffect for initiating the fetch for getting all seasons
   useEffect(() => {
     getSeasonsOptions()
+    getPuckieTeams()
   }, [])
 
 
@@ -215,6 +255,18 @@ export default function GameForm(props) {
         />
       </Form.Group>
 
+      {selectedRoster &&
+        <Form.Group className="mb-3">
+          <Form.Label>Rubber Puckies Roster</Form.Label>
+          <ol>
+            {selectedRoster.length > 0 &&
+              selectedRoster.map((player, index) => (
+                <li key={index}>{player.firstName} {player.lastName}</li>
+              ))}
+          </ol>
+        </Form.Group>
+      }
+
       {props.adminController === "updateGame" &&
         <Button variant="primary" type="submit" onClick={handleFormSubmit}>
           Update Game
@@ -234,3 +286,6 @@ export default function GameForm(props) {
     </Form>
   );
 }
+
+
+//---------------------------------------------------------------------------------
