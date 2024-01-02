@@ -1,5 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 import { useState, useEffect } from 'react';
 
 export default function TeamForm(props) {
@@ -14,17 +15,33 @@ export default function TeamForm(props) {
   const [selectedPlayerId, setSelectedPlayerId] = useState()
   const [selectedSeasonPlace, setSelectedSeasonPlace] = useState('')
   const [selectedPlayoffPlace, setSelectedPlayoffPlace] = useState('')
-  // const [selectedPlayers, setSelectedPlayers] = useState('')
+
+  const [teamRoster, setTeamRoster] = useState([])
+  const [selectedPlayerToAdd, setSelectedPlayerToAdd] = useState('')
+
+
   // Handlers for forum value changes
   const handleNameChange = (e) => { setSelectedName(e.target.value) }
   const handleSeasonChange = (e) => { setSelectedSeasonId(e.target.value) }
   const handlePlayerChange = (e) => { setSelectedPlayerId(e.target.value) }
   const handleSeasonPlaceChange = (e) => { setSelectedSeasonPlace(e.target.value) }
   const handlePlayoffPlaceChange = (e) => { setSelectedPlayoffPlace(e.target.value) }
-  // const handleSelectedPlayersChange = (e) => { setSelectedPlayers(e.target.value) }
+  // Handlers to building roster
+  const handlePlayerToAddChange = (e) => { setSelectedPlayerToAdd(e.target.value) }
+  const handleAddPlayer = (e) => {
+    if (!teamRoster.find(player => player.playerId === selectedPlayerToAdd)) {
+      const player = playerOptions.find(player => player.playerId === selectedPlayerToAdd)
+      const newRoster = [...teamRoster, player]
+      setTeamRoster(newRoster);
+      setSelectedPlayerToAdd('');
+    }
+  }
+  const handleRemovePlayer = (playerId) => {
+    const updatedRoster = teamRoster.filter(player => player.playerId !== playerId)
+    setTeamRoster(updatedRoster)
+  }
 
-
-  const handleTeamChange = (e) => {
+  const handleTeamChange = async (e) => {
     setSelectedTeamId(e.target.value)
     const curTeam = teamOptions.find(team => team.teamId === e.target.value)
     setSelectedName(curTeam.teamName)
@@ -32,6 +49,28 @@ export default function TeamForm(props) {
     setSelectedPlayerId(curTeam.captain ? curTeam.captain : '')
     setSelectedSeasonPlace(curTeam.seasonPlace ? curTeam.seasonPlace : '')
     setSelectedPlayoffPlace(curTeam.playoffPlace ? curTeam.playoffPlace : '')
+    try {
+      const query = await fetch(`/api/player/team/${e.target.value}`)
+      const result = await query.json()
+      const players = []
+      await result.payload.forEach((player) => {
+        players.push({
+          ...players,
+          playerId: player._id,
+          playerName: `${player.firstName} ${player.lastName}`
+        })
+      })
+      players.sort(function (a, b) {
+        let x = a.playerName.toLowerCase();
+        let y = b.playerName.toLowerCase();
+        if (x < y) { return -1; }
+        if (x > y) { return 1; }
+        return 0;
+      })
+      setTeamRoster(players)
+    } catch (err) {
+      console.log(err.message)
+    }
   }
 
 
@@ -66,10 +105,6 @@ export default function TeamForm(props) {
   }
 
 
-
-
-
-
   // Fetches All Teams for updating and deleting
   async function getTeamOptions() {
     const query = await fetch('/api/team')
@@ -89,9 +124,11 @@ export default function TeamForm(props) {
         seasonId: team.season._id,
         captain: team.captain,
         seasonPlace: team.seasonPlace,
-        playoffPlace: team.playoffPlace
+        playoffPlace: team.playoffPlace,
+        createdAt: team.createdAt
       })
     })
+    teams.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
     setTeamOptions(teams)
   }
 
@@ -154,7 +191,14 @@ export default function TeamForm(props) {
           "Content-Type": "application/json",
         },
       })
-      return query;
+      const result = await query.json()
+      const newTeamId = result.payload._id
+
+      // const newTeamId = await fetch('/api/team/mostrecent')
+      teamRoster.forEach(async (player) => {
+        await addTeamToPlayer(player.playerId, newTeamId)
+      })
+      return newTeamId;
     } catch (err) {
       console.log(err.message)
     }
@@ -176,12 +220,107 @@ export default function TeamForm(props) {
           "Content-Type": "application/json",
         },
       })
+
+      const queryCurTeamRoster = await fetch(`/api/player/team/${teamId}`)
+      const curRosterPayload = await queryCurTeamRoster.json();
+      const curRoster = curRosterPayload.payload
+
+      const removePlayerList = curRoster.filter(
+        curPlayer => !teamRoster.some(updatedPlayer => updatedPlayer.playerId === curPlayer._id)
+      )
+      const addPlayerList = teamRoster.filter(
+        updatedPlayer => !curRoster.some(currentPlayer => currentPlayer._id === updatedPlayer.playerId)
+      )
+
+      // if onTeam but not on teamRoster, then remove
+      removePlayerList.forEach(async (player) => {
+        await removeTeamFromPlayer(player._id)
+      })
+      // if notOnTeam but on teamRoster, then add
+      addPlayerList.forEach(async (player) => {
+        await addTeamToPlayer(player.playerId)
+      })
+
       return query;
     } catch (err) {
       console.log(err.message)
     }
   }
 
+  // Add Player to Team
+  async function addTeamToPlayer(playerId, teamId) {
+    const addingTeam = teamId ? teamId : selectedTeamId
+    try {
+      const queryCurPlayer = await fetch(`/api/player/${playerId}`)
+      const curPlayer = await queryCurPlayer.json();
+      if (!curPlayer.payload.teams.includes(addingTeam)) {
+        const updatedTeams = [...curPlayer.payload.teams, addingTeam]
+
+        const queryUpdate = await fetch(`/api/player/${playerId}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            teams: updatedTeams
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        return queryUpdate
+      }
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  // Remove Player From Team
+  async function removeTeamFromPlayer(playerId) {
+    try {
+      const queryCurPlayer = await fetch(`/api/player/${playerId}`)
+      const curPlayer = await queryCurPlayer.json();
+      const teamToRemove = curPlayer.payload.teams.find(team => team._id === selectedTeamId)
+
+      if (teamToRemove) {
+        const updatedTeams = await curPlayer.payload.teams.filter(team => team._id !== selectedTeamId)
+        const queryUpdate = await fetch(`/api/player/${playerId}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            teams: updatedTeams
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        return queryUpdate
+      }
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  async function setInitialRosterOnLoad(teamId) {
+    try {
+      const query = await fetch(`/api/player/team/${teamId}`)
+      const result = await query.json()
+      const players = []
+      await result.payload.forEach((player) => {
+        players.push({
+          ...players,
+          playerId: player._id,
+          playerName: `${player.firstName} ${player.lastName}`
+        })
+      })
+      players.sort(function (a, b) {
+        let x = a.playerName.toLowerCase();
+        let y = b.playerName.toLowerCase();
+        if (x < y) { return -1; }
+        if (x > y) { return 1; }
+        return 0;
+      })
+      setTeamRoster(players)
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
 
   // useEffect for initiating the fetch for getting all seasons
   useEffect(() => {
@@ -205,6 +344,7 @@ export default function TeamForm(props) {
       setSelectedPlayerId(teamOptions[0].captain ? teamOptions[0].captain : '')
       setSelectedSeasonPlace(teamOptions[0].seasonPlace ? teamOptions[0].seasonPlace : '')
       setSelectedPlayoffPlace(teamOptions[0].PlayoffPlace ? teamOptions[0].PlayoffPlace : '')
+      setInitialRosterOnLoad(teamOptions[0].teamId)
     }
   }, [teamOptions])
 
@@ -270,9 +410,10 @@ export default function TeamForm(props) {
         </Form.Select>
       </Form.Group>
 
-      {/* <Form.Group className="mb-3">
-        <Form.Label>Player 1</Form.Label>
-        <Form.Select value={selectedPlayers} onChange={handleSelectedPlayersChange} disabled={isDisabled}>
+
+      <Form.Label>Add Player</Form.Label>
+      <InputGroup className="mb-3">
+        <Form.Select value={selectedPlayerToAdd} onChange={handlePlayerToAddChange} disabled={isDisabled}>
           <option value={null}></option>
           {playerOptions &&
             playerOptions.map((player, key) => {
@@ -282,7 +423,31 @@ export default function TeamForm(props) {
             })
           }
         </Form.Select>
-      </Form.Group> */}
+        <Button variant="outline-success" id="button-addon2" onClick={handleAddPlayer} disabled={isDisabled}>
+          Add
+        </Button>
+      </InputGroup>
+
+      {teamRoster.length > 0 &&
+        <>
+          <Form.Label>Roster</Form.Label>
+          <ol>
+            {teamRoster.map(player => (
+              <li key={player.playerId} style={{ marginBottom: "10px" }}>
+                <div className="d-flex justify-content-between">
+                  <span>{player.playerName}</span>
+
+                  {/* <span>({player.playerId}) */}
+                  <Button style={{ margin: "0px 16px" }} variant="outline-danger" onClick={() => handleRemovePlayer(player.playerId)} disabled={isDisabled}>
+                    X
+                  </Button>
+                  {/* </span> */}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </>
+      }
 
       {props.adminController === "updateTeam" &&
         <Button variant="primary" type="submit" onClick={handleFormSubmit}>

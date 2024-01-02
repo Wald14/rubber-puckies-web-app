@@ -3,7 +3,7 @@ const { Team, Season } = require('../models');
 
 async function getAllTeams() {
   try {
-    return await Team.find().populate({path: "season", select: "startDate seasonType"});
+    return await Team.find().populate({ path: "season", select: "startDate seasonType" });
   } catch (err) {
     throw new Error(err)
   }
@@ -11,7 +11,7 @@ async function getAllTeams() {
 
 async function getTeamsbyNameAndSeasonId(teamName, seasonId) {
   try {
-    return await Team.findOne({ name: teamName, season: seasonId}).populate({path: "season", select: "startDate seasonType playoffRounds rink"}).populate({path: "captain", select: "firstName lastName -_id"});
+    return await Team.findOne({ name: teamName, season: seasonId }).populate({ path: "season", select: "startDate seasonType playoffRounds rink" }).populate({ path: "captain", select: "firstName lastName -_id" });
   } catch (err) {
     throw new Error(err)
   }
@@ -19,7 +19,7 @@ async function getTeamsbyNameAndSeasonId(teamName, seasonId) {
 
 async function getTeamsbySeasonId(seasonId) {
   try {
-    return await Team.find({ season: seasonId}).populate({path: "season", select: "startDate seasonType playoffRounds rink"}).populate({path: "captain", select: "firstName lastName -_id"});
+    return await Team.find({ season: seasonId }).populate({ path: "season", select: "startDate seasonType playoffRounds rink" }).populate({ path: "captain", select: "firstName lastName -_id" });
   } catch (err) {
     throw new Error(err)
   }
@@ -27,7 +27,16 @@ async function getTeamsbySeasonId(seasonId) {
 
 async function getAllTeamsbyName(teamName) {
   try {
-    return await Team.find({ name: teamName }).populate({path: "season", select: "startDate seasonType playoffRounds rink"}).populate({path: "captain", select: "firstName lastName -_id"});
+    return await Team.find({ name: teamName }).populate({ path: "season", select: "startDate seasonType playoffRounds rink" }).populate({ path: "captain", select: "firstName lastName -_id" });
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
+
+async function getMostRecentTeam() {
+  try {
+    return await Team.findOne().sort({ createdAt: -1 });
   } catch (err) {
     throw new Error(err)
   }
@@ -75,6 +84,7 @@ module.exports = {
   getTeamsbyNameAndSeasonId,
   getTeamsbySeasonId,
   getAllTeamsbyName,
+  getMostRecentTeam,
   getTeamById,
   createTeam,
   updateTeamById,

@@ -73,9 +73,11 @@ export default function SeasonForm(props) {
       seasons.push({
         ...season,
         startDate: `${year}-${month}-${day}`,
-        seasonName: `${season.seasonType.charAt(0).toUpperCase() + season.seasonType.slice(1)} ${year}`
+        seasonName: `${season.seasonType.charAt(0).toUpperCase() + season.seasonType.slice(1)} ${year}`,
+        sortDate: date
       })
     })
+    seasons.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
     setSeasonsOptions(seasons)
   }
 
