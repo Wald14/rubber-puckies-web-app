@@ -1,12 +1,8 @@
-# MERN Auth Starter Kit
+# Rubber Puckies Web Application
 
-The latest version of my MERN Auth Starter Kit for use by my students.
+This is currently in development
 
-It features:
-
-- An Express back end with Mongo/Mongoose database.
-- Modern React front-end, built with Vite, using React Context for storage of global user state.
-- Some Bootstrap integration to tidy things up a bit.
+This will be a web application to display the stats of the infamous Rubber Puckies hockey team.
 
 ## Instructions
 
