@@ -113,9 +113,9 @@ export default function PlayerForm(props) {
         body: JSON.stringify({
           firstName: selectedFirstName,
           lastName: selectedLastName,
-          jerseyNumber: selectedJerseyNumber,
-          handedness: selectedHandedness,
-          positions: positions
+          jerseyNumber: selectedJerseyNumber ? selectedJerseyNumber : null,
+          handedness: selectedHandedness ? selectedHandedness : null,
+          positions: positions ? positions : null
         }),
         headers: {
           "Content-Type": "application/json",

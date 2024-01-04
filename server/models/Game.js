@@ -54,6 +54,10 @@ const gameSchema = new Schema({
     default: 'regulation',
     required: true
   },
+  goalie: {
+    type: Schema.Types.ObjectId,
+    ref: 'Player'
+  },
   players: [
     {
       player: {

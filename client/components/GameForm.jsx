@@ -17,18 +17,22 @@ export default function GameForm(props) {
   const [selectedAwayGoals, setSelectedAwayGoals] = useState(0)
   const [selectedEndedIn, setSelectedEndedIn] = useState('regulation')
   const [selectedCompleted, setSelectedCompleted] = useState(false)
+  const [selectedGoalie, setSelectedGoalie] = useState(false)
+
 
   // Handlers for forum value changes
   const handleStartTimeChange = (e) => { setSelectedStartTime(e.target.value) }
   const handleGameTypeChange = (e) => { setSelectedGameType(e.target.value) }
   const handleSeasonChange = (e) => {
     if (e.target.value) {
+      setSelectedGoalieOptions('')
       setSelectedHomeTeam('')
       setSelectedAwayTeam('')
       setSelectedSeasonId(e.target.value)
       getTeamOptions(e.target.value)
       setSelectedRoster(null)
     } else {
+      setSelectedGoalieOptions()
       setSelectedHomeTeam()
       setSelectedAwayTeam()
       setSelectedSeasonId()
@@ -36,48 +40,71 @@ export default function GameForm(props) {
       setSelectedRoster()
     }
   }
+
   const handleHomeTeamChange = async (e) => {
     setSelectedHomeTeam(e.target.value)
     if (puckieTeams.find(team => team._id === e.target.value)) {
-      await getTeamRoster(e.target.value)
+      //-------------------------------------------------------------------------------
+      //-------------------------------------------------------------------------------
+      const teamRoster = await getTeamRoster(e.target.value)
+      //-------------------------------------------------------------------------------
+      const goalies = teamRoster.filter(player => player.positions.includes("G"))
+      setSelectedGoalieOptions(goalies)
+      //-------------------------------------------------------------------------------
+      //-------------------------------------------------------------------------------
+      //-------------------------------------------------------------------------------
+
+
     } else if (!puckieTeams.find(team => team._id === selectedAwayTeam)) {
       setSelectedRoster(null)
+      setSelectedGoalie(null)
     }
   }
+
   const handleAwayTeamChange = async (e) => {
     setSelectedAwayTeam(e.target.value)
     if (puckieTeams.find(team => team._id === e.target.value)) {
-      await getTeamRoster(e.target.value)
+      
+      //-------------------------------------------------------------------------------
+      //-------------------------------------------------------------------------------
+      const teamRoster = await getTeamRoster(e.target.value)
+      //-------------------------------------------------------------------------------
+      const goalies = teamRoster.filter(player => player.positions.includes("G"))
+      setSelectedGoalieOptions(goalies)
+
+
     } else if (!puckieTeams.find(team => team._id === selectedHomeTeam)) {
       setSelectedRoster(null)
+      setSelectedGoalie(null)
     }
   }
   const handleHomeGoalsChange = (e) => { setSelectedHomeGoals(e.target.value) }
   const handleAwayGoalsChange = (e) => { setSelectedAwayGoals(e.target.value) }
   const handleEndedInChange = (e) => { setSelectedEndedIn(e.target.value) }
   const handleCompletedChange = (e) => { setSelectedCompleted(selectedCompleted === true ? false : true) }
+  const handleGoalieChange = (e) => { setSelectedGoalie(e.target.value) }
 
   // Handles update of setting player stats (played and goals for each game)
   const handlePlayerPlayedChange = (e) => {
     setSelectedRoster(selectedRoster.map(player => {
-        if (player._id === e.target.getAttribute("playerid") && player.played) {
-          return {...player, played: false}
-        } else if (player._id === e.target.getAttribute("playerid") && !player.played) {
-          return {...player, played: true}
-        }
-        return player
-      })
+      if (player._id === e.target.getAttribute("playerid") && player.played) {
+        return { ...player, played: false }
+      } else if (player._id === e.target.getAttribute("playerid") && !player.played) {
+        return { ...player, played: true }
+      }
+      return player
+    })
     )
   }
   const handlePlayerGoalsChange = (e) => {
     setSelectedRoster(selectedRoster.map(player => {
-        if (player._id === e.target.getAttribute("playerid") && !e.target.value) {
-          return {...player, goals: 0}
-        } else if (player._id === e.target.getAttribute("playerid") && e.target.value){
-          return {...player, goals: e.target.value}
-        }
-        return player
-      })
+      if (player._id === e.target.getAttribute("playerid") && !e.target.value) {
+        return { ...player, goals: 0 }
+      } else if (player._id === e.target.getAttribute("playerid") && e.target.value) {
+        return { ...player, goals: e.target.value }
+      }
+      return player
+    })
     )
   }
 
@@ -86,6 +113,7 @@ export default function GameForm(props) {
   const [teamOptions, setTeamOptions] = useState(null)
   const [puckieTeams, setPuckieTeams] = useState()
   const [selectedRoster, setSelectedRoster] = useState()
+  const [selectedGoalieOptions, setSelectedGoalieOptions] = useState()
 
 
   // Fetches All Seasons for selecting season
@@ -139,7 +167,7 @@ export default function GameForm(props) {
     })
     roster.forEach(player => {
       player.goals = 0,
-      player.played = false
+        player.played = false
     })
     setSelectedRoster(roster)
     return roster
@@ -153,7 +181,6 @@ export default function GameForm(props) {
         console.log("Update Game clicked")
         break;
       case "createGame":
-        console.log("Create Game clicked")
         console.log({
           startTime: selectedStartTime,
           gameType: selectedGameType,
@@ -166,6 +193,7 @@ export default function GameForm(props) {
           completed: selectedCompleted,
           players: await formatRosterForDatabase(selectedRoster)
         })
+        // createGame()
         break;
       case "deleteGame":
         console.log("Game Deleting Not Functional At This Time")
@@ -174,7 +202,33 @@ export default function GameForm(props) {
     props.handleClose(false)
   }
 
-  async function formatRosterForDatabase(roster){
+  async function createGame() {
+    try {
+      const query = await fetch('/api/game', {
+        method: "POST",
+        body: JSON.stringify({
+          startTime: selectedStartTime,
+          gameType: selectedGameType,
+          season: selectedSeasonId,
+          homeTeam: selectedHomeTeam,
+          awayTeam: selectedAwayTeam,
+          homeGoals: selectedHomeGoals,
+          awayGoals: selectedAwayGoals,
+          endedIn: selectedEndedIn,
+          completed: selectedCompleted,
+          players: await formatRosterForDatabase(selectedRoster)
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      return query;
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  async function formatRosterForDatabase(roster) {
     const outputRoster = roster.map((player) => {
       return {
         player: player._id,
@@ -304,39 +358,55 @@ export default function GameForm(props) {
       </Form.Group>
 
       {selectedRoster &&
-        <Form.Group className="mb-3">
-          <Form.Label>Rubber Puckies Roster</Form.Label>
-          <ol>
-            {selectedRoster.length > 0 &&
-              selectedRoster.map((player, index) => (
-                <li
-                  key={index}
-                  style={{padding: "5px",borderBottom: "solid #5E5E5E 1px"}}
-                >
-                  <div className="d-flex justify-content-between">
-                  {player.firstName} {player.lastName}
-                  <div className="d-flex justify-content-between">
-                    <Form.Check
-                      type="switch"
-                      playerid={player._id}
-                      onChange={handlePlayerPlayedChange}
-                      disabled={isDisabled}
-                      defaultValue={player.played}
-                    />
-                    <Form.Control
-                      type="goals"
-                      playerid={player._id}
-                      onChange={handlePlayerGoalsChange}
-                      disabled={isDisabled}
-                      style={{ width: "35px"}}
-                      defaultValue={player.goals}
-                    />
-                  </div>
-                  </div>
-                </li>
-              ))}
-          </ol>
-        </Form.Group>
+        <>
+          <Form.Group className="mb-3">
+            <Form.Label>Select Rubber Puckie Goalie</Form.Label>
+            <Form.Select value={selectedGoalie} onChange={handleGoalieChange}>
+              {selectedGoalieOptions &&
+                selectedGoalieOptions.map((player, key) => {
+                  return (
+                    <option key={key} value={player._id}>{player.firstName} {player.lastName}</option>
+                  )
+                })
+              }
+            </Form.Select>
+          </Form.Group>
+
+
+          <Form.Group className="mb-3">
+            <Form.Label>Rubber Puckies Roster</Form.Label>
+            <ol>
+              {selectedRoster.length > 0 &&
+                selectedRoster.map((player, index) => (
+                  <li
+                    key={index}
+                    style={{ padding: "5px", borderBottom: "solid #5E5E5E 1px" }}
+                  >
+                    <div className="d-flex justify-content-between">
+                      {player.firstName} {player.lastName}
+                      <div className="d-flex justify-content-between">
+                        <Form.Check
+                          type="switch"
+                          playerid={player._id}
+                          onChange={handlePlayerPlayedChange}
+                          disabled={isDisabled}
+                          defaultValue={player.played}
+                        />
+                        <Form.Control
+                          type="goals"
+                          playerid={player._id}
+                          onChange={handlePlayerGoalsChange}
+                          disabled={isDisabled}
+                          style={{ width: "35px" }}
+                          defaultValue={player.goals}
+                        />
+                      </div>
+                    </div>
+                  </li>
+                ))}
+            </ol>
+          </Form.Group>
+        </>
       }
 
       {props.adminController === "updateGame" &&

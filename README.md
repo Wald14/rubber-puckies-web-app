@@ -4,6 +4,8 @@ This is currently in development
 
 This will be a web application to display the stats of the infamous Rubber Puckies hockey team.
 
+This web app also features an admin only view for add, updating, and deleteing Seasons, Teams, Players, and Games.
+
 ## Instructions
 
 - Clone the repo

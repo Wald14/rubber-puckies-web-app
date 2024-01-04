@@ -14,6 +14,18 @@ router.get("/", async (req, res) => {
   }
 })
 
+
+router.get("/goalies", async (req, res) => {
+  try {
+    const payload = (await getAllPlayers()).filter(player => player.positions.includes("G"))
+    res.status(200).json({ result: "success", payload })
+  } catch (err) {
+    res.status(500).json({ result: "Error", payload: err.message })
+  }
+})
+
+
+
 router.get("/team/:teamId", async (req, res) => {
   try {
     const payload = await getAllPlayersByTeamId(req.params.teamId)
