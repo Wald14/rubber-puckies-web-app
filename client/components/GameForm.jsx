@@ -1,8 +1,13 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useState, useEffect } from 'react';
+import convertToUTC from '../utils/time';
 
 export default function GameForm(props) {
+
+  // DEFAULT GOALIE OPTION
+  // TOM HAROLDSON
+  const defaultGoalie = "6595e312940b2c17539cd008"
 
   // Set fields to be disabled based on if the delete modal is opened
   const isDisabled = props.adminController === "deleteGame" ? true : false
@@ -17,7 +22,7 @@ export default function GameForm(props) {
   const [selectedAwayGoals, setSelectedAwayGoals] = useState(0)
   const [selectedEndedIn, setSelectedEndedIn] = useState('regulation')
   const [selectedCompleted, setSelectedCompleted] = useState(false)
-  const [selectedGoalie, setSelectedGoalie] = useState(false)
+  const [selectedGoalie, setSelectedGoalie] = useState()
 
 
   // Handlers for forum value changes
@@ -25,14 +30,14 @@ export default function GameForm(props) {
   const handleGameTypeChange = (e) => { setSelectedGameType(e.target.value) }
   const handleSeasonChange = (e) => {
     if (e.target.value) {
-      setSelectedGoalieOptions('')
+      setSelectedGoalie('')
       setSelectedHomeTeam('')
       setSelectedAwayTeam('')
       setSelectedSeasonId(e.target.value)
       getTeamOptions(e.target.value)
       setSelectedRoster(null)
     } else {
-      setSelectedGoalieOptions()
+      setSelectedGoalie('')
       setSelectedHomeTeam()
       setSelectedAwayTeam()
       setSelectedSeasonId()
@@ -41,43 +46,50 @@ export default function GameForm(props) {
     }
   }
 
+
+
+
+
   const handleHomeTeamChange = async (e) => {
     setSelectedHomeTeam(e.target.value)
     if (puckieTeams.find(team => team._id === e.target.value)) {
       //-------------------------------------------------------------------------------
       //-------------------------------------------------------------------------------
-      const teamRoster = await getTeamRoster(e.target.value)
-      //-------------------------------------------------------------------------------
-      const goalies = teamRoster.filter(player => player.positions.includes("G"))
-      setSelectedGoalieOptions(goalies)
+      getTeamRoster(e.target.value)
       //-------------------------------------------------------------------------------
       //-------------------------------------------------------------------------------
       //-------------------------------------------------------------------------------
-
+      //-------------------------------------------------------------------------------
 
     } else if (!puckieTeams.find(team => team._id === selectedAwayTeam)) {
-      setSelectedRoster(null)
-      setSelectedGoalie(null)
+      setSelectedRoster('')
+      setSelectedGoalie('')
     }
   }
 
   const handleAwayTeamChange = async (e) => {
     setSelectedAwayTeam(e.target.value)
     if (puckieTeams.find(team => team._id === e.target.value)) {
-      
+
       //-------------------------------------------------------------------------------
       //-------------------------------------------------------------------------------
-      const teamRoster = await getTeamRoster(e.target.value)
+      getTeamRoster(e.target.value)
       //-------------------------------------------------------------------------------
-      const goalies = teamRoster.filter(player => player.positions.includes("G"))
-      setSelectedGoalieOptions(goalies)
+      // const goalies = teamRoster.filter(player => player.positions.includes("G"))
+      // setSelectedGoalieOptions(goalies)
 
 
     } else if (!puckieTeams.find(team => team._id === selectedHomeTeam)) {
-      setSelectedRoster(null)
-      setSelectedGoalie(null)
+      setSelectedRoster('')
+      setSelectedGoalie('')
     }
   }
+
+
+
+
+
+
   const handleHomeGoalsChange = (e) => { setSelectedHomeGoals(e.target.value) }
   const handleAwayGoalsChange = (e) => { setSelectedAwayGoals(e.target.value) }
   const handleEndedInChange = (e) => { setSelectedEndedIn(e.target.value) }
@@ -112,6 +124,7 @@ export default function GameForm(props) {
   const [seasonsOptions, setSeasonsOptions] = useState(null)
   const [teamOptions, setTeamOptions] = useState(null)
   const [puckieTeams, setPuckieTeams] = useState()
+  const [selectedRosterUnfiltered, setSelectedRosterUnfiltered] = useState()
   const [selectedRoster, setSelectedRoster] = useState()
   const [selectedGoalieOptions, setSelectedGoalieOptions] = useState()
 
@@ -153,6 +166,14 @@ export default function GameForm(props) {
     setPuckieTeams(teams)
   }
 
+  // Fetches All Goalies
+  async function getAllGoalies() {
+    const query = await fetch('/api/player/goalies')
+    const result = await query.json()
+    const goalies = result.payload
+    setSelectedGoalieOptions(goalies)
+  }
+
   // Fetches Team Roster by Id
   async function getTeamRoster(teamId) {
     const query = await fetch(`/api/player/team/${teamId}`)
@@ -169,6 +190,7 @@ export default function GameForm(props) {
       player.goals = 0,
         player.played = false
     })
+    setSelectedRosterUnfiltered(roster)
     setSelectedRoster(roster)
     return roster
   }
@@ -182,7 +204,7 @@ export default function GameForm(props) {
         break;
       case "createGame":
         console.log({
-          startTime: selectedStartTime,
+          startTime: convertToUTC(selectedStartTime),
           gameType: selectedGameType,
           season: selectedSeasonId,
           homeTeam: selectedHomeTeam,
@@ -191,9 +213,10 @@ export default function GameForm(props) {
           awayGoals: selectedAwayGoals,
           endedIn: selectedEndedIn,
           completed: selectedCompleted,
-          players: await formatRosterForDatabase(selectedRoster)
+          goalie: selectedGoalie,
+          players: selectedRoster ? await formatRosterForDatabase(selectedRoster) : ''
         })
-        // createGame()
+        createGame()
         break;
       case "deleteGame":
         console.log("Game Deleting Not Functional At This Time")
@@ -207,7 +230,7 @@ export default function GameForm(props) {
       const query = await fetch('/api/game', {
         method: "POST",
         body: JSON.stringify({
-          startTime: selectedStartTime,
+          startTime: convertToUTC(selectedStartTime),
           gameType: selectedGameType,
           season: selectedSeasonId,
           homeTeam: selectedHomeTeam,
@@ -216,7 +239,8 @@ export default function GameForm(props) {
           awayGoals: selectedAwayGoals,
           endedIn: selectedEndedIn,
           completed: selectedCompleted,
-          players: await formatRosterForDatabase(selectedRoster)
+          goalie: selectedGoalie,
+          players: selectedRoster ? await formatRosterForDatabase(selectedRoster) : ''
         }),
         headers: {
           "Content-Type": "application/json",
@@ -229,7 +253,8 @@ export default function GameForm(props) {
   }
 
   async function formatRosterForDatabase(roster) {
-    const outputRoster = roster.map((player) => {
+    const filteredRoster = roster.filter(player => player._id !== selectedGoalie)
+    const outputRoster = filteredRoster.map((player) => {
       return {
         player: player._id,
         played: player.played,
@@ -240,13 +265,20 @@ export default function GameForm(props) {
   }
 
 
-  // useEffect for initiating the fetch for getting all seasons
+  // useEffect for initiating the fetch for getting all seasons, puckie teams, and goalies
   useEffect(() => {
     getSeasonsOptions()
     getPuckieTeams()
+    getAllGoalies()
   }, [])
 
-
+  // Use effect to filter out selected goalie from team roster
+  // useEffect(() => {
+  //   if (selectedRosterUnfiltered && selectedGoalie) {
+  //     const skaters = selectedRosterUnfiltered.filter(player => player._id != selectedGoalie)
+  //     setSelectedRoster(skaters)
+  //   }
+  // }, [selectedGoalie])
 
 
   return (
@@ -362,6 +394,7 @@ export default function GameForm(props) {
           <Form.Group className="mb-3">
             <Form.Label>Select Rubber Puckie Goalie</Form.Label>
             <Form.Select value={selectedGoalie} onChange={handleGoalieChange}>
+              <option value={''}></option>
               {selectedGoalieOptions &&
                 selectedGoalieOptions.map((player, key) => {
                   return (
@@ -371,7 +404,6 @@ export default function GameForm(props) {
               }
             </Form.Select>
           </Form.Group>
-
 
           <Form.Group className="mb-3">
             <Form.Label>Rubber Puckies Roster</Form.Label>
@@ -406,6 +438,7 @@ export default function GameForm(props) {
                 ))}
             </ol>
           </Form.Group>
+
         </>
       }
 
