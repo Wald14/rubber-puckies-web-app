@@ -235,7 +235,6 @@ export default function GameForm(props) {
       games.push(updatedGame)
 
     })
-    console.log(games)
     setGameOptions(games)
   }
 
@@ -340,7 +339,7 @@ export default function GameForm(props) {
           goalie: selectedGoalie,
           players: selectedRoster ? await formatRosterForDatabase(selectedRoster) : ''
         })
-        // createGame()
+        createGame()
         break;
       case "deleteGame":
         console.log("Game Deleting Not Functional At This Time")

@@ -343,7 +343,7 @@ export default function TeamForm(props) {
       setSelectedSeasonId(teamOptions[0].seasonId)
       setSelectedPlayerId(teamOptions[0].captain ? teamOptions[0].captain : '')
       setSelectedSeasonPlace(teamOptions[0].seasonPlace ? teamOptions[0].seasonPlace : '')
-      setSelectedPlayoffPlace(teamOptions[0].PlayoffPlace ? teamOptions[0].PlayoffPlace : '')
+      setSelectedPlayoffPlace(teamOptions[0].playoffPlace ? teamOptions[0].playoffPlace : '')
       setInitialRosterOnLoad(teamOptions[0].teamId)
     }
   }, [teamOptions])

@@ -1,6 +1,5 @@
 export function convertToUTC(localDate) {
   const enteredDate = new Date(localDate)
-
   // const utcDate = new Intl.DateTimeFormat('en-US', {
   //   timeZone: 'UTC',
   //   year: 'numeric',
@@ -12,9 +11,7 @@ export function convertToUTC(localDate) {
   // });
   // const convertedDate = new Date(utcDate).toISOString()
   // console.log("converted Date:", convertedDate)
-
   const utcTime = enteredDate.toISOString();
-  
   return (utcTime)
 }
 
@@ -49,7 +46,6 @@ export function grabTimeFromISO(isoString) {
   let period = 'AM'
 
   let hour = date.getHours()
-  console.log(typeof(hour))
   if (hour >= 12) {
     period = 'PM'
     if (hour > 12) {
