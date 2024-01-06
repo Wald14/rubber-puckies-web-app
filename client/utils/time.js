@@ -1,16 +1,21 @@
 export function convertToUTC(localDate) {
   const enteredDate = new Date(localDate)
-  const utcDate = new Intl.DateTimeFormat('en-US', {
-    timeZone: 'UTC',
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric',
-  }).format(enteredDate);
-  const convertedDate = new Date(utcDate).toISOString()
-  return (convertedDate)
+
+  // const utcDate = new Intl.DateTimeFormat('en-US', {
+  //   timeZone: 'UTC',
+  //   year: 'numeric',
+  //   month: 'numeric',
+  //   day: 'numeric',
+  //   hour: 'numeric',
+  //   minute: 'numeric',
+  //   second: 'numeric',
+  // });
+  // const convertedDate = new Date(utcDate).toISOString()
+  // console.log("converted Date:", convertedDate)
+
+  const utcTime = enteredDate.toISOString();
+  
+  return (utcTime)
 }
 
 export function convertUTCtoLocal(utcDateString) {
