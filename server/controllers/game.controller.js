@@ -22,6 +22,18 @@ async function getAllGamesByTeamId(teamId) {
   }
 }
 
+async function getAllGamesBySeasonId(seasonId) {
+  try {
+    return await Game.find({
+      season: seasonId
+    })
+    .populate({path: "homeTeam awayTeam", select: "_id name"})
+    .populate({path: "goalie players.player", select: "_id firstName lastName"});
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
 async function getAllGamesByPlayerId(playerId) {
   try {
     return await Game.find({
@@ -74,6 +86,7 @@ module.exports = {
   getAllGames,
   getAllGamesByPlayerId,
   getAllGamesByTeamId,
+  getAllGamesBySeasonId,
   getGameById,
   createGame,
   updateGameById,
