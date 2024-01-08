@@ -25,6 +25,13 @@ export function convertUTCtoLocal(utcDateString) {
   return localDate
 }
 
+export function convertUTCtoCT(utcDateString) {
+  const utcDate = new Date(utcDateString)
+  const ctDate = utcDate.toLocaleString('en-US', {timeZone: 'America/Chicago'})
+  return ctDate
+}
+
+
 export function grabDateFromISO(isoString) {
   const date = new Date(isoString)
   if (isNaN(date.getTime())) {
@@ -60,4 +67,13 @@ export function grabTimeFromISO(isoString) {
   const minutes = String(date.getMinutes()).padStart(2, '0')
 
   return `${hourString}:${minutes} ${period}`;
+}
+
+
+// Split Date
+export function splitDateApart(incomingDate) {
+  const date = new Date(incomingDate)
+  return {
+    year: date.getFullYear()
+  }
 }

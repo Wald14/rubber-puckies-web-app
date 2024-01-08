@@ -75,6 +75,7 @@ export default function GameForm(props) {
           lastName: player.player.lastName
         }
       ))
+      console.log(players)
       setSelectedRoster(players)
     } else {
       setSelectedGame(e.target.value)
@@ -310,6 +311,7 @@ export default function GameForm(props) {
     switch (props.adminController) {
       case "updateGame":
         console.log("Update Game clicked")
+        // updateGame(selectedGame)
         console.log({
           game: selectedGame,
           startTime: convertToUTC(selectedStartTime),
@@ -351,6 +353,34 @@ export default function GameForm(props) {
   //------------------------------------------------------------------------------
   // FORM FUNCTIONS (CREATE GAME/UPDATE GAME/FORMAT ROSTER)
   //------------------------------------------------------------------------------
+  async function updateGame(gameId) {
+    try {
+      const query = await fetch(`/api/game/${gameId}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          startTime: convertToUTC(selectedStartTime),
+          gameType: selectedGameType,
+          season: selectedSeasonId,
+          homeTeam: selectedHomeTeam,
+          awayTeam: selectedAwayTeam,
+          homeGoals: selectedHomeGoals,
+          awayGoals: selectedAwayGoals,
+          endedIn: selectedEndedIn,
+          completed: selectedCompleted,
+          goalie: selectedGoalie,
+          players: selectedRoster ? await formatRosterForDatabase(selectedRoster) : ''
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      console.log(query)
+      return query
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
 
   async function createGame() {
     try {
