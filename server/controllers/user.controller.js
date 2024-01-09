@@ -34,7 +34,7 @@ async function authenticate(data){
   let user 
 
   try {
-    user = await Model.findOne({ email: data.email })
+    user = await Model.findOne({ username: data.username })
   } catch(err) {
     console.log(err)
     throw new Error(err)

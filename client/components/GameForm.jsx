@@ -95,12 +95,13 @@ export default function GameForm(props) {
 
   // Handle Home and Away Team Change
   const handleHomeTeamChange = async (e) => {
-    setGameInfo({ ...gameInfo, homeTeam: e.target.value })
     if (puckieTeams.find(team => team._id === e.target.value)) {
       const roster = await gatherRoster(e.target.value)
       setGameInfo({ ...gameInfo, homeTeam: e.target.value, players: roster })
     } else if (!puckieTeams.find(team => team._id === gameInfo.awayTeam)) {
-      setGameInfo({ ...gameInfo, homeTeam: "", players: [], goalie: "" })
+      setGameInfo({ ...gameInfo, homeTeam: e.target.value, players: [], goalie: "" })
+    } else {
+      setGameInfo({ ...gameInfo, homeTeam: e.target.value })
     }
   }
 
@@ -110,7 +111,9 @@ export default function GameForm(props) {
       const roster = await gatherRoster(e.target.value)
       setGameInfo({ ...gameInfo, awayTeam: e.target.value, players: roster })
     } else if (!puckieTeams.find(team => team._id === gameInfo.homeTeam)) {
-      setGameInfo({ ...gameInfo, awayTeam: "", players: [], goalie: "" })
+      setGameInfo({ ...gameInfo, awayTeam: e.target.value, players: [], goalie: "" })
+    } else {
+      setGameInfo({ ...gameInfo, awayTeam: e.target.value })
     }
   }
 

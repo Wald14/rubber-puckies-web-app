@@ -222,10 +222,6 @@ export default function GameFormOLD(props) {
       const localStartTime = convertUTCtoLocal(game.startTime).toISOString()
       const date = grabDateFromISO(game.startTime)
       const time = grabTimeFromISO(game.startTime)
-      // console.log("UTC Time:", game.startTime)
-      // console.log("Local Time:", localStartTime)
-      // console.log("Date:", date)
-      // console.log("Time:", time)
 
       const updatedGame = ({
         ...game,
@@ -238,23 +234,6 @@ export default function GameFormOLD(props) {
     })
     setGameOptions(games)
   }
-
-  //------------------------------------------------------------------
-  //------------------------------------------------------------------
-  // CONVERT TO LOCAL TIME METHOD
-  //------------------------------------------------------------------
-  //------------------------------------------------------------------
-  // function convertUTCtoLocal(utcDateString) {
-  //   const utcDate = new Date(utcDateString);
-  //   if (isNaN(utcDate.getTime())) {
-  //     console.error("Invalid Date:", utcDateString)
-  //     return null;
-  //   }
-  //   const localDate = new Date(utcDate.getTime() - (utcDate.getTimezoneOffset() * 60 * 1000))
-  //   return localDate
-  // }
-  //------------------------------------------------------------------
-  //------------------------------------------------------------------
 
 
   // Fetches All Teams

@@ -24,11 +24,11 @@ export default function App() {
               </ProtectedRoute>
             } /> */}
 
-              <Route path='/admintools' element={
-                <ProtectedRoute>
-                  <AdminToolsPage />
-                </ProtectedRoute>
-              } />
+            <Route path='/admintools' element={
+              <ProtectedRoute>
+                <AdminToolsPage />
+              </ProtectedRoute>
+            } />
 
             <Route path="/logout" element={<Logout />} />
           </Routes>

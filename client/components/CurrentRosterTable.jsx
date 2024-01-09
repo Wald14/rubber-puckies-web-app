@@ -29,9 +29,8 @@ export default function CurrentRosterTable() {
   return (
 
     <>
-      <h2 className="mb-4">Active Roster</h2>
       <h3>Skaters</h3>
-      <Table responsive striped hover variant="dark">
+      <Table responsive striped hover variant="dark" className="text-nowrap" style={{maxWidth: "700px"}}>
         <thead>
           <tr style={{ textAlign: "center" }}>
             <th style={{ textAlign: "left"}}>Player</th>

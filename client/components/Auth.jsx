@@ -1,3 +1,4 @@
+import Button from 'react-bootstrap/Button';
 import { useEffect, useState } from "react"
 import { useAppCtx } from "../utils/AppProvider"
 
@@ -6,7 +7,7 @@ export default function Auth({usage="signup"}){
 
   const appCtx = useAppCtx()
 
-  const [ userData, setUserData ] = useState({ email: "", password: "" })
+  const [ userData, setUserData ] = useState({ username: "", password: "" })
 
   function handleInputChange(e){
     setUserData({...userData, [e.target.name]: e.target.value })
@@ -14,11 +15,8 @@ export default function Auth({usage="signup"}){
 
   async function handleFormSubmit(e){
     e.preventDefault()
-    const apiPath = (usage === "signup") ? "/" : "/auth"
-    const finalPath = `/api/user${apiPath}`
-
     try {
-      const query = await fetch(finalPath, {
+      const query = await fetch(`/api/user/auth`, {
         method: "POST",
         body: JSON.stringify(userData),
         headers: {
@@ -28,7 +26,7 @@ export default function Auth({usage="signup"}){
       const response = await query.json()
       console.log(response)
       if( response.result === "success" ){
-        window.location.href = "/"
+        window.location.href = "/admintools"
       }
     } catch(err){
       console.log(err.message)
@@ -36,7 +34,7 @@ export default function Auth({usage="signup"}){
   }
 
   useEffect(() => {
-    setUserData({...userData, email: appCtx.user.email || "" })
+    setUserData({...userData, username: appCtx.user.username || "" })
   },[appCtx])
 
 
@@ -44,11 +42,11 @@ export default function Auth({usage="signup"}){
     <div>
       <form onSubmit={handleFormSubmit}>
         <div>
-          <h2>{ usage === "signup" ? "Signup" : "Login" }</h2>
+          <h2>Admin Login</h2>
           <div>
             <div>
-              <label className="d-block">Email Address</label>
-              <input type="text" name="email" value={userData.email} onChange={handleInputChange} />
+              <label className="d-block">Username</label>
+              <input type="text" name="username" value={userData.username} onChange={handleInputChange} />
             </div>
 
             <div>
@@ -57,7 +55,7 @@ export default function Auth({usage="signup"}){
             </div>
           </div>
 
-          <button className="mt-2">Submit Info</button>
+          <button className="mt-2 btn btn-outline-warning">Login</button>
         </div>
       </form>
     </div>
