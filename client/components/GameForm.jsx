@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useState, useEffect } from 'react';
 import { convertToUTC, convertUTCtoLocal, convertUTCtoCT, grabDateFromISO, grabTimeFromISO, splitDateApart } from '../utils/time.js';
-import { getSeasons, getSeasonGames, getSeasonTeams, getTeamRoster, getAllGoalies, updateGame, getPuckieTeams } from '../utils/queries.js';
+import { getSeasons, getSeasonGames, getSeasonTeams, getTeamRoster, getAllGoalies, updateGame, getPuckieTeams, createGame } from '../utils/queries.js';
 import capitalizeString from '../utils/stringAdjustments.js';
 
 export default function GameForm(props) {
@@ -100,7 +100,7 @@ export default function GameForm(props) {
       const roster = await gatherRoster(e.target.value)
       setGameInfo({ ...gameInfo, homeTeam: e.target.value, players: roster })
     } else if (!puckieTeams.find(team => team._id === gameInfo.awayTeam)) {
-      setGameInfo({...gameInfo, homeTeam: "", players: [], goalie: ""})
+      setGameInfo({ ...gameInfo, homeTeam: "", players: [], goalie: "" })
     }
   }
 
@@ -110,7 +110,7 @@ export default function GameForm(props) {
       const roster = await gatherRoster(e.target.value)
       setGameInfo({ ...gameInfo, awayTeam: e.target.value, players: roster })
     } else if (!puckieTeams.find(team => team._id === gameInfo.homeTeam)) {
-      setGameInfo({...gameInfo, awayTeam: "", players: [], goalie: ""})
+      setGameInfo({ ...gameInfo, awayTeam: "", players: [], goalie: "" })
     }
   }
 
@@ -212,28 +212,43 @@ export default function GameForm(props) {
   async function handleFormSubmit(e) {
     e.preventDefault()
     switch (props.adminController) {
+      // UPDATE GAME
       case "updateGame":
-        const roster = []
+        const rosterUpdate = []
         gameInfo.players.forEach(player =>
-          roster.push({
+          rosterUpdate.push({
             goals: player.goals,
             played: player.played,
             player: player.player._id
           })
         )
-        const outgoingGameInfo = ({
+        const outgoingUpdateGameInfo = ({
           ...gameInfo,
           startTime: convertToUTC(gameInfo.startTime),
           awayTeam: gameInfo.awayTeam._id,
           homeTeam: gameInfo.homeTeam._id,
-          players: roster
+          players: rosterUpdate
         })
         // console.log(outgoingGameInfo)
-        updateGame(selectedGame, outgoingGameInfo)
+        updateGame(selectedGame, outgoingUpdateGameInfo)
         break;
 
+      // CREATE GAME
       case "createGame":
-        console.log(gameInfo)
+        const rosterCreate = []
+        gameInfo.players.forEach(player =>
+          rosterCreate.push({
+            goals: player.goals,
+            played: player.played,
+            player: player.player._id
+          })
+        )
+        const outgoingCreateGameInfo = ({
+          ...gameInfo,
+          startTime: convertToUTC(gameInfo.startTime),
+          players: rosterCreate
+        })
+        createGame(outgoingCreateGameInfo)
         break;
 
       case "deleteGame":
@@ -296,150 +311,46 @@ export default function GameForm(props) {
         </>
       }
 
-{(props.adminController === "createGame" || selectedGame) &&
-<>
-
-      <Form.Group className="mb-3">
-        <Form.Label>Start Time (M/D/YYYY, H:mm:ss PM)</Form.Label>
-        <Form.Control
-          name="startTime"
-          value={gameInfo.startTime}
-          onChange={handleGameInfoChange}
-          disabled={isDisabled}
-        />
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <Form.Label>Game Type</Form.Label>
-        <Form.Select
-          name="gameType"
-          value={gameInfo.gameType}
-          onChange={handleGameInfoChange}
-          disabled={isDisabled}
-        >
-          <option value="regular">Regular</option>
-          <option value="semifinal">Semifinal</option>
-          <option value="championship">Championship</option>
-        </Form.Select>
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <Form.Label>Select Season</Form.Label>
-        <Form.Select
-          name="season"
-          value={gameInfo.season}
-          onChange={handleSeasonChange}
-          disabled={isDisabled}
-        >
-          <option></option>
-          {seasonOptions &&
-            seasonOptions.map((season, key) => {
-              return (
-                <option key={key} value={season._id}>{capitalizeString(season.seasonType)} {splitDateApart(season.startDate).year}</option>
-              )
-            })
-          }
-        </Form.Select>
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <Form.Label>Home Team</Form.Label>
-        <Form.Select
-          name="homeTeam"
-          value={gameInfo.homeTeam._id}
-          onChange={handleHomeTeamChange}
-          disabled={isDisabled}
-        >
-          <option></option>
-          {teamOptions &&
-            teamOptions.map((team, key) => {
-              return (
-                <option key={key} value={team._id}>{team.name}</option>
-              )
-            })
-          }
-        </Form.Select>
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <Form.Label>Away Team</Form.Label>
-        <Form.Select
-          name="awayTeam"
-          value={gameInfo.awayTeam._id}
-          onChange={handleAwayTeamChange}
-          disabled={isDisabled}
-        >
-          <option></option>
-          {teamOptions &&
-            teamOptions.map((team, key) => {
-              return (
-                <option key={key} value={team._id}>{team.name}</option>
-              )
-            })
-          }
-        </Form.Select>
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <Form.Label>Home Goals</Form.Label>
-        <Form.Control
-          name="homeGoals"
-          value={gameInfo.homeGoals}
-          onChange={handleGameInfoChange}
-          disabled={isDisabled}
-        />
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <Form.Label>Away Goals</Form.Label>
-        <Form.Control
-          name="awayGoals"
-          value={gameInfo.awayGoals}
-          onChange={handleGameInfoChange}
-          disabled={isDisabled}
-        />
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <Form.Label>Ended In</Form.Label>
-        <Form.Select
-          name="endedIn"
-          value={gameInfo.endedIn}
-          onChange={handleGameInfoChange}
-          disabled={isDisabled}
-        >
-          <option value="regulation">Regulation</option>
-          <option value="overtime">Overtime</option>
-          <option value="shootout">Shootout</option>
-        </Form.Select>
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <Form.Label style={{ marginRight: '10px' }}>Completed?</Form.Label>
-        <Form.Check
-          inline
-          name="completed"
-          type="checkbox"
-          checked={gameInfo.completed}
-          onChange={handleCompletedChange}
-          disabled={isDisabled}
-        />
-      </Form.Group>
-
-      {gameInfo.players.length > 0 &&
+      {(props.adminController === "createGame" || selectedGame) &&
         <>
+
           <Form.Group className="mb-3">
-            <Form.Label>Select Rubber Puckie Goalie</Form.Label>
-            <Form.Select
-              name="goalie"
-              value={gameInfo.goalie}
+            <Form.Label>Start Time (M/D/YYYY, H:mm:ss PM)</Form.Label>
+            <Form.Control
+              name="startTime"
+              value={gameInfo.startTime}
               onChange={handleGameInfoChange}
+              disabled={isDisabled}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Game Type</Form.Label>
+            <Form.Select
+              name="gameType"
+              value={gameInfo.gameType}
+              onChange={handleGameInfoChange}
+              disabled={isDisabled}
             >
-              <option value={""}></option>
-              {goalieOptions &&
-                goalieOptions.map((player, key) => {
+              <option value="regular">Regular</option>
+              <option value="semifinal">Semifinal</option>
+              <option value="championship">Championship</option>
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Select Season</Form.Label>
+            <Form.Select
+              name="season"
+              value={gameInfo.season}
+              onChange={handleSeasonChange}
+              disabled={isDisabled}
+            >
+              <option></option>
+              {seasonOptions &&
+                seasonOptions.map((season, key) => {
                   return (
-                    <option key={key} value={player._id}>{player.firstName} {player.lastName}</option>
+                    <option key={key} value={season._id}>{capitalizeString(season.seasonType)} {splitDateApart(season.startDate).year}</option>
                   )
                 })
               }
@@ -447,45 +358,149 @@ export default function GameForm(props) {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Rubber Puckies Roster</Form.Label>
-            <ol>
-                {gameInfo.players
-                  .filter((player) => player.player)
-                  .map((player, index) => (
-
-                    <li
-                      key={index}
-                      style={{ padding: "5px", borderBottom: "solid #5E5E5E 1px" }}
-                    >
-                      <div className="d-flex justify-content-between">
-                        {player.player.firstName} {player.player.lastName}
-                        <div className="d-flex justify-content-between">
-                          <Form.Check
-                            name="played"
-                            type="switch"
-                            playerid={player.player._id}
-                            onChange={handlePlayerStatsChange}
-                            disabled={isDisabled}
-                            checked={player.played}
-                          />
-                          <Form.Control
-                            name="goals"
-                            playerid={player.player._id}
-                            onChange={handlePlayerStatsChange}
-                            disabled={isDisabled}
-                            style={{ width: "35px" }}
-                            value={player.goals}
-                          />
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-            </ol>
+            <Form.Label>Home Team</Form.Label>
+            <Form.Select
+              name="homeTeam"
+              value={gameInfo.homeTeam._id}
+              onChange={handleHomeTeamChange}
+              disabled={isDisabled}
+            >
+              <option></option>
+              {teamOptions &&
+                teamOptions.map((team, key) => {
+                  return (
+                    <option key={key} value={team._id}>{team.name}</option>
+                  )
+                })
+              }
+            </Form.Select>
           </Form.Group>
 
-        </>
-      }
-      </>}
+          <Form.Group className="mb-3">
+            <Form.Label>Away Team</Form.Label>
+            <Form.Select
+              name="awayTeam"
+              value={gameInfo.awayTeam._id}
+              onChange={handleAwayTeamChange}
+              disabled={isDisabled}
+            >
+              <option></option>
+              {teamOptions &&
+                teamOptions.map((team, key) => {
+                  return (
+                    <option key={key} value={team._id}>{team.name}</option>
+                  )
+                })
+              }
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Home Goals</Form.Label>
+            <Form.Control
+              name="homeGoals"
+              value={gameInfo.homeGoals}
+              onChange={handleGameInfoChange}
+              disabled={isDisabled}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Away Goals</Form.Label>
+            <Form.Control
+              name="awayGoals"
+              value={gameInfo.awayGoals}
+              onChange={handleGameInfoChange}
+              disabled={isDisabled}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Ended In</Form.Label>
+            <Form.Select
+              name="endedIn"
+              value={gameInfo.endedIn}
+              onChange={handleGameInfoChange}
+              disabled={isDisabled}
+            >
+              <option value="regulation">Regulation</option>
+              <option value="overtime">Overtime</option>
+              <option value="shootout">Shootout</option>
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label style={{ marginRight: '10px' }}>Completed?</Form.Label>
+            <Form.Check
+              inline
+              name="completed"
+              type="checkbox"
+              checked={gameInfo.completed}
+              onChange={handleCompletedChange}
+              disabled={isDisabled}
+            />
+          </Form.Group>
+
+          {gameInfo.players.length > 0 &&
+            <>
+              <Form.Group className="mb-3">
+                <Form.Label>Select Rubber Puckie Goalie</Form.Label>
+                <Form.Select
+                  name="goalie"
+                  value={gameInfo.goalie}
+                  onChange={handleGameInfoChange}
+                >
+                  <option value={""}></option>
+                  {goalieOptions &&
+                    goalieOptions.map((player, key) => {
+                      return (
+                        <option key={key} value={player._id}>{player.firstName} {player.lastName}</option>
+                      )
+                    })
+                  }
+                </Form.Select>
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Rubber Puckies Roster</Form.Label>
+                <ol>
+                  {gameInfo.players
+                    .filter((player) => player.player)
+                    .map((player, index) => (
+
+                      <li
+                        key={index}
+                        style={{ padding: "5px", borderBottom: "solid #5E5E5E 1px" }}
+                      >
+                        <div className="d-flex justify-content-between">
+                          {player.player.firstName} {player.player.lastName}
+                          <div className="d-flex justify-content-between">
+                            <Form.Check
+                              name="played"
+                              type="switch"
+                              playerid={player.player._id}
+                              onChange={handlePlayerStatsChange}
+                              disabled={isDisabled}
+                              checked={player.played}
+                            />
+                            <Form.Control
+                              name="goals"
+                              playerid={player.player._id}
+                              onChange={handlePlayerStatsChange}
+                              disabled={isDisabled}
+                              style={{ width: "35px" }}
+                              value={player.goals}
+                            />
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                </ol>
+              </Form.Group>
+
+            </>
+          }
+        </>}
 
       {props.adminController === "updateGame" &&
         <Button

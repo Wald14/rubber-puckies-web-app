@@ -61,7 +61,7 @@ export async function getPuckieTeams() {
   return(teams)
 }
 
-// Update a Game
+// Update Game
 export async function updateGame(gameId, gameInfo) {
   try {
     const query = await fetch(`/api/game/${gameId}`, {
@@ -71,9 +71,24 @@ export async function updateGame(gameId, gameInfo) {
         "Content-Type": "application/json",
       },
     })
-    const response = await query.json()
     return query
   } catch (err) {
     console.log(err)
+  }
+}
+
+// Create Game
+export async function createGame(gameInfo) {
+  try {
+    const query = await fetch('/api/game', {
+      method: "POST",
+      body: JSON.stringify(gameInfo),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    return query;
+  } catch (err) {
+    console.log(err.message)
   }
 }
