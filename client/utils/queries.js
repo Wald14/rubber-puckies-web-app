@@ -19,7 +19,6 @@ export async function getSeasonTeams(seasonId) {
   const query = await fetch(`/api/team/season/${seasonId}`)
   const result = await query.json()
   const teams = result.payload
-  console.log(teams)
   return teams
 }
 
@@ -51,5 +50,30 @@ export async function getAllGoalies() {
     if (x > y) { return 1; }
     return 0;
   })
-  return(goalies)
+  return (goalies)
+}
+
+// Fetches All Rubber Puckie Teams
+export async function getPuckieTeams() {
+  const query = await fetch('/api/team/name/Rubber Puckies')
+  const result = await query.json()
+  const teams = result.payload
+  return(teams)
+}
+
+// Update a Game
+export async function updateGame(gameId, gameInfo) {
+  try {
+    const query = await fetch(`/api/game/${gameId}`, {
+      method: 'PUT',
+      body: JSON.stringify(gameInfo),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    const response = await query.json()
+    return query
+  } catch (err) {
+    console.log(err)
+  }
 }
