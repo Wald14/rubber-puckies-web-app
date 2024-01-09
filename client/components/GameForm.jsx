@@ -1,13 +1,15 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useState, useEffect } from 'react';
-import {convertToUTC, convertUTCtoLocal, grabDateFromISO, grabTimeFromISO} from '../utils/time';
+import { convertToUTC, convertUTCtoLocal, convertUTCtoCT, grabDateFromISO, grabTimeFromISO, splitDateApart } from '../utils/time.js';
+import { getSeasons, getSeasonGames, getSeasonTeams, getTeamRoster, getAllGoalies, updateGame, getPuckieTeams } from '../utils/queries.js';
+import capitalizeString from '../utils/stringAdjustments.js';
 
 export default function GameForm(props) {
 
-  // DEFAULT GOALIE OPTION
-  // TOM HAROLDSON
-  const defaultGoalie = "6595e312940b2c17539cd008"
+  //------------------------------------------------------------------------------
+  // PROPS - ADMIN CONTROLLER
+  //------------------------------------------------------------------------------
 
   // Set fields to be disabled based on if the delete modal is opened
   const isDisabled = props.adminController === "deleteGame" ? true : false
@@ -16,422 +18,242 @@ export default function GameForm(props) {
   // USE STATE
   //------------------------------------------------------------------------------
 
-  // useState for forum values
-  const [selectedGame, setSelectedGame] = useState('')
-  const [selectedStartTime, setSelectedStartTime] = useState('')
-  const [selectedGameType, setSelectedGameType] = useState('regular')
-  const [selectedUpdateSeasonId, setSelectedUpdateSeasonId] = useState()
-  const [selectedSeasonId, setSelectedSeasonId] = useState()
-  const [selectedHomeTeam, setSelectedHomeTeam] = useState()
-  const [selectedAwayTeam, setSelectedAwayTeam] = useState()
-  const [selectedHomeGoals, setSelectedHomeGoals] = useState(0)
-  const [selectedAwayGoals, setSelectedAwayGoals] = useState(0)
-  const [selectedEndedIn, setSelectedEndedIn] = useState('regulation')
-  const [selectedCompleted, setSelectedCompleted] = useState(false)
-  const [selectedGoalie, setSelectedGoalie] = useState()
-  // useState for handling fetched seasons and players for selecting
-  const [seasonsOptions, setSeasonsOptions] = useState(null)
-  const [teamOptions, setTeamOptions] = useState(null)
-  const [gameOptions, setGameOptions] = useState(null)
-  const [puckieTeams, setPuckieTeams] = useState()
-  const [selectedRoster, setSelectedRoster] = useState()
-  const [selectedGoalieOptions, setSelectedGoalieOptions] = useState()
+  // Select Season to Update/Delete Field
+  const [seasonUpdateOptions, setSeasonUpdateOptions] = useState()
+  const [selectedSeasonUpdate, setSelectedSeasonUpdate] = useState()
+  // Selected Game to Update/Delete Field
+  const [selectedGame, setSelectedGame] = useState()
+  const [selectedGameUpdateOptions, setSelectedGameUpdateOptions] = useState()
+  // Select Season field
+  const [seasonOptions, setSeasonOptions] = useState()
+  // Home and Away Team fields
+  const [teamOptions, setTeamOptions] = useState()
+  // Goalie Field
+  const [goalieOptions, setGoalieOptions] = useState()
 
+  // Roster Field
+  const [roster, setRoster] = useState()
+  const [puckieTeams, setPuckieTeams] = useState()
+
+  // MASTER GAME INFO
+  const [gameInfo, setGameInfo] = useState({
+    startTime: "",
+    completed: false,
+    homeTeam: "",
+    awayTeam: "",
+    homeGoals: 0,
+    awayGoals: 0,
+    season: "",
+    gameType: "regular",
+    endedIn: "regulation",
+    goalie: "",
+    players: [],
+  })
 
   //------------------------------------------------------------------------------
   // HANDLERS
   //------------------------------------------------------------------------------
 
-
-  // Handlers for forum value changes
-  const handleStartTimeChange = (e) => { setSelectedStartTime(e.target.value) }
-  const handleGameTypeChange = (e) => { setSelectedGameType(e.target.value) }
-  const handleHomeGoalsChange = (e) => { setSelectedHomeGoals(e.target.value) }
-  const handleAwayGoalsChange = (e) => { setSelectedAwayGoals(e.target.value) }
-  const handleEndedInChange = (e) => { setSelectedEndedIn(e.target.value) }
-  const handleCompletedChange = (e) => { setSelectedCompleted(selectedCompleted === true ? false : true) }
-  const handleGoalieChange = (e) => { setSelectedGoalie(e.target.value) }
-
-  // Game UPDATE/DELETE Change
-  const handleGameChange = (e) => {
-    if (e.target.value) {
-      setSelectedGame(e.target.value)
-      const curGame = gameOptions.find(game => game._id === e.target.value)
-      setSelectedStartTime(curGame.startTime)
-      setSelectedGameType(curGame.gameType)
-      setSelectedSeasonId(curGame.season)
-      setSelectedHomeTeam(curGame.homeTeam._id)
-      setSelectedAwayTeam(curGame.awayTeam._id)
-      setSelectedHomeGoals(curGame.homeGoals)
-      setSelectedAwayGoals(curGame.awayGoals)
-      setSelectedEndedIn(curGame.endedIn)
-      setSelectedCompleted(curGame.completed)
-      curGame.goalie ? setSelectedGoalie(curGame.goalie._id) : ''
-      const players = curGame.players.map(player => (
-        {
-          ...player,
-          player: player.player._id,
-          firstName: player.player.firstName,
-          lastName: player.player.lastName
-        }
-      ))
-      console.log(players)
-      setSelectedRoster(players)
-    } else {
-      setSelectedGame(e.target.value)
-      setSelectedStartTime('')
-      setSelectedGameType("regular")
-      setSelectedSeasonId('')
-      setSelectedHomeTeam('')
-      setSelectedAwayTeam('')
-      setSelectedHomeGoals(0)
-      setSelectedAwayGoals(0)
-      setSelectedEndedIn("regulation")
-      setSelectedCompleted(false)
-      setSelectedGoalie()
-      setSelectedRoster('')
-    }
+  // Master Game Info Handler
+  const handleGameInfoChange = (e) => {
+    const newValue = e.target.name === "goalie" && e.target.value === "" ? null : e.target.value
+    setGameInfo({ ...gameInfo, [e.target.name]: newValue })
   }
 
-  const handleUpdateSeasonChange = (e) => {
-    if (e.target.value) {
-      setSelectedUpdateSeasonId(e.target.value)
-      getGameOptions(e.target.value)
-      setSelectedSeasonId(e.target.value)
-      getTeamOptions(e.target.value)
-      setSelectedStartTime('')
-      setSelectedGameType("regular")
-      setSelectedEndedIn("regulation")
-      setSelectedHomeTeam('')
-      setSelectedAwayTeam('')
-      setSelectedHomeGoals(0)
-      setSelectedAwayGoals(0)
-      setSelectedCompleted(false)
-    } else {
-      setSelectedUpdateSeasonId()
-      setGameOptions()
-      setSelectedGoalie()
-      setSelectedHomeTeam('')
-      setSelectedAwayTeam('')
-      setSelectedSeasonId()
-      setSelectedGameType("regular")
-      setSelectedEndedIn("regulation")
-      setTeamOptions()
-      setSelectedRoster()
-      setSelectedStartTime('')
-      setSelectedHomeGoals(0)
-      setSelectedAwayGoals(0)
-      setSelectedCompleted(false)
-    }
+  // Update Season Selection Handler
+  const handleSelectedSeasonChange = (e) => (
+    setSelectedSeasonUpdate(e.target.value),
+    gatherGames(e.target.value),
+    gatherTeams(e.target.value)
+  )
+
+  // Update Season Selection Handler
+  const handleSelectedGameChange = (e) => {
+    setSelectedGame(e.target.value)
+    const game = selectedGameUpdateOptions.find(game => game._id === e.target.value)
+    setGameInfo({
+      startTime: game.startTime,
+      completed: game.completed,
+      homeTeam: game.homeTeam,
+      awayTeam: game.awayTeam,
+      homeGoals: game.homeGoals,
+      awayGoals: game.awayGoals,
+      season: game.season,
+      gameType: game.gameType,
+      endedIn: game.endedIn,
+      goalie: game.goalie ? game.goalie._id : null,
+      players: game.players,
+    })
   }
 
-  const handleSeasonChange = (e) => {
-    if (e.target.value) {
-      setSelectedGoalie()
-      setSelectedHomeTeam('')
-      setSelectedAwayTeam('')
-      setSelectedSeasonId(e.target.value)
-      getTeamOptions(e.target.value)
-      setSelectedRoster(null)
-    } else {
-      setSelectedGoalie()
-      setSelectedHomeTeam()
-      setSelectedAwayTeam()
-      setSelectedSeasonId()
-      setTeamOptions()
-      setSelectedRoster()
-    }
-  }
+  // Update Season Selection Handler
+  const handleSeasonChange = (e) => (
+    gatherTeams(e.target.value),
+    setGameInfo({ ...gameInfo, [e.target.name]: e.target.value })
+  )
 
+
+  // Handle Home and Away Team Change
   const handleHomeTeamChange = async (e) => {
-    setSelectedHomeTeam(e.target.value)
+    setGameInfo({ ...gameInfo, homeTeam: e.target.value })
     if (puckieTeams.find(team => team._id === e.target.value)) {
-      getTeamRoster(e.target.value)
-    } else if (!puckieTeams.find(team => team._id === selectedAwayTeam)) {
-      setSelectedRoster('')
-      setSelectedGoalie()
+      const roster = await gatherRoster(e.target.value)
+      setGameInfo({ ...gameInfo, homeTeam: e.target.value, players: roster })
+    } else if (!puckieTeams.find(team => team._id === gameInfo.awayTeam)) {
+      setGameInfo({...gameInfo, homeTeam: "", players: [], goalie: ""})
     }
   }
 
   const handleAwayTeamChange = async (e) => {
-    setSelectedAwayTeam(e.target.value)
+    setGameInfo({ ...gameInfo, awayTeam: e.target.value })
     if (puckieTeams.find(team => team._id === e.target.value)) {
-      getTeamRoster(e.target.value)
-    } else if (!puckieTeams.find(team => team._id === selectedHomeTeam)) {
-      setSelectedRoster('')
-      setSelectedGoalie()
+      const roster = await gatherRoster(e.target.value)
+      setGameInfo({ ...gameInfo, awayTeam: e.target.value, players: roster })
+    } else if (!puckieTeams.find(team => team._id === gameInfo.homeTeam)) {
+      setGameInfo({...gameInfo, awayTeam: "", players: [], goalie: ""})
     }
   }
 
 
-  // Handles update of setting player stats (played and goals for each game)
-  const handlePlayerPlayedChange = (e) => {
-    setSelectedRoster(selectedRoster.map(player => {
-      if (player._id === e.target.getAttribute("playerid") && player.played) {
-        return { ...player, played: false }
-      } else if (player._id === e.target.getAttribute("playerid") && !player.played) {
-        return { ...player, played: true }
+
+  // Game Completed Handler
+  const handleCompletedChange = (e) => { gameInfo.completed ? setGameInfo({ ...gameInfo, [e.target.name]: false }) : setGameInfo({ ...gameInfo, [e.target.name]: true }) }
+
+  // Handle Player Stats Change
+  const handlePlayerStatsChange = (e) => {
+    const updatedPlayers = gameInfo.players.map(player => {
+      if (player.player._id === e.target.getAttribute("playerid")) {
+        switch (e.target.name) {
+          case "played":
+            return { ...player, played: e.target.checked }
+          case "goals":
+            return { ...player, goals: e.target.value }
+        }
+      } else {
+        return player
       }
-      return player
     })
-    )
-  }
-  const handlePlayerGoalsChange = (e) => {
-    setSelectedRoster(selectedRoster.map(player => {
-      if (player._id === e.target.getAttribute("playerid") && !e.target.value) {
-        return { ...player, goals: 0 }
-      } else if (player._id === e.target.getAttribute("playerid") && e.target.value) {
-        return { ...player, goals: e.target.value }
-      }
-      return player
+    setGameInfo({
+      ...gameInfo,
+      players: updatedPlayers
     })
-    )
   }
 
   //------------------------------------------------------------------------------
-  // API CALLS
+  // Functions That Gather Selection Options
   //------------------------------------------------------------------------------
 
-  // Fetches All Seasons for selecting season
-  async function getSeasonsOptions() {
-    const query = await fetch('/api/season')
-    const result = await query.json()
-
-    const seasons = []
-    await result.payload.forEach((season) => {
-      const date = new Date(season.startDate)
-      const year = date.getFullYear()
-      const month = String(date.getMonth() + 1).padStart(2, '0')
-      const day = String(date.getDate()).padStart(2, '0')
-      seasons.push({
+  // Gathers seasons and updates startDate to CT time
+  async function gatherSeasons() {
+    const seasons = await getSeasons()
+    const updatedSeasons = await seasons.map(season => (
+      {
         ...season,
-        startDate: `${year}-${month}-${day}`,
-        seasonName: `${season.seasonType.charAt(0).toUpperCase() + season.seasonType.slice(1)} ${year}`
-      })
-    })
-    setSeasonsOptions(seasons)
+        startDate: convertUTCtoCT(season.startDate),
+      }))
+    setSeasonUpdateOptions(updatedSeasons)
+    setSeasonOptions(updatedSeasons)
   }
 
-  // Fetches All Games
-  async function getGameOptions(seasonId) {
-    const query = await fetch(`/api/game/season/${seasonId}`)
-    const result = await query.json()
-
-    const games = []
-    await result.payload.forEach(game => {
-      const localStartTime = convertUTCtoLocal(game.startTime).toISOString()
-      const date = grabDateFromISO(game.startTime)
-      const time = grabTimeFromISO(game.startTime)
-      // console.log("UTC Time:", game.startTime)
-      // console.log("Local Time:", localStartTime)
-      // console.log("Date:", date)
-      // console.log("Time:", time)
-
-      const updatedGame = ({
+  // Gathers games based off of selected update/delete season 
+  // Updates startDate to CT time
+  async function gatherGames(seasonId) {
+    const games = await getSeasonGames(seasonId)
+    const updatedGames = await games.map(game => (
+      {
         ...game,
-        startTime: localStartTime,
-        localStartTime: time,
-        gameDate: date
-      })
-      games.push(updatedGame)
-
-    })
-    setGameOptions(games)
+        startTime: convertUTCtoCT(game.startTime),
+      }))
+    setSelectedGameUpdateOptions(updatedGames)
   }
 
-  //------------------------------------------------------------------
-  //------------------------------------------------------------------
-  // CONVERT TO LOCAL TIME METHOD
-  //------------------------------------------------------------------
-  //------------------------------------------------------------------
-  // function convertUTCtoLocal(utcDateString) {
-  //   const utcDate = new Date(utcDateString);
-  //   if (isNaN(utcDate.getTime())) {
-  //     console.error("Invalid Date:", utcDateString)
-  //     return null;
-  //   }
-  //   const localDate = new Date(utcDate.getTime() - (utcDate.getTimezoneOffset() * 60 * 1000))
-  //   return localDate
-  // }
-  //------------------------------------------------------------------
-  //------------------------------------------------------------------
-
-
-  // Fetches All Teams
-  async function getTeamOptions(seasonId) {
-    const query = await fetch(`/api/team/season/${seasonId}`)
-    const result = await query.json()
-    const teams = result.payload
+  // Gathers Team Options based on Selected Season
+  async function gatherTeams(seasonId) {
+    const teams = await getSeasonTeams(seasonId)
     setTeamOptions(teams)
   }
 
-  // Fetches All Rubber Puckie Teams
-  async function getPuckieTeams() {
-    const query = await fetch('/api/team/name/Rubber Puckies')
-    const result = await query.json()
-    const teams = result.payload
+  // Looks Up Selected Team Roster
+  async function gatherRoster(teamId) {
+    const roster = await getTeamRoster(teamId)
+    const players = []
+    await roster.forEach(player => {
+      players.push({
+        player: {
+          _id: player._id,
+          firstName: player.firstName,
+          lastName: player.lastName
+        },
+        goals: 0,
+        played: false
+      })
+    })
+    return players
+  }
+
+  // Gather Goalies
+  async function gatherGoalies() {
+    const goalies = await getAllGoalies()
+    setGoalieOptions(goalies)
+  }
+
+  // Gather Puckie Teams
+  async function gatherPuckieTeams() {
+    const teams = await getPuckieTeams()
     setPuckieTeams(teams)
   }
 
-  // Fetches All Goalies
-  async function getAllGoalies() {
-    const query = await fetch('/api/player/goalies')
-    const result = await query.json()
-    const goalies = result.payload
-    setSelectedGoalieOptions(goalies)
-  }
-
-  // Fetches Team Roster by Id
-  async function getTeamRoster(teamId) {
-    const query = await fetch(`/api/player/team/${teamId}`)
-    const result = await query.json()
-    const roster = result.payload
-    roster.sort(function (a, b) {
-      let x = a.firstName.toLowerCase();
-      let y = b.firstName.toLowerCase();
-      if (x < y) { return -1; }
-      if (x > y) { return 1; }
-      return 0;
-    })
-    roster.forEach(player => {
-      player.goals = 0,
-        player.played = false
-    })
-    setSelectedRoster(roster)
-    return roster
-  }
 
   //------------------------------------------------------------------------------
   // FORM SUBMITTION
   //------------------------------------------------------------------------------
 
-  // Handles form submition
+
   async function handleFormSubmit(e) {
     e.preventDefault()
     switch (props.adminController) {
       case "updateGame":
-        console.log("Update Game clicked")
-        // updateGame(selectedGame)
-        console.log({
-          game: selectedGame,
-          startTime: convertToUTC(selectedStartTime),
-          gameType: selectedGameType,
-          season: selectedSeasonId,
-          homeTeam: selectedHomeTeam,
-          awayTeam: selectedAwayTeam,
-          homeGoals: selectedHomeGoals,
-          awayGoals: selectedAwayGoals,
-          endedIn: selectedEndedIn,
-          completed: selectedCompleted,
-          goalie: selectedGoalie,
-          players: selectedRoster ? await formatRosterForDatabase(selectedRoster) : ''
+        const roster = []
+        gameInfo.players.forEach(player =>
+          roster.push({
+            goals: player.goals,
+            played: player.played,
+            player: player.player._id
+          })
+        )
+        const outgoingGameInfo = ({
+          ...gameInfo,
+          startTime: convertToUTC(gameInfo.startTime),
+          awayTeam: gameInfo.awayTeam._id,
+          homeTeam: gameInfo.homeTeam._id,
+          players: roster
         })
+        // console.log(outgoingGameInfo)
+        updateGame(selectedGame, outgoingGameInfo)
         break;
+
       case "createGame":
-        console.log({
-          startTime: convertToUTC(selectedStartTime),
-          gameType: selectedGameType,
-          season: selectedSeasonId,
-          homeTeam: selectedHomeTeam,
-          awayTeam: selectedAwayTeam,
-          homeGoals: selectedHomeGoals,
-          awayGoals: selectedAwayGoals,
-          endedIn: selectedEndedIn,
-          completed: selectedCompleted,
-          goalie: selectedGoalie,
-          players: selectedRoster ? await formatRosterForDatabase(selectedRoster) : ''
-        })
-        createGame()
+        console.log(gameInfo)
         break;
+
       case "deleteGame":
-        console.log("Game Deleting Not Functional At This Time")
+        console.log("Game deleting is not a function yet")
         break;
     }
     props.handleClose(false)
   }
 
-  //------------------------------------------------------------------------------
-  // FORM FUNCTIONS (CREATE GAME/UPDATE GAME/FORMAT ROSTER)
-  //------------------------------------------------------------------------------
-  async function updateGame(gameId) {
-    try {
-      const query = await fetch(`/api/game/${gameId}`, {
-        method: 'PUT',
-        body: JSON.stringify({
-          startTime: convertToUTC(selectedStartTime),
-          gameType: selectedGameType,
-          season: selectedSeasonId,
-          homeTeam: selectedHomeTeam,
-          awayTeam: selectedAwayTeam,
-          homeGoals: selectedHomeGoals,
-          awayGoals: selectedAwayGoals,
-          endedIn: selectedEndedIn,
-          completed: selectedCompleted,
-          goalie: selectedGoalie,
-          players: selectedRoster ? await formatRosterForDatabase(selectedRoster) : ''
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      console.log(query)
-      return query
-    } catch (err) {
-      console.log(err)
-    }
-  }
 
-
-  async function createGame() {
-    try {
-      const query = await fetch('/api/game', {
-        method: "POST",
-        body: JSON.stringify({
-          startTime: convertToUTC(selectedStartTime),
-          gameType: selectedGameType,
-          season: selectedSeasonId,
-          homeTeam: selectedHomeTeam,
-          awayTeam: selectedAwayTeam,
-          homeGoals: selectedHomeGoals,
-          awayGoals: selectedAwayGoals,
-          endedIn: selectedEndedIn,
-          completed: selectedCompleted,
-          goalie: selectedGoalie,
-          players: selectedRoster ? await formatRosterForDatabase(selectedRoster) : ''
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      return query;
-    } catch (err) {
-      console.log(err.message)
-    }
-  }
-
-  async function formatRosterForDatabase(roster) {
-    const filteredRoster = roster.filter(player => player._id !== selectedGoalie)
-    const outputRoster = filteredRoster.map((player) => {
-      return {
-        player: player._id,
-        played: player.played,
-        goals: player.goals
-      }
-    })
-    return outputRoster
-  }
 
   //------------------------------------------------------------------------------
   // USE EFFECT
   //------------------------------------------------------------------------------
 
-  // useEffect for initiating the fetch for getting all seasons, puckie teams, and goalies
   useEffect(() => {
-    getSeasonsOptions()
-    getPuckieTeams()
-    getAllGoalies()
+    gatherSeasons()
+    gatherGoalies()
+    gatherPuckieTeams()
   }, [])
-
 
   return (
     <Form>
@@ -440,12 +262,15 @@ export default function GameForm(props) {
         <>
           <Form.Group className="mb-3">
             <Form.Label>Select Season</Form.Label>
-            <Form.Select value={selectedUpdateSeasonId} onChange={handleUpdateSeasonChange}>
+            <Form.Select
+              value={selectedSeasonUpdate}
+              onChange={handleSelectedSeasonChange}
+            >
               <option></option>
-              {seasonsOptions &&
-                seasonsOptions.map((season, key) => {
+              {seasonUpdateOptions &&
+                seasonUpdateOptions.map((season, key) => {
                   return (
-                    <option key={key} value={season._id}>{season.seasonName}</option>
+                    <option key={key} value={season._id}>{capitalizeString(season.seasonType)} {splitDateApart(season.startDate).year}</option>
                   )
                 })
               }
@@ -454,12 +279,15 @@ export default function GameForm(props) {
 
           <Form.Group className="mb-3">
             <Form.Label>Select Game</Form.Label>
-            <Form.Select value={selectedGame} onChange={handleGameChange}>
+            <Form.Select
+              value={selectedGame}
+              onChange={handleSelectedGameChange}
+            >
               <option></option>
-              {gameOptions &&
-                gameOptions.map((game, key) => {
+              {selectedGameUpdateOptions &&
+                selectedGameUpdateOptions.map((game, key) => {
                   return (
-                    <option key={key} value={game._id}>{game.gameDate} @ {game.localStartTime} - {game.homeTeam.name} vs {game.awayTeam.name}</option>
+                    <option key={key} value={game._id}>{game.startTime} @ {game.startTime} - {game.homeTeam.name} vs {game.awayTeam.name}</option>
                   )
                 })
               }
@@ -468,15 +296,27 @@ export default function GameForm(props) {
         </>
       }
 
+{(props.adminController === "createGame" || selectedGame) &&
+<>
 
       <Form.Group className="mb-3">
-        <Form.Label>Start Time (YYYY-MM-DDTHH:mm)</Form.Label>
-        <Form.Control type="startTime" value={selectedStartTime} onChange={handleStartTimeChange} disabled={isDisabled} />
+        <Form.Label>Start Time (M/D/YYYY, H:mm:ss PM)</Form.Label>
+        <Form.Control
+          name="startTime"
+          value={gameInfo.startTime}
+          onChange={handleGameInfoChange}
+          disabled={isDisabled}
+        />
       </Form.Group>
 
       <Form.Group className="mb-3">
         <Form.Label>Game Type</Form.Label>
-        <Form.Select value={selectedGameType} onChange={handleGameTypeChange} disabled={isDisabled}>
+        <Form.Select
+          name="gameType"
+          value={gameInfo.gameType}
+          onChange={handleGameInfoChange}
+          disabled={isDisabled}
+        >
           <option value="regular">Regular</option>
           <option value="semifinal">Semifinal</option>
           <option value="championship">Championship</option>
@@ -485,12 +325,17 @@ export default function GameForm(props) {
 
       <Form.Group className="mb-3">
         <Form.Label>Select Season</Form.Label>
-        <Form.Select value={selectedSeasonId} onChange={handleSeasonChange} disabled={isDisabled}>
+        <Form.Select
+          name="season"
+          value={gameInfo.season}
+          onChange={handleSeasonChange}
+          disabled={isDisabled}
+        >
           <option></option>
-          {seasonsOptions &&
-            seasonsOptions.map((season, key) => {
+          {seasonOptions &&
+            seasonOptions.map((season, key) => {
               return (
-                <option key={key} value={season._id}>{season.seasonName}</option>
+                <option key={key} value={season._id}>{capitalizeString(season.seasonType)} {splitDateApart(season.startDate).year}</option>
               )
             })
           }
@@ -499,8 +344,13 @@ export default function GameForm(props) {
 
       <Form.Group className="mb-3">
         <Form.Label>Home Team</Form.Label>
-        <Form.Select value={selectedHomeTeam} onChange={handleHomeTeamChange} disabled={isDisabled}>
-          <option value={null}></option>
+        <Form.Select
+          name="homeTeam"
+          value={gameInfo.homeTeam._id}
+          onChange={handleHomeTeamChange}
+          disabled={isDisabled}
+        >
+          <option></option>
           {teamOptions &&
             teamOptions.map((team, key) => {
               return (
@@ -513,8 +363,13 @@ export default function GameForm(props) {
 
       <Form.Group className="mb-3">
         <Form.Label>Away Team</Form.Label>
-        <Form.Select value={selectedAwayTeam} onChange={handleAwayTeamChange} disabled={isDisabled}>
-          <option value={null}></option>
+        <Form.Select
+          name="awayTeam"
+          value={gameInfo.awayTeam._id}
+          onChange={handleAwayTeamChange}
+          disabled={isDisabled}
+        >
+          <option></option>
           {teamOptions &&
             teamOptions.map((team, key) => {
               return (
@@ -527,45 +382,62 @@ export default function GameForm(props) {
 
       <Form.Group className="mb-3">
         <Form.Label>Home Goals</Form.Label>
-        <Form.Control type="homeGoals" value={selectedHomeGoals} onChange={handleHomeGoalsChange} disabled={isDisabled} />
+        <Form.Control
+          name="homeGoals"
+          value={gameInfo.homeGoals}
+          onChange={handleGameInfoChange}
+          disabled={isDisabled}
+        />
       </Form.Group>
 
       <Form.Group className="mb-3">
         <Form.Label>Away Goals</Form.Label>
-        <Form.Control type="awayGoals" value={selectedAwayGoals} onChange={handleAwayGoalsChange} disabled={isDisabled} />
+        <Form.Control
+          name="awayGoals"
+          value={gameInfo.awayGoals}
+          onChange={handleGameInfoChange}
+          disabled={isDisabled}
+        />
       </Form.Group>
 
       <Form.Group className="mb-3">
         <Form.Label>Ended In</Form.Label>
-        <Form.Select value={selectedEndedIn} onChange={handleEndedInChange} disabled={isDisabled}>
+        <Form.Select
+          name="endedIn"
+          value={gameInfo.endedIn}
+          onChange={handleGameInfoChange}
+          disabled={isDisabled}
+        >
           <option value="regulation">Regulation</option>
           <option value="overtime">Overtime</option>
           <option value="shootout">Shootout</option>
         </Form.Select>
       </Form.Group>
 
-
       <Form.Group className="mb-3">
         <Form.Label style={{ marginRight: '10px' }}>Completed?</Form.Label>
         <Form.Check
           inline
-          name="group1"
+          name="completed"
           type="checkbox"
-          id={`inline-checkbox-1`}
-          checked={selectedCompleted}
+          checked={gameInfo.completed}
           onChange={handleCompletedChange}
           disabled={isDisabled}
         />
       </Form.Group>
 
-      {selectedRoster &&
+      {gameInfo.players.length > 0 &&
         <>
           <Form.Group className="mb-3">
             <Form.Label>Select Rubber Puckie Goalie</Form.Label>
-            <Form.Select value={selectedGoalie} onChange={handleGoalieChange}>
-              <option value={''}></option>
-              {selectedGoalieOptions &&
-                selectedGoalieOptions.map((player, key) => {
+            <Form.Select
+              name="goalie"
+              value={gameInfo.goalie}
+              onChange={handleGameInfoChange}
+            >
+              <option value={""}></option>
+              {goalieOptions &&
+                goalieOptions.map((player, key) => {
                   return (
                     <option key={key} value={player._id}>{player.firstName} {player.lastName}</option>
                   )
@@ -577,52 +449,68 @@ export default function GameForm(props) {
           <Form.Group className="mb-3">
             <Form.Label>Rubber Puckies Roster</Form.Label>
             <ol>
-              {selectedRoster.length > 0 &&
-                selectedRoster.map((player, index) => (
-                  <li
-                    key={index}
-                    style={{ padding: "5px", borderBottom: "solid #5E5E5E 1px" }}
-                  >
-                    <div className="d-flex justify-content-between">
-                      {player.firstName} {player.lastName}
+                {gameInfo.players
+                  .filter((player) => player.player)
+                  .map((player, index) => (
+
+                    <li
+                      key={index}
+                      style={{ padding: "5px", borderBottom: "solid #5E5E5E 1px" }}
+                    >
                       <div className="d-flex justify-content-between">
-                        <Form.Check
-                          type="switch"
-                          playerid={player._id}
-                          onChange={handlePlayerPlayedChange}
-                          disabled={isDisabled}
-                          checked={player.played}
-                        />
-                        <Form.Control
-                          type="goals"
-                          playerid={player._id}
-                          onChange={handlePlayerGoalsChange}
-                          disabled={isDisabled}
-                          style={{ width: "35px" }}
-                          value={player.goals}
-                        />
+                        {player.player.firstName} {player.player.lastName}
+                        <div className="d-flex justify-content-between">
+                          <Form.Check
+                            name="played"
+                            type="switch"
+                            playerid={player.player._id}
+                            onChange={handlePlayerStatsChange}
+                            disabled={isDisabled}
+                            checked={player.played}
+                          />
+                          <Form.Control
+                            name="goals"
+                            playerid={player.player._id}
+                            onChange={handlePlayerStatsChange}
+                            disabled={isDisabled}
+                            style={{ width: "35px" }}
+                            value={player.goals}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                ))}
+                    </li>
+                  ))}
             </ol>
           </Form.Group>
 
         </>
       }
+      </>}
 
       {props.adminController === "updateGame" &&
-        <Button variant="primary" type="submit" onClick={handleFormSubmit}>
+        <Button
+          variant="primary"
+          type="submit"
+          onClick={handleFormSubmit}
+        >
           Update Game
         </Button>
       }
       {props.adminController === "createGame" &&
-        <Button variant="success" type="submit" onClick={handleFormSubmit}>
+        <Button
+          variant="success"
+          type="submit"
+          onClick={handleFormSubmit}
+        >
           Create Game
         </Button>
       }
       {props.adminController === "deleteGame" &&
-        <Button variant="danger" type="submit" onClick={handleFormSubmit}>
+        <Button
+          variant="danger"
+          type="submit"
+          onClick={handleFormSubmit}
+        >
           Delete Game
         </Button>
       }
@@ -630,7 +518,6 @@ export default function GameForm(props) {
     </Form>
   );
 }
-
 
 //---------------------------------------
 //-----------------------------------------
