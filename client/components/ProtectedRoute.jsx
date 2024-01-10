@@ -4,8 +4,8 @@ import { useAppCtx } from "../utils/AppProvider";
 export default function ProtectedRoute({ children }){
   const { user } = useAppCtx()
 
-  if (!user.email) {
-    <Navigate to="/auth" replace />;
+  if (!user.username) {
+    <Navigate to="/" replace />;
   }
 
   return children;
