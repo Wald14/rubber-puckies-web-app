@@ -27,8 +27,8 @@ function stripPassword(user){
 }
 
 
-function createToken(email, id){
-  return jwt.sign({ email: email, id: id }, process.env.JWT_SECRET )
+function createToken(username, id){
+  return jwt.sign({ username: username, id: id }, process.env.JWT_SECRET )
 }
 
 // Declare the routes that point to the controllers above
@@ -57,7 +57,7 @@ router.get("/verify", async (req, res) => {
   } else if (user === "noCookie"){
     res.status(401)
   } else{
-    const token = createToken(user.email, user._id)
+    const token = createToken(user.username, user._id)
     const payload = stripPassword(user)
     res.cookie("auth-cookie", token).json({ result: "success", payload })
   }
@@ -77,7 +77,7 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const user = await createUser(req.body)
-    const token = createToken(user.email, user._id)
+    const token = createToken(user.username, user._id)
     const payload = stripPassword(user)
     res.cookie("auth-cookie", token).json({ result: "success", payload })
   } catch(err){
@@ -88,7 +88,7 @@ router.post("/", async (req, res) => {
 router.post("/auth", async (req, res) => {
   try {
     const user = await authenticate(req.body)
-    const token = createToken(user.email, user._id)
+    const token = createToken(user.username, user._id)
     const payload = stripPassword(user)
     res.cookie("auth-cookie", token).json({ result: "success", payload })
   }catch(err){
