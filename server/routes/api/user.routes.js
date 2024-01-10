@@ -55,7 +55,7 @@ router.get("/verify", async (req, res) => {
   if( !user ){
     res.status(401).json({ result: "invalid login" })
   } else if (user === "noCookie"){
-    res.status(401)
+    res.status(200)
   } else{
     const token = createToken(user.username, user._id)
     const payload = stripPassword(user)

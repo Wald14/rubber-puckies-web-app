@@ -37,7 +37,7 @@ export default function AppProvider(props){
     } catch(err){
       if( 
         // window.location.pathname !== "" && 
-        !window.location.pathname.includes("/auth")) {
+        window.location.pathname.includes("/admintools")) {
         window.location.href = "/auth"
       }
     }
