@@ -23,7 +23,7 @@ export default function TeamHistoryBySeason() {
 
     <>
       <h3>Regular Season</h3>
-      <Table responsive striped hover variant="dark">
+      <Table responsive striped hover variant="dark" className="text-nowrap">
         <thead>
           <tr style={{ textAlign: "center" }}>
             <th style={{ textAlign: "left" }}>Season</th>
@@ -73,7 +73,7 @@ export default function TeamHistoryBySeason() {
 
 
       <h3 className="mt-4">Playoffs</h3>
-      <Table responsive striped hover variant="dark">
+      <Table responsive striped hover variant="dark" className="text-nowrap">
         <thead>
           <tr style={{ textAlign: "center" }}>
             <th style={{ textAlign: "left" }}>Season</th>
