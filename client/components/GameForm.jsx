@@ -46,7 +46,7 @@ export default function GameForm(props) {
     season: "",
     gameType: "regular",
     endedIn: "regulation",
-    goalie: "",
+    goalie: undefined,
     players: [],
   })
 
@@ -230,7 +230,7 @@ export default function GameForm(props) {
           startTime: convertToUTC(gameInfo.startTime),
           awayTeam: gameInfo.awayTeam._id,
           homeTeam: gameInfo.homeTeam._id,
-          players: rosterUpdate
+          players: rosterUpdate,
         })
         // console.log(outgoingGameInfo)
         updateGame(selectedGame, outgoingUpdateGameInfo)
@@ -249,7 +249,7 @@ export default function GameForm(props) {
         const outgoingCreateGameInfo = ({
           ...gameInfo,
           startTime: convertToUTC(gameInfo.startTime),
-          players: rosterCreate
+          players: rosterCreate,
         })
         createGame(outgoingCreateGameInfo)
         break;
@@ -453,7 +453,7 @@ export default function GameForm(props) {
                   value={gameInfo.goalie}
                   onChange={handleGameInfoChange}
                 >
-                  <option value={""}></option>
+                  <option value={undefined}></option>
                   {goalieOptions &&
                     goalieOptions.map((player, key) => {
                       return (
