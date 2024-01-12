@@ -108,10 +108,10 @@ router.get("/:teamName", async (req, res) => {
 
               case "shootout":
                 if (gameType === "semifinal") {
-                  season.playoffPlace > 2 ? sol++ : sow++
+                  season.playoffPlace > 2 ? (sol++, playoffLoses++)  : (sow++, playoffWins++)
                 }
                 if (gameType === "championship") {
-                  season.playoffPlace === 2 ? sol++ : sow++
+                  season.playoffPlace === 2 ? (sol++, playoffLoses++) : (sow++, playoffWins++)
                 }
             }
 
