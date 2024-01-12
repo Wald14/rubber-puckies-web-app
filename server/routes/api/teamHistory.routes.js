@@ -98,7 +98,7 @@ router.get("/:teamName", async (req, res) => {
 
 
             switch (game.endedIn) {
-              case "regular" || "overtime":
+              case "regulation" || "overtime":
                 if ((isHomeTeam && homeGoals > awayGoals) || (isAwayTeam && awayGoals > homeGoals)) {
                   playoffWins++;
                 } else {
