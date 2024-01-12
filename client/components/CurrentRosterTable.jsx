@@ -5,6 +5,7 @@ import Table from 'react-bootstrap/Table';
 export default function CurrentRosterTable() {
   const [curRosInfo, setCurRosInfo] = useState(null)
 
+  const fColor2 = "gray"
 
   async function getCurRosInfo() {
     const query = await fetch("/api/currentroster/Rubber Puckies");
@@ -30,13 +31,13 @@ export default function CurrentRosterTable() {
 
     <>
       <h3>Skaters</h3>
-      <Table responsive striped hover variant="dark" className="text-nowrap" style={{maxWidth: "700px"}}>
+      <Table responsive striped variant="dark" className="text-nowrap" style={{maxWidth: "700px"}}>
         <thead>
-          <tr style={{ textAlign: "center" }}>
-            <th style={{ textAlign: "left"}}>Player</th>
+          <tr style={{ textAlign: "center"}}>
+            <th style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`}}>Player</th>
             <th>#</th>
             <th>POS</th>
-            <th>Sh</th>
+            <th style={{borderRight: `solid 1px ${fColor2}`}}>Sh</th>
             <th>SP</th>
             <th>GP</th>
             <th>G</th>
@@ -50,11 +51,11 @@ export default function CurrentRosterTable() {
           {curRosInfo &&
             curRosInfo.playerInfo.map((player, key) => {
               return (
-                <tr key={key} style={{ textAlign: "center" }}>
-                  <td style={{ textAlign: "left"}}>{player.firstName} {player.lastName}</td>
+                <tr key={key} style={{ textAlign: "center"}}>
+                  <td style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`}}>{player.firstName} {player.lastName}</td>
                   <td>{player.jerseyNumber}</td>
                   <td>{player.pos}</td>
-                  <td>{player.handedness}</td>
+                  <td style={{borderRight: `solid 1px ${fColor2}`}}>{player.handedness}</td>
                   <td>{player.sp}</td>
                   <td>{player.gp}</td>
                   <td>{player.goals}</td>
