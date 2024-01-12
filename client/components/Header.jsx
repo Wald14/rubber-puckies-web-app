@@ -36,9 +36,9 @@ export default function Header() {
                 <NavDropdown.Item href="#bretta">Brett A</NavDropdown.Item>
                 <NavDropdown.Item href="#lukew">Luke W</NavDropdown.Item>
                 <NavDropdown.Item href="#zachd">Zach D</NavDropdown.Item>
-              </NavDropdown>
-              <Nav.Link className="text-warning">Season Log</Nav.Link>
-              <Nav.Link className="text-warning">Records</Nav.Link> */}
+              </NavDropdown> */}
+              <Nav.Link href="/seasonlog" className="text-warning">Season Log</Nav.Link>
+              {/* <Nav.Link className="text-warning">Records</Nav.Link> */}
 
               {user?._id !== undefined &&
                 <>

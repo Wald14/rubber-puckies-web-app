@@ -1,0 +1,11 @@
+#seasonAccord {
+ --bs-accordion-active-bg: black;
+ --bs-accordion-active-color: #fff;
+ --bs-accordion-btn-focus-box-shadow:none;
+}
+
+#gamesAccord {
+  --bs-accordion-active-bg: #ffc107;
+  --bs-accordion-active-color: black;
+  --bs-accordion-btn-focus-box-shadow:none;
+ }

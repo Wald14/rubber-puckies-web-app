@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AppProvider from './utils/AppProvider';
 import { Header, ProtectedRoute } from './components';
-import { HomePage, AuthPage, Logout, PrivatePage, TeamHistory, RosterPage, AdminToolsPage } from './pages/'
+import { HomePage, AuthPage, Logout, PrivatePage, TeamHistory, SeasonLogPage, RosterPage, AdminToolsPage } from './pages/'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function App() {
@@ -15,6 +15,7 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/roster" element={<RosterPage />} />
             <Route path="/teamhistory" element={<TeamHistory />} />
+            <Route path="/seasonlog" element={<SeasonLogPage />} />
 
             <Route path="/auth" element={<AuthPage />} />
 

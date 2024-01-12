@@ -12,3 +12,5 @@ export { default as SeasonForm } from "./SeasonForm";
 export { default as TeamForm } from "./TeamForm";
 export { default as PlayerForm } from "./PlayerForm";
 export { default as GameForm } from "./GameForm";
+export { default as SeasonAccord } from "./SeasonAccord";
+export { default as GamesAccord } from "./GamesAccord";
