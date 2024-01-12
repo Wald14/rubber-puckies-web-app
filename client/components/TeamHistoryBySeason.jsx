@@ -5,6 +5,7 @@ import Table from 'react-bootstrap/Table';
 export default function TeamHistoryBySeason() {
   const [teamArr, setTeamArr] = useState(null)
 
+  const fColor = "#D6D6DE"
 
   async function getRegSeaInfo() {
     const query = await fetch("/api/teamHistory/Rubber Puckies");
@@ -50,21 +51,21 @@ export default function TeamHistoryBySeason() {
               return (
                 <tr key={key} style={{ textAlign: "center" }}>
                   <td style={{ textAlign: "left" }}>{season.season}</td>
-                  <td>{season.regular.gamesPlayed}</td>
-                  <td>{season.regular.record}</td>
-                  <td>{season.regular.points}</td>
-                  <td>{season.regular.point_percentage}</td>
-                  <td>{season.regular.goals_for}</td>
-                  <td>{season.regular.goals_against}</td>
-                  <td>{season.regular.diff}</td>
-                  <td>{season.regular.goals_per_game}</td>
-                  <td>{season.regular.goals_against_per_game}</td>
-                  <td>{season.regular.diff_per_game}</td>
-                  <td>{season.regular.finish}</td>
-                  <td>{season.playoff.finish}</td>
-                  <td>{season.captain}</td>
-                  <td>{season.playoff.champion}</td>
-                  <td>{season.rink}</td>
+                  <td style={{ color: fColor }}>{season.regular.gamesPlayed}</td>
+                  <td style={{ color: fColor }}>{season.regular.record}</td>
+                  <td style={{ color: fColor }}>{season.regular.points}</td>
+                  <td style={{ color: fColor }}>{season.regular.point_percentage}</td>
+                  <td style={{ color: fColor }}>{season.regular.goals_for}</td>
+                  <td style={{ color: fColor }}>{season.regular.goals_against}</td>
+                  <td style={{ color: fColor }}>{season.regular.diff}</td>
+                  <td style={{ color: fColor }}>{season.regular.goals_per_game}</td>
+                  <td style={{ color: fColor }}>{season.regular.goals_against_per_game}</td>
+                  <td style={{ color: fColor }}>{season.regular.diff_per_game}</td>
+                  <td style={{ color: fColor }}>{season.regular.finish}</td>
+                  <td style={{ color: fColor }}>{season.playoff.finish}</td>
+                  <td style={{ color: fColor }}>{season.captain}</td>
+                  <td style={{ color: fColor }}>{season.playoff.champion}</td>
+                  <td style={{ color: fColor }}>{season.rink}</td>
                 </tr>
               )
             })}
@@ -98,17 +99,17 @@ export default function TeamHistoryBySeason() {
               return (
                 <tr key={key} style={{ textAlign: "center" }}>
                   <td style={{ textAlign: "left" }}>{season.season}</td>
-                  <td>{season.playoff.rounds}</td>
-                  <td>{season.playoff.gamesPlayed}</td>
-                  <td>{season.playoff.record}</td>
-                  <td>{season.playoff.sow}</td>
-                  <td>{season.playoff.sol}</td>
-                  <td>{season.playoff.gf}</td>
-                  <td>{season.playoff.ga}</td>
-                  <td>{season.playoff.semiRoundOpp === null ? "N/A" : season.playoff.semiRoundOpp}</td>
-                  <td>{season.playoff.championshipOpp === null ? "N/A" : season.playoff.championshipOpp}</td>
-                  <td>{season.playoff.championshipOpp === null ? "N/A" : season.playoff.championshipScore}</td>
-                  <td>{season.playoff.champion}</td>
+                  <td style={{ color: fColor }}>{season.playoff.rounds}</td>
+                  <td style={{ color: fColor }}>{season.playoff.gamesPlayed}</td>
+                  <td style={{ color: fColor }}>{season.playoff.record}</td>
+                  <td style={{ color: fColor }}>{season.playoff.sow}</td>
+                  <td style={{ color: fColor }}>{season.playoff.sol}</td>
+                  <td style={{ color: fColor }}>{season.playoff.gf}</td>
+                  <td style={{ color: fColor }}>{season.playoff.ga}</td>
+                  <td style={{ color: fColor }}>{season.playoff.semiRoundOpp === null ? "N/A" : season.playoff.semiRoundOpp}</td>
+                  <td style={{ color: fColor }}>{season.playoff.championshipOpp === null ? "N/A" : season.playoff.championshipOpp}</td>
+                  <td style={{ color: fColor }}>{season.playoff.championshipOpp === null ? "N/A" : season.playoff.championshipScore}</td>
+                  <td style={{ color: fColor }}>{season.playoff.champion}</td>
                 </tr>
               )
             })}

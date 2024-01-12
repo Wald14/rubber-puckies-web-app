@@ -1,6 +1,6 @@
 // Import any controllers needed here
-const {getAllTeamsbyName} = require('../../controllers/team.controller');
-const {getAllGamesByTeamId} = require('../../controllers/game.controller');
+const { getAllTeamsbyName } = require('../../controllers/team.controller');
+const { getAllGamesByTeamId } = require('../../controllers/game.controller');
 
 // Declare the routes that point to the controllers above
 const router = require('express').Router();
@@ -13,26 +13,26 @@ router.get("/:teamName", async (req, res) => {
 
     const payload = await Promise.all(
       teamSeasonInfo.map(async (season) => {
-        let wins = 0, 
-            loses = 0, 
-            ties = 0, 
-            goalsFor = 0, 
-            goalsAgainst = 0, 
-            gamesPlayed = 0,
-            seasonFinish = season.seasonPlace ? season.seasonPlace : null
+        let wins = 0,
+          loses = 0,
+          ties = 0,
+          goalsFor = 0,
+          goalsAgainst = 0,
+          gamesPlayed = 0,
+          seasonFinish = season.seasonPlace ? season.seasonPlace : null
 
-        let playoffWins = 0, 
-            playoffLoses = 0,
-            sow = 0, 
-            sol = 0,  
-            playoffGamesPlayed = 0, 
-            playoffGoalsFor = 0, 
-            playoffGoalsAgainst = 0,
-            champion = null,
-            championshipOpp = null,
-            championshipScore = null,
-            semiRoundOpp = null,
-            playoffFinish = season.playoffPlace ? season.playoffPlace : null
+        let playoffWins = 0,
+          playoffLoses = 0,
+          sow = 0,
+          sol = 0,
+          playoffGamesPlayed = 0,
+          playoffGoalsFor = 0,
+          playoffGoalsAgainst = 0,
+          champion = null,
+          championshipOpp = null,
+          championshipScore = null,
+          semiRoundOpp = null,
+          playoffFinish = season.playoffPlace ? season.playoffPlace : null
 
 
         const seasonName = season.season.seasonType.charAt(0).toUpperCase() + season.season.seasonType.slice(1);
@@ -69,7 +69,7 @@ router.get("/:teamName", async (req, res) => {
           }
 
           // PLAYOFF
-          if (completed && (gameType === "semi-finals" || gameType === "championship")) {
+          if (completed && (gameType === "semifinal" || gameType === "championship")) {
             playoffGamesPlayed++
 
             const teamName = req.params.teamName;
@@ -82,20 +82,40 @@ router.get("/:teamName", async (req, res) => {
             playoffGoalsAgainst += isHomeTeam ? awayGoals : homeGoals;
 
             if (gameType === "championship") {
-              championshipOpp = isHomeTeam ? game.awayTeam.name : game.homeTeam.name,
+              championshipOpp = isHomeTeam ? game.awayTeam.name : game.homeTeam.name
               championshipScore = isHomeTeam ? `${homeGoals} - ${awayGoals}` : `${awayGoals} - ${homeGoals}`
             }
 
-            if (gameType === "semi-round") {
+            if (gameType === "semifinal") {
               semiRoundOpp = isHomeTeam ? game.awayTeam.name : game.homeTeam.name
             }
 
+            // if ((isHomeTeam && homeGoals > awayGoals) || (isAwayTeam && awayGoals > homeGoals)) {
+            //   playoffWins++;
+            // } else if ((isHomeTeam && homeGoals < awayGoals) || (isAwayTeam && awayGoals < homeGoals)) {
+            //   playoffLoses++;
+            // }
 
-            if ((isHomeTeam && homeGoals > awayGoals) || (isAwayTeam && awayGoals > homeGoals)) {
-              playoffWins++;
-            } else if ((isHomeTeam && homeGoals < awayGoals) || (isAwayTeam && awayGoals < homeGoals)) {
-              playoffLoses++;
+
+            switch (game.endedIn) {
+              case "regular" || "overtime":
+                if ((isHomeTeam && homeGoals > awayGoals) || (isAwayTeam && awayGoals > homeGoals)) {
+                  playoffWins++;
+                } else {
+                  playoffLoses++;
+                }
+                break;
+
+              case "shootout":
+                if (gameType === "semifinal") {
+                  season.playoffPlace === 4 ? sol++ : sow++
+                }
+                if (gameType === "championship") {
+                  season.playoffPlace === 2 ? sol++ : sow++
+                }
             }
+
+
           }
         })
 

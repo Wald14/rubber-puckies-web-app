@@ -305,7 +305,7 @@ export default function GameForm(props) {
               {selectedGameUpdateOptions &&
                 selectedGameUpdateOptions.map((game, key) => {
                   return (
-                    <option key={key} value={game._id}>{game.startTime} @ {game.startTime} - {game.homeTeam.name} vs {game.awayTeam.name}</option>
+                    <option key={key} value={game._id}>{game.startTime} - {game.homeTeam.name} vs {game.awayTeam.name}</option>
                   )
                 })
               }
