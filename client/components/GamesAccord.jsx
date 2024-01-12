@@ -78,7 +78,7 @@ export default function GamesAccord(props) {
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{new Date(game.startTime).getMonth()}/{new Date(game.startTime).getDate()}/{new Date(game.startTime).getFullYear()}</td>
+                        <td>{(new Date(game.startTime).getMonth() + 1)}/{new Date(game.startTime).getDate()}/{new Date(game.startTime).getFullYear()}</td>
                         <td>{grabTimeFromISO(game.startTime)}</td>
 
                         <td>{determineOutcome(
