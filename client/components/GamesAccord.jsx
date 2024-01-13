@@ -15,7 +15,7 @@ export default function GamesAccord(props) {
     setGames(payload)
   }
 
-  function determineOutcome(endedIn, homeGoals, awayGoals, homeTeamName, gameType){
+  function determineOutcome(endedIn, homeGoals, awayGoals, homeTeamName, gameType) {
     const isHomeTeam = homeTeamName === "Rubber Puckies" ? true : false
     let outcome = ""
     if ((isHomeTeam && homeGoals > awayGoals) || (!isHomeTeam && awayGoals > homeGoals)) {
@@ -26,10 +26,10 @@ export default function GamesAccord(props) {
       outcome = "Tie"
     } else if (endedIn === "shootout") {
       if (gameType === "semifinal") {
-        outcome = props.playoffPlace > 2 ? "Loss"  : "Win"
+        outcome = props.playoffPlace > 2 ? "Loss" : "Win"
       }
       if (gameType === "championship") {
-        outcome = props.playoffPlace === 2 ? "Loss"  : "Win"
+        outcome = props.playoffPlace === 2 ? "Loss" : "Win"
       }
     }
     return outcome
@@ -51,25 +51,39 @@ export default function GamesAccord(props) {
             return (
               <Accordion.Item eventKey={index} key={index}>
                 <Accordion.Header>
-                  <div style={{ width: "50px" }}>
+                  {/* <div style={{ width: "50px" }}>
                     {`#${index + 1}`}
-                  </div>
-                  <div style={{ width: "100px" }}>
-                    {(new Date(game.startTime).getMonth() + 1)}/{new Date(game.startTime).getDate()}/{new Date(game.startTime).getFullYear()}
-                  </div>
+                  </div> */}
+                  <div style={{ display: "flex", flexWrap: "wrap" }}>
+                    <div style={{ width: "80px", marginBlockEnd: "8px" }}>
+                      {(new Date(game.startTime).getMonth() + 1)}/{new Date(game.startTime).getDate()}/{new Date(game.startTime).getFullYear()}
+                    </div>
+                    <div style={{ width: "100px" }}>
+                      @ {grabTimeFromISO(game.startTime)}
+                    </div>
+                    <div style={{ width: "90px" }}>
+                      {determineOutcome(
+                        game.endedIn,
+                        game.homeGoals,
+                        game.awayGoals,
+                        game.homeTeam.name,
+                        game.gameType
+                      )} {game.homeGoals} - {game.awayGoals}
+                    </div>
                   <div>
-                    {game.homeTeam.name === "Rubber Puckies" ? game.awayTeam.name : game.homeTeam.name}
+                    vs. {game.homeTeam.name === "Rubber Puckies" ? game.awayTeam.name : game.homeTeam.name}
+                  </div>
                   </div>
                 </Accordion.Header>
                 <Accordion.Body>
                   <Table responsive className="text-nowrap">
                     <thead>
                       <tr>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Result</th>
+                        {/* <th>Date</th> */}
+                        {/* <th>Time</th> */}
+                        {/* <th>Result</th> */}
                         <th>Home Team</th>
-                        <th>Score</th>
+                        {/* <th>Score</th> */}
                         <th>Away Team</th>
                         <th>Goals By</th>
                         <th>Played</th>
@@ -78,48 +92,57 @@ export default function GamesAccord(props) {
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{(new Date(game.startTime).getMonth() + 1)}/{new Date(game.startTime).getDate()}/{new Date(game.startTime).getFullYear()}</td>
-                        <td>{grabTimeFromISO(game.startTime)}</td>
+                        {/* <td>{(new Date(game.startTime).getMonth() + 1)}/{new Date(game.startTime).getDate()}/{new Date(game.startTime).getFullYear()}</td> */}
+                        {/* <td>{grabTimeFromISO(game.startTime)}</td> */}
 
-                        <td>{determineOutcome(
-                          game.endedIn, 
-                          game.homeGoals, 
-                          game.awayGoals, 
-                          game.homeTeam.name, 
+                        {/* <td>{determineOutcome(
+                          game.endedIn,
+                          game.homeGoals,
+                          game.awayGoals,
+                          game.homeTeam.name,
                           game.gameType
-                          )}</td>
+                        )}</td> */}
 
                         <td>{game.homeTeam.name}</td>
-                        <td>{game.homeGoals} - {game.awayGoals}</td>
-                        <td>{game.awayTeam.name}</td> 
+                        {/* <td>{game.homeGoals} - {game.awayGoals}</td> */}
+                        <td>{game.awayTeam.name}</td>
                         <td>
-                          <ul style={{listStyleType: "none", padding: "0px"}}>
-                          {game.players.map((player, index) => {
-                            if (player.goals > 0) {
-                              return <li key={index}>{player.player.firstName} {player.player.lastName} ({player.goals})</li>
+                          <ul style={{ listStyleType: "none", padding: "0px" }}>
+                            {game.players.map((player, index) => {
+                              if (player.goals > 0) {
+                                return <li key={index}>{player.player.firstName} {player.player.lastName} ({player.goals})</li>
+                              }
+                            })
                             }
-                          })
-                          }
                           </ul>
                         </td>
                         <td>
-                        <ul style={{listStyleType: "none", padding: "0px"}}>
-                          {game.players.map((player, index) => {
-                            if (player.played) {
-                              return <li key={index}>{player.player.firstName} {player.player.lastName}</li>
+                          <ul style={{ listStyleType: "none", padding: "0px" }}>
+                            <li style={{ textDecoration: "underline", fontWeight: "bold" }}>Skaters:</li>
+                            {game.players.map((player, index) => {
+                              if (player.played) {
+                                return <li key={index}>{player.player.firstName} {player.player.lastName}</li>
+                              }
+                            })}
+                            {game.goalie &&
+                              <>
+                                <li style={{ paddingTop: "10px", textDecoration: "underline", fontWeight: "bold" }}>Goalie:</li>
+                                <li>{game.goalie.firstName} {game.goalie.lastName}</li>
+                              </>
                             }
-                          })
-                          }
                           </ul>
                         </td>
                         <td>
-                        <ul style={{listStyleType: "none", padding: "0px"}}>
-                          {game.players.map((player, index) => {
-                            if (!player.played) {
-                              return <li key={index}>{player.player.firstName} {player.player.lastName}</li>
-                            }
-                          })
-                          }
+                          <ul style={{ listStyleType: "none", padding: "0px" }}>
+                            {game.players.map((player, index) => {
+                              if (!player.played) {
+                                if (game.goalie && player.player._id !== game.goalie._id) {
+                                  return <li key={index}>{player.player.firstName} {player.player.lastName}</li>
+                                } else if (!game.goalie) {
+                                  return <li key={index}>{player.player.firstName} {player.player.lastName}</li>
+                                }
+                              }
+                            })}
                           </ul>
                         </td>
                       </tr>

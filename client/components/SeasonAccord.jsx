@@ -30,10 +30,10 @@ export default function SeasonAccord() {
         {seasonArr &&
           seasonArr.map((season, key) => {
             return (
-              <Accordion.Item eventKey={key} key={key}>
+              <Accordion.Item eventKey={key} key={key} style={{backgroundColor: "#141414"}}>
                 <Accordion.Header>{capitalizeString(season.season.seasonType)} {new Date(season.season.startDate).getFullYear()} - {season.season.rink}</Accordion.Header>
                 <Accordion.Body>
-                  <h3>Games</h3>
+                  <p style={{fontSize: "18px"}}>Games</p>
 
                   <GamesAccord teamId={season.season._id} playoffPlace={season.playoffPlace} />
 
