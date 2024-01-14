@@ -153,6 +153,8 @@ export default function GameForm(props) {
         ...season,
         startDate: convertUTCtoCT(season.startDate),
       }))
+    // console.log(updatedSeasons)
+    updatedSeasons.sort((a,b) => new Date(b.startDate) - new Date(a.startDate))
     setSeasonUpdateOptions(updatedSeasons)
     setSeasonOptions(updatedSeasons)
   }
@@ -166,6 +168,8 @@ export default function GameForm(props) {
         ...game,
         startTime: convertUTCtoCT(game.startTime),
       }))
+    // console.log(updatedGames)
+    updatedGames.sort((a,b) => new Date(a.startTime) - new Date(b.startTime))
     setSelectedGameUpdateOptions(updatedGames)
   }
 
@@ -250,7 +254,7 @@ export default function GameForm(props) {
           startTime: convertToUTC(gameInfo.startTime),
           players: rosterCreate,
         })
-        console.log(outgoingCreateGameInfo)
+        // console.log(outgoingCreateGameInfo)
         createGame(outgoingCreateGameInfo)
         break;
 
