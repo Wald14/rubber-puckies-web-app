@@ -46,45 +46,51 @@ router.get("/:teamName", async (req, res) => {
         let gp = 0,
           goals = 0,
           hat = 0,
-          tg = 0
+          tg = 0,
+          playoffgp = 0,
+          playoffgoals = 0,
+          playoffhat = 0
 
         let playedSeasonArr = []
 
         const handedness = player.handedness === "left" ? "L" : player.handedness === "right" ? "R" : null
 
-        const positions = player.positions.join(" / ")
+        const positions = player.positions.join(", ")
 
         const gamesArr = await getAllGamesByPlayerId(player._id)
-
         gamesArr.forEach((game) => {
-
           if (game.gameType === "regular") {
-
             const gamesSeaon = game.season.toString()
-
-
             if (playedSeasonArr.indexOf(gamesSeaon) === -1) {
               playedSeasonArr.push(gamesSeaon)
             }
-
             game.players.forEach((playerInGame) => {
               const playerInGameId = playerInGame.player.toString();
-
-
               if (playerInGameId === playerId && playerInGame.played === true) {
                 gp++;
                 goals += playerInGame.goals;
-
                 if (playerInGame.goals > 2) {
                   hat++;
                 }
-
               }
             });
+          } else if (game.gameType === "semifinal" || game.gameType === "championship") {
+            game.players.forEach((playerInGame) => {
+              const playerInGameId = playerInGame.player.toString();
+              if (playerInGameId === playerId && playerInGame.played === true) {
+                playoffgp++;
+                playoffgoals += playerInGame.goals;
+                if (playerInGame.goals > 2) {
+                  playoffhat++;
+                }
+              }
+            })
           }
+
         });
 
         const goalsPerGamePlayed = !goals ? (0.00).toFixed(2) : (goals/gp).toFixed(2)
+        const playoffgoalsPerGamePlayed = !playoffgoals ? (0.00).toFixed(2) : (playoffgoals/playoffgp).toFixed(2)
 
         return {
           firstName: player.firstName,
@@ -97,7 +103,11 @@ router.get("/:teamName", async (req, res) => {
           goals: goals,
           goalsPerGamePlayed: goalsPerGamePlayed,
           hat: hat,
-          tg: tg
+          tg: tg,
+          playoffgp: playoffgp,
+          playoffgoals: playoffgoals,
+          playoffgoalsPerGamePlayed: playoffgoalsPerGamePlayed,
+          playoffhat: playoffhat
         }
       })
     )

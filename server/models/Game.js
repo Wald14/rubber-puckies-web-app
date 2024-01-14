@@ -41,9 +41,9 @@ const gameSchema = new Schema({
     type: String,
     enum: {
       values: ['regular', 'semifinal', 'championship'],
-      message: '{VALUE} is not supported. Game type must be: regular, semi-finals, championship'
+      message: '{VALUE} is not supported. Game type must be: regular, semifinals, championship'
     },
-    required: [true, "Game have a type: regular, semi-Finals, playoff"],
+    required: [true, "Game have a type: regular, semifinals, playoff"],
   },
   endedIn: {
     type: String,
