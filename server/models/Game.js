@@ -17,7 +17,7 @@ const gameSchema = new Schema({
   },
   awayTeam: {
     type: Schema.Types.ObjectId,
-    required: [true, "Game must have a home team"],
+    required: [true, "Game must have an away team"],
     ref: 'Team'
   },
   homeGoals: {

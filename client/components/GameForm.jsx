@@ -56,7 +56,7 @@ export default function GameForm(props) {
 
   // Master Game Info Handler
   const handleGameInfoChange = (e) => {
-    const newValue = e.target.name === "goalie" && e.target.value === "" ? null : e.target.value
+    const newValue = e.target.name === "goalie" && e.target.value === "" ? undefined : e.target.value
     setGameInfo({ ...gameInfo, [e.target.name]: newValue })
   }
 
@@ -81,7 +81,7 @@ export default function GameForm(props) {
       season: game.season,
       gameType: game.gameType,
       endedIn: game.endedIn,
-      goalie: game.goalie ? game.goalie._id : null,
+      goalie: game.goalie ? game.goalie._id : undefined,
       players: game.players,
     })
   }
@@ -99,7 +99,7 @@ export default function GameForm(props) {
       const roster = await gatherRoster(e.target.value)
       setGameInfo({ ...gameInfo, homeTeam: e.target.value, players: roster })
     } else if (!puckieTeams.find(team => team._id === gameInfo.awayTeam)) {
-      setGameInfo({ ...gameInfo, homeTeam: e.target.value, players: [], goalie: "" })
+      setGameInfo({ ...gameInfo, homeTeam: e.target.value, players: [], goalie: undefined })
     } else {
       setGameInfo({ ...gameInfo, homeTeam: e.target.value })
     }
@@ -110,7 +110,7 @@ export default function GameForm(props) {
       const roster = await gatherRoster(e.target.value)
       setGameInfo({ ...gameInfo, awayTeam: e.target.value, players: roster })
     } else if (!puckieTeams.find(team => team._id === gameInfo.homeTeam)) {
-      setGameInfo({ ...gameInfo, awayTeam: e.target.value, players: [], goalie: "" })
+      setGameInfo({ ...gameInfo, awayTeam: e.target.value, players: [], goalie: undefined })
     } else {
       setGameInfo({ ...gameInfo, awayTeam: e.target.value })
     }
@@ -250,6 +250,7 @@ export default function GameForm(props) {
           startTime: convertToUTC(gameInfo.startTime),
           players: rosterCreate,
         })
+        console.log(outgoingCreateGameInfo)
         createGame(outgoingCreateGameInfo)
         break;
 
