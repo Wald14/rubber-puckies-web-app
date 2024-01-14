@@ -106,7 +106,6 @@ export default function GameForm(props) {
   }
 
   const handleAwayTeamChange = async (e) => {
-    setGameInfo({ ...gameInfo, awayTeam: e.target.value })
     if (puckieTeams.find(team => team._id === e.target.value)) {
       const roster = await gatherRoster(e.target.value)
       setGameInfo({ ...gameInfo, awayTeam: e.target.value, players: roster })
