@@ -43,24 +43,24 @@ router.get("/", async (req, res) => {
 
 
 router.get("/verify", async (req, res) => {
-  // const user = await verifyUser(req)
-  // if( !user ){
-  //   res.status(401).json({ result: "invalid login" })
-  // } else {
-  //   const token = createToken(user.email, user._id)
-  //   const payload = stripPassword(user)
-  //   res.cookie("auth-cookie", token).json({ result: "success", payload })
-  // }
   const user = await verifyUser(req)
   if( !user ){
     res.status(401).json({ result: "invalid login" })
-  } else if (user === "noCookie"){
-    res.status(200)
-  } else{
-    const token = createToken(user.username, user._id)
+  } else {
+    const token = createToken(user.email, user._id)
     const payload = stripPassword(user)
     res.cookie("auth-cookie", token).json({ result: "success", payload })
   }
+  // const user = await verifyUser(req)
+  // if( !user ){
+  //   res.status(401).json({ result: "invalid login" })
+  // } else if (user === "noCookie"){
+  //   res.status(200)
+  // } else{
+  //   const token = createToken(user.username, user._id)
+  //   const payload = stripPassword(user)
+  //   res.cookie("auth-cookie", token).json({ result: "success", payload })
+  // }
 })
 
 

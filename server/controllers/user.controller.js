@@ -6,19 +6,8 @@ require("dotenv").config();
 const Model = User; 
 
   async function verifyUser(req){
-    // const cookie = req.cookies["auth-cookie"]
-    // if( !cookie ) return false
-
-    // const isVerified = jwt.verify(cookie, process.env.JWT_SECRET)
-    // if( !isVerified ) return false 
-
-    // const user = await Model.findOne({ _id: isVerified.id })
-    // if( !user ) return false 
-
-    // return user
-
     const cookie = req.cookies["auth-cookie"]
-    if( !cookie ) return "noCookie"
+    if( !cookie ) return false
 
     const isVerified = jwt.verify(cookie, process.env.JWT_SECRET)
     if( !isVerified ) return false 
@@ -27,6 +16,17 @@ const Model = User;
     if( !user ) return false 
 
     return user
+
+    // const cookie = req.cookies["auth-cookie"]
+    // if( !cookie ) return "noCookie"
+
+    // const isVerified = jwt.verify(cookie, process.env.JWT_SECRET)
+    // if( !isVerified ) return false 
+
+    // const user = await Model.findOne({ _id: isVerified.id })
+    // if( !user ) return false 
+
+    // return user
 }
 
 
