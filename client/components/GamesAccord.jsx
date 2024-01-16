@@ -6,6 +6,8 @@ import { convertToUTC, convertUTCtoLocal, convertUTCtoCT, grabDateFromISO, grabT
 
 
 export default function GamesAccord(props) {
+  const isMobile = window.screen.width < 600
+
   const [games, setGames] = useState(null)
 
   async function getGames() {
@@ -51,9 +53,6 @@ export default function GamesAccord(props) {
             return (
               <Accordion.Item eventKey={index} key={index}>
                 <Accordion.Header>
-                  {/* <div style={{ width: "50px" }}>
-                    {`#${index + 1}`}
-                  </div> */}
                   <div style={{ display: "flex", flexWrap: "wrap" }}>
                     <div style={{ width: "80px", marginBlockEnd: "8px" }}>
                       {(new Date(game.startTime).getMonth() + 1)}/{new Date(game.startTime).getDate()}/{new Date(game.startTime).getFullYear()}
@@ -70,42 +69,28 @@ export default function GamesAccord(props) {
                         game.gameType
                       )} {game.homeGoals} - {game.awayGoals}
                     </div>
-                  <div>
-                    vs. {game.homeTeam.name === "Rubber Puckies" ? game.awayTeam.name : game.homeTeam.name}
-                  </div>
+                    <div>
+                      vs. {game.homeTeam.name === "Rubber Puckies" ? game.awayTeam.name : game.homeTeam.name}
+                    </div>
                   </div>
                 </Accordion.Header>
                 <Accordion.Body>
+                  <div>
+                    <p><span style={{ fontWeight: "bold" }}>Home Team:</span> {game.homeTeam.name}</p>
+                    <p><span style={{ fontWeight: "bold" }}>Away Team:</span> {game.awayTeam.name}</p>
+                  </div>
                   <Table responsive className="text-nowrap">
                     <thead>
                       <tr>
-                        {/* <th>Date</th> */}
-                        {/* <th>Time</th> */}
-                        {/* <th>Result</th> */}
-                        <th>Home Team</th>
-                        {/* <th>Score</th> */}
-                        <th>Away Team</th>
                         <th>Goals By</th>
                         <th>Played</th>
+                        {!isMobile && 
                         <th>Gone</th>
+                        }
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        {/* <td>{(new Date(game.startTime).getMonth() + 1)}/{new Date(game.startTime).getDate()}/{new Date(game.startTime).getFullYear()}</td> */}
-                        {/* <td>{grabTimeFromISO(game.startTime)}</td> */}
-
-                        {/* <td>{determineOutcome(
-                          game.endedIn,
-                          game.homeGoals,
-                          game.awayGoals,
-                          game.homeTeam.name,
-                          game.gameType
-                        )}</td> */}
-
-                        <td>{game.homeTeam.name}</td>
-                        {/* <td>{game.homeGoals} - {game.awayGoals}</td> */}
-                        <td>{game.awayTeam.name}</td>
                         <td>
                           <ul style={{ listStyleType: "none", padding: "0px" }}>
                             {game.players.map((player, index) => {
@@ -132,19 +117,22 @@ export default function GamesAccord(props) {
                             }
                           </ul>
                         </td>
-                        <td>
-                          <ul style={{ listStyleType: "none", padding: "0px" }}>
-                            {game.players.map((player, index) => {
-                              if (!player.played) {
-                                if (game.goalie && player.player._id !== game.goalie._id) {
-                                  return <li key={index}>{player.player.firstName} {player.player.lastName}</li>
-                                } else if (!game.goalie) {
-                                  return <li key={index}>{player.player.firstName} {player.player.lastName}</li>
+
+                        {!isMobile &&
+                          <td>
+                            <ul style={{ listStyleType: "none", padding: "0px" }}>
+                              {game.players.map((player, index) => {
+                                if (!player.played) {
+                                  if (game.goalie && player.player._id !== game.goalie._id) {
+                                    return <li key={index}>{player.player.firstName} {player.player.lastName}</li>
+                                  } else if (!game.goalie) {
+                                    return <li key={index}>{player.player.firstName} {player.player.lastName}</li>
+                                  }
                                 }
-                              }
-                            })}
-                          </ul>
-                        </td>
+                              })}
+                            </ul>
+                          </td>
+                        }
                       </tr>
                     </tbody>
                   </Table>
