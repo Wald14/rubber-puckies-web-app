@@ -40,7 +40,8 @@ async function getAllGamesByPlayerId(playerId) {
     return await Game.find({
       completed: true,
       "players.player": playerId
-    });
+    })
+    .populate({path: "homeTeam awayTeam", select: "_id name"});
   } catch (err) {
     throw new Error(err);
   }

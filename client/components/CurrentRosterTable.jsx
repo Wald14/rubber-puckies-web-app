@@ -24,6 +24,7 @@ export default function CurrentRosterTable() {
     setSortedByColumn("firstName")
     setSortOrder("ASC")
     setCurRosInfo(result)
+    console.log(result)
   }
 
   async function sortCurRosInfo(e) {
@@ -78,11 +79,10 @@ export default function CurrentRosterTable() {
   return (
 
     <>
-      <h3>Skaters</h3>
       <Table responsive striped variant="dark" className="text-nowrap">
         <thead>
           <tr style={{ textAlign: "center" }}>
-            <th colSpan={1} style={{ borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1 }}></th>
+            <th colSpan={1} style={{ borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1, fontSize: "24px", textAlign: "left" }}>Skaters</th>
             {!isMobile &&
               <th colSpan={3} style={{ borderRight: `solid 1px ${fColor2}` }}></th>
             }
@@ -131,6 +131,67 @@ export default function CurrentRosterTable() {
                   <td>{player.playoffgoals}</td>
                   <td>{player.playoffgoalsPerGamePlayed}</td>
                   <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.playoffhat}</td>
+                </tr>
+              )}
+            })}
+        </tbody>
+      </Table>
+
+
+      <Table responsive striped variant="dark" className="text-nowrap" style={{marginTop: "50px"}}>
+        <thead>
+
+          <tr style={{ textAlign: "center" }}>
+            <th colSpan={1} style={{ borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1, fontSize: "24px", textAlign: "left"}}> Goalies</th>
+            {!isMobile &&
+              <th colSpan={2} style={{ borderRight: `solid 1px ${fColor2}` }}></th>
+            }
+            <th colSpan={10} style={{ borderRight: `solid 1px ${fColor2}` }}>Regular Season</th>
+          </tr>
+
+          <tr style={{ textAlign: "center" }}>
+            <th style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1 }}>Player</th>
+            {!isMobile &&
+              <>
+                <th>#</th>
+                <th style={{ borderRight: `solid 1px ${fColor2}` }}>Sh</th>
+              </>
+            }
+            <th>SP</th>
+            <th>GP</th>
+            <th>W%</th>
+            <th>W</th>
+            <th>L</th>
+            <th>T</th>
+            <th>GA</th>
+            <th>GAA</th>
+            <th>SO</th>
+            <th style={{ borderRight: `solid 1px ${fColor2}` }}>SO%</th>
+          </tr>
+
+        </thead>
+        <tbody>
+          {curRosInfo &&
+            curRosInfo.playerInfo.map((player, key) => { if (player.pos === "G" || player.pos === "F, G" || player.pos === "D, G" || player.pos === "F, D, G"){
+              return (
+                <tr key={key} style={{ textAlign: "center" }}>
+                  <td style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1 }}>{player.firstName} {player.lastName}</td>
+                  {!isMobile &&
+                    <>
+                      <td>{player.jerseyNumber}</td>
+                      <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.handedness}</td>
+                    </>
+                  }
+                  <td>{player.goaliestats.sp}</td>
+                  <td>{player.goaliestats.gp}</td>
+                  <td>{player.goaliestats.winpercent}</td>
+                  <td>{player.goaliestats.wins}</td>
+                  <td>{player.goaliestats.losses}</td>
+                  <td>{player.goaliestats.ties}</td>
+                  <td>{player.goaliestats.ga}</td>
+                  <td>{player.goaliestats.gaa}</td>
+                  <td>{player.goaliestats.shutouts}</td>
+                  <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.goaliestats.shutoutpercent}</td>
                 </tr>
               )}
             })}

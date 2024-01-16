@@ -9,7 +9,7 @@ const router = require('express').Router();
 
 
 
-router.get("/:teamName", async (req, res) => {
+router.get("/:teamName", async ({params: {teamName}}, res) => {
   try {
     // Grab most recent season info
     const curSeason = await getCurrentSeason()
@@ -24,10 +24,10 @@ router.get("/:teamName", async (req, res) => {
     }
 
     // Grab user entered team from most recent season
-    const curTeam = await getTeamsbyNameAndSeasonId(req.params.teamName, curSeason._id)
+    const curTeam = await getTeamsbyNameAndSeasonId(teamName, curSeason._id)
 
     // Team Info for export
-    const teamnInfo = {
+    const teamInfo = {
       _id: curTeam._id,
       name: curTeam.name,
       captain: curTeam.captain
@@ -50,8 +50,15 @@ router.get("/:teamName", async (req, res) => {
           playoffgp = 0,
           playoffgoals = 0,
           playoffhat = 0
-
         let playedSeasonArr = []
+
+        let goaliegp = 0,
+        wins = 0,
+        losses = 0,
+        ties = 0,
+        goalsagainst = 0,
+        shutouts = 0
+        let goaliePlayedSeasonArr = []
 
         const handedness = player.handedness === "left" ? "L" : player.handedness === "right" ? "R" : null
 
@@ -87,10 +94,56 @@ router.get("/:teamName", async (req, res) => {
             })
           }
 
+
+          const goalie = game.goalie ? game.goalie.toString() : null
+          if (goalie === player._id.toString()) {
+            // Track Regular Season Stats
+            if (game.gameType === "regular") {
+
+              // Track how many different seasons the goalie played at least one game in
+              const goalieGamesSeaon = game.season.toString()
+              if (goaliePlayedSeasonArr.indexOf(goalieGamesSeaon) === -1) {
+                goaliePlayedSeasonArr.push(goalieGamesSeaon)
+              }
+
+              // Track number of games played as goalie
+              goaliegp++
+              
+              // Track goalie regular season record AND goals against
+              if (game.homeGoals === game.awayGoals) {
+                ties++
+                goalsagainst += game.homeGoals
+              } 
+              else if (game.homeTeam.name === teamName && game.homeGoals > game.awayGoals) {
+                wins++
+                goalsagainst += game.awayGoals
+                if (game.awayGoals === 0) {
+                  shutouts++
+                }
+              } else if (game.awayTeam.name === teamName && game.awayGoals > game.homeGoals) {
+                wins++
+                goalsagainst += game.homeGoals
+                if (game.homeGoals === 0) {
+                  shutouts++
+                }
+              }  else if (game.homeTeam.name === teamName &&  game.homeGoals < game.awayGoals){
+                losses++
+                goalsagainst += game.awayGoals
+              } else if (game.awayTeam.name === teamName && game.homeGoals > game.awayGoals){
+                losses++
+                goalsagainst += game.homeGoals
+              }
+            }
+          }
+
         });
 
         const goalsPerGamePlayed = !goals ? (0.00).toFixed(2) : (goals/gp).toFixed(2)
         const playoffgoalsPerGamePlayed = !playoffgoals ? (0.00).toFixed(2) : (playoffgoals/playoffgp).toFixed(2)
+
+        const goalsagainstavg = !goalsagainst && !goaliegp ? (0.00).toFixed(2) : (goalsagainst/goaliegp).toFixed(2)
+        const winpercent = !wins && !goaliegp ? (0.00).toFixed(3) : (wins/goaliegp).toFixed(3)
+        const shutoutspercent = !shutouts && !goaliegp ? (0.00).toFixed(3) : (shutouts/goaliegp).toFixed(3)
 
         return {
           firstName: player.firstName,
@@ -107,13 +160,23 @@ router.get("/:teamName", async (req, res) => {
           playoffgp: playoffgp,
           playoffgoals: playoffgoals,
           playoffgoalsPerGamePlayed: playoffgoalsPerGamePlayed,
-          playoffhat: playoffhat
+          playoffhat: playoffhat,
+          goaliestats: {
+            sp: goaliePlayedSeasonArr.length,
+            gp: goaliegp,
+            wins: wins,
+            losses: losses,
+            ties: ties,
+            ga: goalsagainst,
+            gaa: goalsagainstavg,
+            shutouts: shutouts,
+            winpercent: winpercent,
+            shutoutspercent: shutoutspercent
+          }
         }
       })
     )
-
-
-    res.status(200).json({ result: "success", seasonInfo, teamnInfo, playerInfo })
+    res.status(200).json({ result: "success", seasonInfo, teamInfo, playerInfo })
   } catch (err) {
     res.status(500).json({ result: "Error", payload: err.message })
   }
