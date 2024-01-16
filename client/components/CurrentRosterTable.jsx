@@ -111,7 +111,7 @@ export default function CurrentRosterTable() {
         </thead>
         <tbody>
           {curRosInfo &&
-            curRosInfo.playerInfo.map((player, key) => {
+            curRosInfo.playerInfo.map((player, key) => { if (player.pos !== "G" ){
               return (
                 <tr key={key} style={{ textAlign: "center" }}>
                   <td style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1 }}>{player.firstName} {player.lastName}</td>
@@ -132,7 +132,7 @@ export default function CurrentRosterTable() {
                   <td>{player.playoffgoalsPerGamePlayed}</td>
                   <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.playoffhat}</td>
                 </tr>
-              )
+              )}
             })}
         </tbody>
       </Table>
