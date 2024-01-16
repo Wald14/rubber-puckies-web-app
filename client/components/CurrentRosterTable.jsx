@@ -34,14 +34,15 @@ export default function CurrentRosterTable() {
       <Table responsive striped variant="dark" className="text-nowrap">
         <thead>
           <tr style={{ textAlign: "center" }}>
-            <th colSpan={4} style={{ borderRight: `solid 1px ${fColor2}` }}></th>
+            <th colSpan={1} style={{ borderRight: `solid 1px ${fColor2}`, position: "sticky", left:0, zIndex: 1 }}></th>
+            <th colSpan={3} style={{ borderRight: `solid 1px ${fColor2}` }}></th>
             <th colSpan={5} style={{ borderRight: `solid 1px ${fColor2}` }}>Regular Season</th>
             {/* <th>TG%</th>
             <th>TG/GP%</th> */}
             <th colSpan={4} style={{ borderRight: `solid 1px ${fColor2}` }}>Playoffs</th>
           </tr>
           <tr style={{ textAlign: "center" }}>
-            <th style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}` }}>Player</th>
+            <th style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left:0, zIndex: 1 }}>Player</th>
             <th>#</th>
             <th>POS</th>
             <th style={{ borderRight: `solid 1px ${fColor2}` }}>Sh</th>
@@ -63,7 +64,7 @@ export default function CurrentRosterTable() {
             curRosInfo.playerInfo.map((player, key) => {
               return (
                 <tr key={key} style={{ textAlign: "center" }}>
-                  <td style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}` }}>{player.firstName} {player.lastName}</td>
+                  <td style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left:0, zIndex: 1 }}>{player.firstName} {player.lastName}</td>
                   <td>{player.jerseyNumber}</td>
                   <td>{player.pos}</td>
                   <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.handedness}</td>

@@ -28,7 +28,7 @@ export default function TeamHistoryBySeason() {
       <Table responsive striped variant="dark" className="text-nowrap">
         <thead>
           <tr style={{ textAlign: "center" }}>
-            <th style={{borderRight: `solid 1px ${fColor2}`}}>Season</th>
+            <th style={{borderRight: `solid 1px ${fColor2}`, position: "sticky", left:0, zIndex: 1}}>Season</th>
             <th>GP</th>
             <th>Record</th>
             <th>Pts</th>
@@ -51,7 +51,7 @@ export default function TeamHistoryBySeason() {
             teamArr.map((season, key) => {
               return (
                 <tr key={key} style={{ textAlign: "center" }}>
-                  <td style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}` }}>{season.season}</td>
+                  <td style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left:0, zIndex: 1 }}>{season.season}</td>
                   <td style={{ color: fColor }}>{season.regular.gamesPlayed}</td>
                   <td style={{ color: fColor }}>{season.regular.record}</td>
                   <td style={{ color: fColor }}>{season.regular.points}</td>
@@ -78,7 +78,7 @@ export default function TeamHistoryBySeason() {
       <Table responsive striped variant="dark" className="text-nowrap">
         <thead>
           <tr style={{ textAlign: "center" }}>
-            <th style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}` }}>Season</th>
+            <th style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left:0, zIndex: 1 }}>Season</th>
             <th>Rds</th>
             <th>GP</th>
             <th>Record</th>
@@ -99,7 +99,7 @@ export default function TeamHistoryBySeason() {
 
               return (
                 <tr key={key} style={{ textAlign: "center" }}>
-                  <td style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}` }}>{season.season}</td>
+                  <td style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left:0, zIndex: 1 }}>{season.season}</td>
                   <td style={{ color: fColor }}>{season.playoff.rounds}</td>
                   <td style={{ color: fColor }}>{season.playoff.gamesPlayed}</td>
                   <td style={{ color: fColor }}>{season.playoff.record}</td>
