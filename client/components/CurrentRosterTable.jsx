@@ -29,7 +29,6 @@ export default function CurrentRosterTable() {
 
   async function sortCurRosInfo(e) {
     const players = curRosInfo.playerInfo
-
     if (e.target.name !== sortedByColumn) {
       players.sort(function (a, b) {
         let x = a.firstName.toLowerCase();

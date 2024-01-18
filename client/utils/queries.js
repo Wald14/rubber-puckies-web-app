@@ -92,3 +92,18 @@ export async function createGame(gameInfo) {
     console.log(err.message)
   }
 }
+
+// Fetches Player Info
+export async function getPlayer(playerId) {
+  const query = await fetch(`/api/player/${playerId}`)
+  const result = await query.json()
+  const roster = result.payload
+  // roster.sort(function (a, b) {
+  //   let x = a.startTime;
+  //   let y = b.startTime;
+  //   if (x < y) { return -1; }
+  //   if (x > y) { return 1; }
+  //   return 0;
+  // })
+  return roster
+}

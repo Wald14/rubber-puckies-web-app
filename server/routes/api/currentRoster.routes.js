@@ -146,6 +146,7 @@ router.get("/:teamName", async ({params: {teamName}}, res) => {
         const shutoutspercent = !shutouts && !goaliegp ? (0.00).toFixed(3) : (shutouts/goaliegp).toFixed(3)
 
         return {
+          _id: player._id,
           firstName: player.firstName,
           lastName: player.lastName,
           jerseyNumber: player.jerseyNumber,

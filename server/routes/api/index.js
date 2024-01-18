@@ -8,6 +8,7 @@ const gameRoutes = require('./game.routes');
 const playerRoutes = require('./player.routes');
 const teamHistoryRoutes = require('./teamHistory.routes');
 const currentRosterRoutes = require('./currentRoster.routes');
+const singlePlayerStatsRoutes = require('./singlePlayerStats.routes');
 
 router.use('/sample', sampleRoutes);
 router.use('/user', userRoutes);
@@ -17,5 +18,6 @@ router.use('/game', gameRoutes);
 router.use('/player', playerRoutes);
 router.use('/teamhistory', teamHistoryRoutes);
 router.use('/currentroster', currentRosterRoutes);
+router.use('/singleplayerstats', singlePlayerStatsRoutes);
 
 module.exports = router;
