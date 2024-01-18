@@ -60,7 +60,7 @@ export default function PlayerPage() {
                   <th>{player.careerStats.sp.length}</th>
                   <th>{player.careerStats.gp}</th>
                   <th>{player.careerStats.g}</th>
-                  <th>{player.careerStats.gp > 0 ? player.careerStats.g / player.careerStats.gp.toFixed(2) : (0.00).toFixed(2)}</th>
+                  <th>{player.careerStats.gp > 0 ? (player.careerStats.g / player.careerStats.gp).toFixed(2) : (0.00).toFixed(2)}</th>
                   <th>{player.careerStats.hat}</th>
                 </tr>
               </tbody>
