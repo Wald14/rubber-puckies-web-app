@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
+import { PlayerPageStats, PlayerPageSplits, PlayerPageGameLog } from '../components'
 
 import { getPlayer } from '../utils/queries.js';
 import captializeString from '../utils/stringAdjustments.js';
@@ -19,7 +20,7 @@ export default function PlayerPage() {
   const [player, setPlayer] = useState()
   const [selectedSplit, setSelectedSplit] = useState()
 
-  const handleChange = (e) => {setSelectedSplit(e.target.name)}
+  const handleChange = (e) => { setSelectedSplit(e.target.name) }
 
   async function getPlayerFromQuery() {
     const playerInfo = await getPlayer(params.playerid)
@@ -30,6 +31,7 @@ export default function PlayerPage() {
 
   useEffect(() => {
     getPlayerFromQuery()
+    setSelectedSplit("stats")
   }, [])
 
   if (!player) return <></>
@@ -42,8 +44,8 @@ export default function PlayerPage() {
             <Row><h2>{player.playerInfo.firstName} {player.playerInfo.lastName}</h2></Row>
             <Row>
               <Col>
-                <span style={{marginRight: "10px"}}>#{player.playerInfo.jerseyNumber}</span>
-                <span style={{marginRight: "10px"}}>{player.playerInfo.positions.join(", ")}</span>
+                <span style={{ marginRight: "10px" }}>#{player.playerInfo.jerseyNumber}</span>
+                <span style={{ marginRight: "10px" }}>{player.playerInfo.positions.join(", ")}</span>
                 <span>{captializeString(player.playerInfo.handedness)}y</span>
               </Col>
             </Row>
@@ -52,10 +54,10 @@ export default function PlayerPage() {
             </Row>
           </Col>
           <Col sm={12} md={6}>
-            <Table style={{ textAlign: "center" }}>
+            <Table striped style={{ textAlign: "center" }}>
               <thead>
                 <tr>
-                  <th colSpan={5} style={{ textAlign: "left" }}>Career Stats</th>
+                  <th colSpan={5} style={{ textAlign: "left", fontSize: "24px" }}>Career Stats</th>
                 </tr>
                 <tr>
                   <th>SP</th>
@@ -77,12 +79,22 @@ export default function PlayerPage() {
             </Table>
           </Col>
         </Row>
-        <Row style={{borderBottom: "solid gold 1px", paddingBottom: "3px"}}>
-          <Col xs={3} md={1} ><a name="stats" className={`headerBtnA ${selectedSplit === "stats" ? 'selected' : ''}`} onClick={handleChange} >Stats</a></Col>
-          <Col xs={3} md={1} ><a name="splits" className={`headerBtnA ${selectedSplit === "splits" ? 'selected' : ''}`} onClick={handleChange} >Splits</a></Col>
-          <Col xs={6} md={2} ><a name="gamelog" className={`headerBtnA ${selectedSplit === "gamelog" ? 'selected' : ''}`} onClick={handleChange} >Game Log</a></Col>
+        <Row style={{ borderBottom: "solid gold 1px", paddingBottom: "2px", marginTop: "16px" }}>
+          <Col xs={3} md={2} lg={1}><a name="stats" className={`headerBtnA ${selectedSplit === "stats" ? 'selected' : ''}`} onClick={handleChange} >Stats</a></Col>
+          <Col xs={3} md={2} lg={1}><a name="splits" className={`headerBtnA ${selectedSplit === "splits" ? 'selected' : ''}`} onClick={handleChange} >Splits</a></Col>
+          <Col xs={6} md={4} lg={1}><a name="gamelog" className={`headerBtnA ${selectedSplit === "gamelog" ? 'selected' : ''}`} style={{ whiteSpace: "nowrap" }} onClick={handleChange} >Game Log</a></Col>
         </Row>
       </Container>
+
+      {selectedSplit === "stats" &&
+        <PlayerPageStats player={player} />
+      }
+      {selectedSplit === "splits" &&
+        <PlayerPageSplits player={player} />
+      }
+      {selectedSplit === "gamelog" &&
+        <PlayerPageGameLog player={player} />
+      }
     </>
   )
 }

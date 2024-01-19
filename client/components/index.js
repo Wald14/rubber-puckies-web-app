@@ -14,3 +14,6 @@ export { default as PlayerForm } from "./PlayerForm";
 export { default as GameForm } from "./GameForm";
 export { default as SeasonAccord } from "./SeasonAccord";
 export { default as GamesAccord } from "./GamesAccord";
+export { default as PlayerPageStats } from "./PlayerPageStats";
+export { default as PlayerPageSplits } from "./PlayerPageSplits";
+export { default as PlayerPageGameLog } from "./PlayerPageGameLog";
