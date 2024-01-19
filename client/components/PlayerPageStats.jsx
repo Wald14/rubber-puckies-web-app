@@ -29,11 +29,10 @@ export default function PlayerPageStats({ player }) {
           <Table striped>
             <thead>
               <tr>
-                <th colSpan={6} style={{ fontSize: "24px" }}>By Season</th>
+                <th colSpan={5} style={{ fontSize: "24px" }}>By Season</th>
               </tr>
               <tr style={{textAlign: "center"}}>
-                <th>Year</th>
-                <th>Season</th>
+                <th style={{textAlign: "left"}}>Season</th>
                 <th>GP</th>
                 <th>G</th>
                 <th>G/GP</th>
@@ -45,8 +44,7 @@ export default function PlayerPageStats({ player }) {
                 player.statsBySeason.map((season, key) => {
                   return (
                     <tr key={key} style={{textAlign: "center"}}>
-                      <td>{new Date(season.seasonStats.seasonInfo.startDate).getFullYear()}</td>
-                      <td>{captializeString(season.seasonStats.seasonInfo.seasonType)}</td>
+                      <td style={{textAlign: "left"}}>{captializeString(season.seasonStats.seasonInfo.seasonType)} {new Date(season.seasonStats.seasonInfo.startDate).getFullYear()}</td>
                       <td>{season.seasonStats.totals.gp}</td>
                       <td>{season.seasonStats.totals.g}</td>
                       <td>{season.seasonStats.totals.gp > 0 ? (season.seasonStats.totals.g/season.seasonStats.totals.gp).toFixed(2): (0.00).toFixed(2)}</td>
@@ -63,11 +61,10 @@ export default function PlayerPageStats({ player }) {
           <Table striped>
             <thead>
               <tr >
-                <th colSpan={6} style={{ fontSize: "24px" }}>Post Season</th>
+                <th colSpan={5} style={{ fontSize: "24px" }}>Post Season</th>
               </tr>
               <tr style={{textAlign: "center"}}>
-                <th>Year</th>
-                <th>Season</th>
+                <th style={{textAlign: "left"}}>Season</th>
                 <th>GP</th>
                 <th>G</th>
                 <th>G/GP</th>
@@ -80,8 +77,7 @@ export default function PlayerPageStats({ player }) {
                   if (season.seasonStats.totals.pgp > 0){
                   return (
                     <tr key={key} style={{textAlign: "center"}}>
-                      <td>{new Date(season.seasonStats.seasonInfo.startDate).getFullYear()}</td>
-                      <td>{captializeString(season.seasonStats.seasonInfo.seasonType)}</td>
+                      <td style={{textAlign: "left"}}>{captializeString(season.seasonStats.seasonInfo.seasonType)} {new Date(season.seasonStats.seasonInfo.startDate).getFullYear()}</td>
                       <td>{season.seasonStats.totals.pgp}</td>
                       <td>{season.seasonStats.totals.pg}</td>
                       <td>{season.seasonStats.totals.pgp > 0 ? (season.seasonStats.totals.pg/season.seasonStats.totals.pgp).toFixed(2): (0.00).toFixed(2)}</td>
