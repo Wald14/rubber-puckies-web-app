@@ -14,17 +14,45 @@ import Table from 'react-bootstrap/Table';
 export default function PlayerPageStats({ player }) {
 
 
-
-
-  // useEffect(() => {
-
-  // }, [])
-
   if (!player) return <></>
 
   return (
     <>
-      <h4 style={{margin: "20px"}}>Player Game Log is under construction. Come back later!</h4>
+      <Row style={{ marginTop: "16px", whiteSpace: "nowrap" }}>
+        {player.statsBySeason.map((season, key) => {
+          return (
+            <Col key={key}>
+              <Table striped responsive style={{fontSize: "14px"}}>
+                <thead>
+                  <tr style={{ fontSize: "18px" }}>
+                    <th colSpan={4}>{captializeString(season.seasonStats.seasonInfo.seasonType)} {new Date(season.seasonStats.seasonInfo.startDate).getFullYear()}</th>
+                  </tr>
+                  <tr style={{textAlign: "center"}}>
+                    <th style={{textAlign: "left"}}>Date</th>
+                    <th style={{textAlign: "left"}}>Opponent</th>
+                    <th>Goals</th>
+                    <th>Missed</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {season.seasonStats.games.map((game, keytwo) => {
+                    return (
+                      <tr key={keytwo} style={{textAlign: "center"}}>
+                        <td style={{textAlign: "left"}}>{(new Date(game.startTime).getMonth())+1}/{new Date(game.startTime).getDate()}/{new Date(game.startTime).getFullYear()}</td>
+                        <td style={{textAlign: "left"}}>{game.opponent}</td>
+                        <td>{game.playerGoals > 0 ? game.playerGoals : ''}</td>
+                        <td>{game.played === true ? "" : "X"}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </Table>
+            </Col>
+          )
+        })
+
+        }
+      </Row>
     </>
   )
 }

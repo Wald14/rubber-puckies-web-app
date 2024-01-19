@@ -13,13 +13,6 @@ import Table from 'react-bootstrap/Table';
 
 export default function PlayerPageStats({ player }) {
 
-
-
-
-  // useEffect(() => {
-
-  // }, [])
-
   if (!player) return <></>
 
   return (
