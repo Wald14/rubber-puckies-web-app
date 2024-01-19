@@ -24,7 +24,7 @@ export default function PlayerPage() {
 
   async function getPlayerFromQuery() {
     const playerInfo = await getPlayer(params.playerid)
-    console.log(playerInfo)
+    // console.log(playerInfo)
     setPlayer(playerInfo)
   }
 
@@ -35,6 +35,7 @@ export default function PlayerPage() {
   }, [])
 
   if (!player) return <></>
+  // if (!player.careerStats.gp > 0) return <></>
 
   return (
     <>
@@ -46,11 +47,13 @@ export default function PlayerPage() {
               <Col>
                 <span style={{ marginRight: "10px" }}>#{player.playerInfo.jerseyNumber}</span>
                 <span style={{ marginRight: "10px" }}>{player.playerInfo.positions.join(", ")}</span>
-                <span>{captializeString(player.playerInfo.handedness)}y</span>
+                {player.playerInfo.handedness &&
+                <span >{captializeString(player.playerInfo.handedness)}y</span>
+                }
               </Col>
             </Row>
             <Row>
-              <Col>Started: {captializeString(player.statsBySeason[0].seasonStats.seasonInfo.seasonType)} {(new Date(player.statsBySeason[0].seasonStats.seasonInfo.startDate)).getFullYear()}</Col>
+                <Col>Started: {captializeString(player.statsBySeason[0].seasonStats.seasonInfo.seasonType)} {(new Date(player.statsBySeason[0].seasonStats.seasonInfo.startDate)).getFullYear()}</Col>
             </Row>
           </Col>
           <Col sm={12} md={6}>
@@ -86,14 +89,17 @@ export default function PlayerPage() {
         </Row>
       </Container>
 
-      {selectedSplit === "stats" &&
+      {player.careerStats.gp > 0 && selectedSplit === "stats" &&
         <PlayerPageStats player={player} />
       }
-      {selectedSplit === "splits" &&
+      {player.careerStats.gp > 0 && selectedSplit === "splits" &&
         <PlayerPageSplits player={player} />
       }
-      {selectedSplit === "gamelog" &&
+      {player.careerStats.gp > 0 && selectedSplit === "gamelog" &&
         <PlayerPageGameLog player={player} />
+      }
+      {!player.careerStats.gp > 0 &&
+        <h4 style={{margin: "20px 0px"}}>Player has not skated out for the Puckies</h4>
       }
     </>
   )
