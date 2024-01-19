@@ -9,6 +9,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
 
+import '../assets/css/tables.css'
 
 
 export default function PlayerPageStats({ player }) {
@@ -38,10 +39,10 @@ export default function PlayerPageStats({ player }) {
                   {season.seasonStats.games.map((game, keytwo) => {
                     return (
                       <tr key={keytwo} style={{textAlign: "center"}}>
-                        <td style={{textAlign: "left"}}>{(new Date(game.startTime).getMonth())+1}/{new Date(game.startTime).getDate()}/{new Date(game.startTime).getFullYear()}</td>
-                        <td style={{textAlign: "left"}}>{game.opponent}</td>
-                        <td>{game.playerGoals > 0 ? game.playerGoals : ''}</td>
-                        <td>{game.played === true ? "" : "X"}</td>
+                        <td className={game.gameType === "regular" ? "" : "playoffRow"} style={{textAlign: "left"}}>{(new Date(game.startTime).getMonth())+1}/{new Date(game.startTime).getDate()}/{new Date(game.startTime).getFullYear()}</td>
+                        <td className={game.gameType === "regular" ? "" : "playoffRow"} style={{textAlign: "left"}}>{game.opponent}</td>
+                        <td className={game.gameType === "regular" ? "" : "playoffRow"}>{game.playerGoals > 0 ? game.playerGoals : ''}</td>
+                        <td className={game.gameType === "regular" ? "" : "playoffRow"}>{game.played === true ? "" : "X"}</td>
                       </tr>
                     )
                   })}
