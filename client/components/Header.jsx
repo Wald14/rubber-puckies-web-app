@@ -44,11 +44,6 @@ export default function Header() {
             />{' '}
             RUBBER PUCKIES
           </Navbar.Brand>
-        </Container>
-      </Navbar>
-
-      <Navbar expand="lg" className="bg-body-tertiary" style={{ padding: "0px 0px 8px 0px" }}>
-        <Container>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
@@ -65,8 +60,6 @@ export default function Header() {
                 }
               </NavDropdown>
               <Nav.Link href="/seasonlog" className="text-warning">Season Log</Nav.Link>
-              {/* <Nav.Link href="/player" className="text-warning">Players</Nav.Link> */}
-              {/* <Nav.Link className="text-warning">Records</Nav.Link> */}
 
               {user?._id !== undefined &&
                 <>
