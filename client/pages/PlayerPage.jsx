@@ -48,26 +48,26 @@ export default function PlayerPage() {
                 <span style={{ marginRight: "10px" }}>#{player.playerInfo.jerseyNumber}</span>
                 <span style={{ marginRight: "10px" }}>{player.playerInfo.positions.join(", ")}</span>
                 {player.playerInfo.handedness &&
-                <span >{captializeString(player.playerInfo.handedness)}y</span>
+                  <span >{captializeString(player.playerInfo.handedness)}y</span>
                 }
               </Col>
             </Row>
             <Row>
-                <Col>Started: {captializeString(player.statsBySeason[0].seasonStats.seasonInfo.seasonType)} {(new Date(player.statsBySeason[0].seasonStats.seasonInfo.startDate)).getFullYear()}</Col>
+              <Col>Started: {captializeString(player.statsBySeason[0].seasonStats.seasonInfo.seasonType)} {(new Date(player.statsBySeason[0].seasonStats.seasonInfo.startDate)).getFullYear()}</Col>
             </Row>
           </Col>
-          <Col sm={12} md={6}>
+          <Col sm={12} md={6} style={{padding: 0}}>
             <Table striped style={{ textAlign: "center" }}>
               <thead>
                 <tr>
                   <th colSpan={5} style={{ textAlign: "left", fontSize: "24px" }}>Career Stats</th>
                 </tr>
                 <tr>
-                  <th>SP</th>
-                  <th>GP</th>
-                  <th>Goals</th>
-                  <th>G/GP</th>
-                  <th>Hat</th>
+                  <th className="bg-warning" style={{color: "black"}}>SP</th>
+                  <th className="bg-warning" style={{color: "black"}}>GP</th>
+                  <th className="bg-warning" style={{color: "black"}}>Goals</th>
+                  <th className="bg-warning" style={{color: "black"}}>G/GP</th>
+                  <th className="bg-warning" style={{color: "black"}}>Hat</th>
                 </tr>
               </thead>
               <tbody>
@@ -99,7 +99,7 @@ export default function PlayerPage() {
         <PlayerPageGameLog player={player} />
       }
       {!player.careerStats.gp > 0 &&
-        <h4 style={{margin: "20px 0px"}}>Player has not skated out for the Puckies</h4>
+        <h4 style={{ margin: "20px 0px" }}>Player has not skated out for the Puckies</h4>
       }
     </>
   )
