@@ -9,6 +9,7 @@ const playerRoutes = require('./player.routes');
 const teamHistoryRoutes = require('./teamHistory.routes');
 const currentRosterRoutes = require('./currentRoster.routes');
 const singlePlayerStatsRoutes = require('./singlePlayerStats.routes');
+const puckiePlayerListRoutes = require('./puckiePlayerList.routes');
 
 router.use('/sample', sampleRoutes);
 router.use('/user', userRoutes);
@@ -19,5 +20,6 @@ router.use('/player', playerRoutes);
 router.use('/teamhistory', teamHistoryRoutes);
 router.use('/currentroster', currentRosterRoutes);
 router.use('/singleplayerstats', singlePlayerStatsRoutes);
+router.use('/puckieplayerlist', puckiePlayerListRoutes);
 
 module.exports = router;

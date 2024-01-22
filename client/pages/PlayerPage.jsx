@@ -35,7 +35,6 @@ export default function PlayerPage() {
   }, [])
 
   if (!player) return <></>
-  // if (!player.careerStats.gp > 0) return <></>
 
   return (
     <>
@@ -45,8 +44,12 @@ export default function PlayerPage() {
             <Row><h2>{player.playerInfo.firstName} {player.playerInfo.lastName}</h2></Row>
             <Row>
               <Col>
-                <span style={{ marginRight: "10px" }}>#{player.playerInfo.jerseyNumber}</span>
-                <span style={{ marginRight: "10px" }}>{player.playerInfo.positions.join(", ")}</span>
+                {player.playerInfo.jerseyNumber &&
+                  <span style={{ marginRight: "10px" }}>#{player.playerInfo.jerseyNumber}</span>
+                }
+                {player.playerInfo.positions !== "" &&
+                  <span style={{ marginRight: "10px" }}>{player.playerInfo.positions.join(", ")}</span>
+                }
                 {player.playerInfo.handedness &&
                   <span >{captializeString(player.playerInfo.handedness)}y</span>
                 }
@@ -56,18 +59,18 @@ export default function PlayerPage() {
               <Col>Started: {captializeString(player.statsBySeason[0].seasonStats.seasonInfo.seasonType)} {(new Date(player.statsBySeason[0].seasonStats.seasonInfo.startDate)).getFullYear()}</Col>
             </Row>
           </Col>
-          <Col sm={12} md={6} style={{padding: 0}}>
+          <Col sm={12} md={6} style={{ padding: 0 }}>
             <Table striped style={{ textAlign: "center" }}>
               <thead>
                 <tr>
                   <th colSpan={5} style={{ textAlign: "left", fontSize: "24px" }}>Career Stats</th>
                 </tr>
                 <tr>
-                  <th className="bg-warning" style={{color: "black"}}>SP</th>
-                  <th className="bg-warning" style={{color: "black"}}>GP</th>
-                  <th className="bg-warning" style={{color: "black"}}>Goals</th>
-                  <th className="bg-warning" style={{color: "black"}}>G/GP</th>
-                  <th className="bg-warning" style={{color: "black"}}>Hat</th>
+                  <th className="bg-warning" style={{ color: "black" }}>SP</th>
+                  <th className="bg-warning" style={{ color: "black" }}>GP</th>
+                  <th className="bg-warning" style={{ color: "black" }}>Goals</th>
+                  <th className="bg-warning" style={{ color: "black" }}>G/GP</th>
+                  <th className="bg-warning" style={{ color: "black" }}>Hat</th>
                 </tr>
               </thead>
               <tbody>
