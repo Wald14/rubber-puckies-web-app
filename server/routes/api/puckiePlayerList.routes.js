@@ -23,9 +23,9 @@ router.get("/:teamName", async ({params: {teamName}}, res) => {
           _id: player._id,
           firstName: player.firstName,
           lastName: player.lastName,
-          jerseyNumber: player.jerseyNumber,
-          handedness: player.handedness,
-          positions: player.positions,
+          jerseyNumber: player.jerseyNumber ? player.jerseyNumber : "",
+          handedness: player.handedness ? player.handedness : "",
+          positions: player.positions ? player.positions : "",
           teams: player.playerTeamList
         })
       }

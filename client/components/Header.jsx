@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import Dropdown from 'react-bootstrap/Dropdown';
 import { useAppCtx } from "../utils/AppProvider"
 
 export default function Header() {
@@ -51,6 +52,7 @@ export default function Header() {
               <Nav.Link href="/roster" className="text-warning">Current Roster</Nav.Link>
               <Nav.Link href="/teamhistory" className="text-warning">Team History</Nav.Link>
               <NavDropdown title={<span className="text-warning">Players</span>} id="navbarScrollingDropdown">
+              <Dropdown.Header style={{color: "goldenrod"}}>Current Players</Dropdown.Header>
                 {curPlayers &&
                   curPlayers.playerInfo.map((player, key) => {
                     return (
@@ -58,6 +60,8 @@ export default function Header() {
                     )
                   })
                 }
+                <NavDropdown.Divider/>
+                <NavDropdown.Item style={{color: "darkorange"}} href={`/player/allplayers`}>All Players</NavDropdown.Item>
               </NavDropdown>
               <Nav.Link href="/seasonlog" className="text-warning">Season Log</Nav.Link>
 
