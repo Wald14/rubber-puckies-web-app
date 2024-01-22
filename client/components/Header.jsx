@@ -6,6 +6,8 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useAppCtx } from "../utils/AppProvider"
 
+import '../assets/css/navbar.css'
+
 export default function Header() {
   const { user } = useAppCtx()
 
@@ -33,17 +35,20 @@ export default function Header() {
 
   return (
     <>
-      <Navbar expand="lg" className="bg-body-tertiary" style={{ padding: "8px 0px 0px 0px" }}>
+      <Navbar expand="lg" className="bg-body-tertiary" style={{ padding: "8px 0px 8px 0px" }}>
         <Container>
-          <Navbar.Brand href="/" style={{ color: "white", textDecoration: "none" }} className="fs-1">
+          <Navbar.Brand
+            href="/"
+            className="brandSize">
+
             <img
               alt="Rubber Puckie Logo "
               src="/assets/images/rubber_puckie_logo.png"
-              width="60"
-              height="60"
               className="d-inline-block align-top"
-            />{' '}
-            RUBBER PUCKIES
+            />
+
+            {' '}RUBBER PUCKIES
+
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -52,7 +57,7 @@ export default function Header() {
               <Nav.Link href="/roster" className="text-warning">Current Roster</Nav.Link>
               <Nav.Link href="/teamhistory" className="text-warning">Team History</Nav.Link>
               <NavDropdown title={<span className="text-warning">Players</span>} id="navbarScrollingDropdown">
-              <Dropdown.Header style={{color: "goldenrod"}}>Current Players</Dropdown.Header>
+                <Dropdown.Header style={{ color: "goldenrod" }}>Current Players</Dropdown.Header>
                 {curPlayers &&
                   curPlayers.playerInfo.map((player, key) => {
                     return (
@@ -60,8 +65,8 @@ export default function Header() {
                     )
                   })
                 }
-                <NavDropdown.Divider/>
-                <NavDropdown.Item style={{color: "darkorange"}} href={`/player/allplayers`}>All Players</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item style={{ color: "darkorange" }} href={`/player/allplayers`}>All Players</NavDropdown.Item>
               </NavDropdown>
               <Nav.Link href="/seasonlog" className="text-warning">Season Log</Nav.Link>
 
