@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
+import { Chart } from '../components';
 
 import { getPlayer } from '../utils/queries.js';
 import captializeString from '../utils/stringAdjustments.js';
@@ -8,7 +9,6 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
-
 
 
 export default function PlayerPageStats({ player }) {
@@ -83,6 +83,11 @@ export default function PlayerPageStats({ player }) {
             </tbody>
           </Table>
         </Col>
+      </Row>
+      <Row style={{maxWidth: "600px"}}>
+
+        <Chart seasonStats={player.statsBySeason}/>
+
       </Row>
     </>
   )
