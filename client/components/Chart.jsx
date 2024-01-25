@@ -43,6 +43,14 @@ export default function Chart({ seasonStats }) {
         color: "goldenrod"
       },
     },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1
+        }
+      }
+    }
   };
 
 
