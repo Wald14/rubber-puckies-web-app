@@ -46,6 +46,6 @@ export default function BarChart({ chartTitle, data, stepSize }) {
   if (!chartTitle || !data) return <></>
 
   return (
-      <Bar options={options} data={data} />
+      <Bar options={options} data={data} style={{height: "300px"}}/>
   )
 }
