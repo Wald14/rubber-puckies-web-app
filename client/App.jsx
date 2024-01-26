@@ -10,7 +10,7 @@ export default function App() {
     <AppProvider>
       <BrowserRouter>
         <Header />
-        <div className="container pt-5">
+        <div className="container pt-3">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/roster" element={<RosterPage />} />

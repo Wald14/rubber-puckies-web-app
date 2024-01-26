@@ -17,4 +17,5 @@ export { default as GamesAccord } from "./GamesAccord";
 export { default as PlayerPageStats } from "./PlayerPageStats";
 export { default as PlayerPageSplits } from "./PlayerPageSplits";
 export { default as PlayerPageGameLog } from "./PlayerPageGameLog";
-export { default as Chart } from "./Chart";
+export { default as PlayerCharts } from "./PlayerCharts";
+export { default as BarChart } from "./BarChart";

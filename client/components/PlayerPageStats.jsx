@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { Chart } from '../components';
+import { PlayerCharts } from '../components';
 
 import { getPlayer } from '../utils/queries.js';
 import captializeString from '../utils/stringAdjustments.js';
@@ -17,10 +17,8 @@ export default function PlayerPageStats({ player }) {
 
   return (
     <>
-      <Row style={{ maxWidth: "600px" }}>
-
-        <Chart seasonStats={player.statsBySeason} />
-
+      <Row>
+        <PlayerCharts seasonStats={player.statsBySeason} />
       </Row>
       <Row style={{ marginTop: "16px" }}>
         <Col>
