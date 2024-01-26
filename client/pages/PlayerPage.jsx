@@ -87,7 +87,7 @@ export default function PlayerPage() {
         </Row>
         <Row style={{ borderBottom: "solid gold 1px", paddingBottom: "2px", marginTop: "16px" }}>
           <Col xs={3} md={2} lg={1}><a name="stats" className={`headerBtnA ${selectedSplit === "stats" ? 'selected' : ''}`} onClick={handleChange} >Stats</a></Col>
-          <Col xs={3} md={2} lg={1}><a name="splits" className={`headerBtnA ${selectedSplit === "splits" ? 'selected' : ''}`} onClick={handleChange} >Splits</a></Col>
+          {/* <Col xs={3} md={2} lg={1}><a name="splits" className={`headerBtnA ${selectedSplit === "splits" ? 'selected' : ''}`} onClick={handleChange} >Splits</a></Col> */}
           <Col xs={6} md={4} lg={1}><a name="gamelog" className={`headerBtnA ${selectedSplit === "gamelog" ? 'selected' : ''}`} style={{ whiteSpace: "nowrap" }} onClick={handleChange} >Game Log</a></Col>
         </Row>
       </Container>
@@ -95,9 +95,9 @@ export default function PlayerPage() {
       {player.careerStats.gp > 0 && selectedSplit === "stats" &&
         <PlayerPageStats player={player} />
       }
-      {player.careerStats.gp > 0 && selectedSplit === "splits" &&
+      {/* {player.careerStats.gp > 0 && selectedSplit === "splits" &&
         <PlayerPageSplits player={player} />
-      }
+      } */}
       {player.careerStats.gp > 0 && selectedSplit === "gamelog" &&
         <PlayerPageGameLog player={player} />
       }
