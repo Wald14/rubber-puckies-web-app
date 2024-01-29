@@ -118,6 +118,7 @@ export default function PlayerPageStats({ player }) {
                 <tbody>
                   {player &&
                     player.statsBySeason.map((season, key) => {
+                      if (season.seasonStats.totals.goalie.gp > 0) {
                       return (
                         <tr key={key} style={{ textAlign: "center" }}>
                           <td style={{ textAlign: "left" }}>{captializeString(season.seasonStats.seasonInfo.seasonType)} {new Date(season.seasonStats.seasonInfo.startDate).getFullYear()}</td>
@@ -129,7 +130,7 @@ export default function PlayerPageStats({ player }) {
                           <td>{season.seasonStats.totals.goalie.shutouts}</td>
                         </tr>
                       )
-
+                      }
                     })
                   }
                 </tbody>
@@ -154,7 +155,7 @@ export default function PlayerPageStats({ player }) {
                 <tbody>
                   {player &&
                     player.statsBySeason.map((season, key) => {
-                      if (season.seasonStats.totals.pgp > 0) {
+                      if (season.seasonStats.totals.goalie.pgp > 0) {
                         return (
                           <tr key={key} style={{ textAlign: "center" }}>
                             <td style={{ textAlign: "left" }}>{captializeString(season.seasonStats.seasonInfo.seasonType)} {new Date(season.seasonStats.seasonInfo.startDate).getFullYear()}</td>
