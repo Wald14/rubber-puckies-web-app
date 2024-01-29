@@ -96,14 +96,14 @@ export default function PlayerPageStats({ player }) {
       {/* --------------------------------------------
       GOALIE STATS
       ---------------------------------------------*/}
-      {/* {player.careerStats.goalie.gp > 0 &&
+      {player.careerStats.goalie.gp > 0 &&
         <>
           <Row style={{ marginTop: "16px" }}>
             <Col>
               <Table striped>
                 <thead>
                   <tr>
-                    <th colSpan={5} style={{ fontSize: "24px" }}>By Season</th>
+                    <th colSpan={7} style={{ fontSize: "24px" }}>By Season</th>
                   </tr>
                   <tr style={{ textAlign: "center" }}>
                     <th style={{ textAlign: "left" }}>Season</th>
@@ -125,7 +125,7 @@ export default function PlayerPageStats({ player }) {
                           <td>{season.seasonStats.totals.goalie.wins}</td>
                           <td>{season.seasonStats.totals.goalie.losses}</td>
                           <td>{season.seasonStats.totals.goalie.ties}</td>
-                          <td>{season.seasonStats.totals.goalie.gp > 0 ? (player.seasonStats.goalie.ga / player.seasonStats.goalie.gp).toFixed(2) : (0.00).toFixed(2)}</td>
+                          <td>{season.seasonStats.totals.goalie.gp > 0 ? (season.seasonStats.totals.goalie.ga / season.seasonStats.totals.goalie.gp).toFixed(2) : (0.00).toFixed(2)}</td>
                           <td>{season.seasonStats.totals.goalie.shutouts}</td>
                         </tr>
                       )
@@ -139,7 +139,7 @@ export default function PlayerPageStats({ player }) {
               <Table striped>
                 <thead>
                   <tr >
-                    <th colSpan={5} style={{ fontSize: "24px" }}>Post Season</th>
+                    <th colSpan={7} style={{ fontSize: "24px" }}>Post Season</th>
                   </tr>
                   <tr style={{ textAlign: "center" }}>
                     <th style={{ textAlign: "left" }}>Season</th>
@@ -162,7 +162,7 @@ export default function PlayerPageStats({ player }) {
                             <td>{season.seasonStats.totals.goalie.pwins}</td>
                             <td>{season.seasonStats.totals.goalie.plosses}</td>
                             <td>{season.seasonStats.totals.goalie.pties}</td>
-                            <td>{season.seasonStats.totals.goalie.pgp > 0 ? (player.seasonStats.goalie.pga / player.seasonStats.goalie.pgp).toFixed(2) : (0.00).toFixed(2)}</td>
+                            <td>{season.seasonStats.totals.goalie.pgp > 0 ? (season.seasonStats.totals.goalie.pga / season.seasonStats.totals.goalie.pgp).toFixed(2) : (0.00).toFixed(2)}</td>
                             <td>{season.seasonStats.totals.goalie.pshutouts}</td>
                           </tr>
                         )
@@ -175,7 +175,7 @@ export default function PlayerPageStats({ player }) {
             </Col>
           </Row>
         </>
-      } */}
+      }
 
     </>
   )

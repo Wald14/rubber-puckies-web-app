@@ -79,22 +79,25 @@ router.get("/:playerId", async ({ params: { playerId } }, res) => {
             pgp: 0,
             pg: 0,
             phat: 0,
-            // Goalie Regular
-            goaliegp: 0,
-            wins: 0,
-            losses: 0,
-            ties: 0,
-            ga: 0,
-            shutouts: 0,
-            // Goalie Playoff
-            pgoaliegp: 0,
-            pwins: 0,
-            plosses: 0,
-            pties: 0,
-            pga: 0,
-            pshutouts: 0,
-            sow: 0,
-            sol: 0,
+            // goalie regular season
+            goalie: {
+              gp: 0,
+              wins: 0,
+              losses: 0,
+              ties: 0,
+              ga: 0,
+              shutouts: 0,
+
+              // goalie playoff season
+              pgp: 0,
+              pwins: 0,
+              plosses: 0,
+              pties: 0,
+              pga: 0,
+              pshutouts: 0,
+              sow: 0,
+              sol: 0,
+            }
           },
           games: []
         }
@@ -153,15 +156,25 @@ router.get("/:playerId", async ({ params: { playerId } }, res) => {
               careerStats.goalie.gp++
               careerStats.goalie.ga += opponentGoals
 
+              seasonStats.totals.goalie.gp++
+              seasonStats.totals.goalie.ga += opponentGoals
+
               // Goalie Record Stats
               if (game.homeGoals === game.awayGoals) {
                 careerStats.goalie.ties++
                 careerStats.goalie.shutouts += opponentGoals === 0 ? 1 : 0
+
+                seasonStats.totals.goalie.ties++
+                seasonStats.totals.goalie.shutouts += opponentGoals === 0 ? 1 : 0
               } else if (isHome && game.homeGoals > game.awayGoals || !isHome && game.awayGoals > game.homeGoals) {
                 careerStats.goalie.wins++
                 careerStats.goalie.shutouts += opponentGoals === 0 ? 1 : 0
+
+                seasonStats.totals.goalie.wins++
+                seasonStats.totals.goalie.shutouts += opponentGoals === 0 ? 1 : 0
               } else if (isHome && game.homeGoals < game.awayGoals || !isHome && game.homeGoals > game.awayGoals) {
                 careerStats.goalie.losses++
+                seasonStats.totals.goalie.losses++
               }
 
               // Playoff Stats
@@ -169,29 +182,52 @@ router.get("/:playerId", async ({ params: { playerId } }, res) => {
               careerStats.goalie.pgp++
               careerStats.goalie.pga += opponentGoals
 
+              seasonStats.totals.goalie.pgp++
+              seasonStats.totals.goalie.pga += opponentGoals
+
               switch (game.endedIn) {
                 case "regulation" || "overtime":
                   if ((isHome && game.homeGoals > game.awayGoals) || (!isHome && game.awayGoals > game.homeGoals)) {
                     careerStats.goalie.pwins++;
                     careerStats.goalie.pshutouts += opponentGoals === 0 ? 1 : 0
+
+                    seasonStats.totals.goalie.pwins++;
+                    seasonStats.totals.goalie.pshutouts += opponentGoals === 0 ? 1 : 0
                   } else {
                     careerStats.goalie.plosses++;
+
+                    seasonStats.totals.goalie.plosses++;
                   }
                   break;
 
                 case "shootout":
                   if (game.gameType === "semifinal") {
                     team.playoffPlace > 2 ? (
-                      careerStats.goalie.plosses++, 
-                      careerStats.goalie.sol++ 
-                      ) : (
-                      careerStats.goalie.pwins++, 
+                      careerStats.goalie.plosses++,
+                      careerStats.goalie.sol++,
+                      seasonStats.totals.goalie.plosses++,
+                      seasonStats.totals.goalie.sol++
+                    ) : (
+                      careerStats.goalie.pwins++,
                       careerStats.goalie.sow++,
-                      careerStats.goalie.pshutouts += opponentGoals === 0 ? 1 : 0
-                      )
+                      careerStats.goalie.pshutouts += opponentGoals === 0 ? 1 : 0,
+                      seasonStats.totals.goalie.pwins++,
+                      seasonStats.totals.goalie.sow++,
+                      seasonStats.totals.goalie.pshutouts += opponentGoals === 0 ? 1 : 0
+                    )
                   }
                   if (game.gameType === "championship") {
-                    team.playoffPlace === 2 ? (careerStats.goalie.plosses++, careerStats.goalie.sol++) : (careerStats.goalie.pwins++, careerStats.goalie.sow++)
+                    team.playoffPlace === 2 ? (
+                      careerStats.goalie.plosses++,
+                      careerStats.goalie.sol++,
+                      seasonStats.totals.goalie.plosses++,
+                      seasonStats.totals.goalie.sol++
+                    ) : (
+                      careerStats.goalie.pwins++,
+                      careerStats.goalie.sow++,
+                      seasonStats.totals.goalie.pwins++,
+                      seasonStats.totals.goalie.sow++
+                      )
                   }
               }
             }

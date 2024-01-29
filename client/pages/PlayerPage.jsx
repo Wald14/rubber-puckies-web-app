@@ -28,8 +28,6 @@ export default function PlayerPage() {
     setPlayer(playerInfo)
   }
 
-  console.log(player)
-
   useEffect(() => {
     getPlayerFromQuery()
     setSelectedSplit("stats")
@@ -137,7 +135,7 @@ export default function PlayerPage() {
       {player.careerStats.gp > 0 && selectedSplit === "gamelog" &&
         <PlayerPageGameLog player={player} />
       }
-      {!player.careerStats.gp > 0 &&
+      {!player.careerStats.gp > 0 && !player.careerStats.goalie.gp > 0 &&
         <h4 style={{ margin: "20px 0px" }}>Player has not skated out for the Puckies</h4>
       }
     </>
