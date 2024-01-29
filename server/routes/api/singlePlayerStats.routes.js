@@ -137,70 +137,68 @@ router.get("/:playerId", async ({ params: { playerId } }, res) => {
           }
 
 
-
-          // // Find goalie
-          // const goalie = game.goalie ? game.goalie.toString() : null
-
-          // // Calculate Goalie Stats
-          // if (playerId === goalie) {
-
-          //   const isHome = game.homeTeam.name === "Rubber Puckies" ? true : false
-
-          //   let opponentGoals = isHome ? game.awayGoals : game.homeGoals
-
-          //   // Regular Stats
-          //   if (game.gameType === "regular") {
-          //     careerStats.goalie.gp++
-          //     careerStats.goalie.ga += opponentGoals
-
-          //     // Goalie Record Stats
-          //     if (game.homeGoals === game.awayGoals) {
-          //       careerStats.goalie.ties++
-          //       careerStats.goalie.shutouts += opponentGoals === 0 ? 1 : 0
-          //     } else if (isHome && game.homeGoals > game.awayGoals || !isHome && game.awayGoals > game.homeGoals) {
-          //       careerStats.goalie.wins++
-          //       careerStats.goalie.shutouts += opponentGoals === 0 ? 1 : 0
-          //     } else if (isHome && game.homeGoals < game.awayGoals || !isHome && game.homeGoals > game.awayGoals) {
-          //       careerStats.goalie.losses++
-          //     }
-
-          //     // Playoff Stats
-          //   } else {
-          //     careerStats.goalie.pgp++
-          //     careerStats.goalie.pga += opponentGoals
-
-          //     // console.log(team)
-          //     // console.log(game.endedIn)
-          //     // console.log(game.gameType)
-          //     switch (game.endedIn) {
-          //       case "regulation" || "overtime":
-          //         if ((isHomeTeam && game.homeGoals > game.awayGoals) || (!isHomeTeam && game.awayGoals > game.homeGoals)) {
-          //           careerStats.goalie.pwins++;
-          //           careerStats.goalie.pshutouts += opponentGoals === 0 ? 1 : 0
-          //         } else {
-          //           careerStats.goalie.plosses++;
-          //         }
-          //         break;
-
-          //       case "shootout":
-          //         if (game.gameType === "semifinal") {
-          //           team.playoffPlace > 2 ? (
-          //             careerStats.goalie.plosses++, 
-          //             careerStats.goalie.sol++ 
-          //             ) : (
-          //             careerStats.goalie.pwins++, 
-          //             careerStats.goalie.sow++,
-          //             careerStats.goalie.pshutouts += opponentGoals === 0 ? 1 : 0
-          //             )
-          //         }
-          //         if (game.gameType === "championship") {
-          //           team.playoffPlace === 2 ? (careerStats.goalie.plosses++, careerStats.goalie.sol++) : (careerStats.goalie.pwins++, careerStats.goalie.sow++)
-          //         }
-          //     }
-          //   }
-          // }
-
           
+          // Find goalie
+          const goalie = game.goalie ? game.goalie.toString() : null
+
+          // Calculate Goalie Stats
+          if (playerId === goalie) {
+
+            const isHome = game.homeTeam.name === "Rubber Puckies" ? true : false
+
+            let opponentGoals = isHome ? game.awayGoals : game.homeGoals
+
+            // Regular Stats
+            if (game.gameType === "regular") {
+              careerStats.goalie.gp++
+              careerStats.goalie.ga += opponentGoals
+
+              // Goalie Record Stats
+              if (game.homeGoals === game.awayGoals) {
+                careerStats.goalie.ties++
+                careerStats.goalie.shutouts += opponentGoals === 0 ? 1 : 0
+              } else if (isHome && game.homeGoals > game.awayGoals || !isHome && game.awayGoals > game.homeGoals) {
+                careerStats.goalie.wins++
+                careerStats.goalie.shutouts += opponentGoals === 0 ? 1 : 0
+              } else if (isHome && game.homeGoals < game.awayGoals || !isHome && game.homeGoals > game.awayGoals) {
+                careerStats.goalie.losses++
+              }
+
+              // Playoff Stats
+            } 
+            // else {
+            //   careerStats.goalie.pgp++
+            //   careerStats.goalie.pga += opponentGoals
+
+            //   switch (game.endedIn) {
+            //     case "regulation" || "overtime":
+            //       if ((isHomeTeam && game.homeGoals > game.awayGoals) || (!isHomeTeam && game.awayGoals > game.homeGoals)) {
+            //         careerStats.goalie.pwins++;
+            //         careerStats.goalie.pshutouts += opponentGoals === 0 ? 1 : 0
+            //       } else {
+            //         careerStats.goalie.plosses++;
+            //       }
+            //       break;
+
+            //     case "shootout":
+            //       if (game.gameType === "semifinal") {
+            //         team.playoffPlace > 2 ? (
+            //           careerStats.goalie.plosses++, 
+            //           careerStats.goalie.sol++ 
+            //           ) : (
+            //           careerStats.goalie.pwins++, 
+            //           careerStats.goalie.sow++,
+            //           careerStats.goalie.pshutouts += opponentGoals === 0 ? 1 : 0
+            //           )
+            //       }
+            //       if (game.gameType === "championship") {
+            //         team.playoffPlace === 2 ? (careerStats.goalie.plosses++, careerStats.goalie.sol++) : (careerStats.goalie.pwins++, careerStats.goalie.sow++)
+            //       }
+            //   }
+            // }
+          }
+
+
 
           seasonStats.games.push({
             _id: game._id.toString(),

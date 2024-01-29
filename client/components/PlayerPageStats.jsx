@@ -17,11 +17,9 @@ export default function PlayerPageStats({ player }) {
 
   return (
     <>
-      {player.statsBySeason.length > 0 &&
-        <Row>
-          <PlayerCharts seasonStats={player.statsBySeason} />
-        </Row>
-      }
+      <Row>
+        <PlayerCharts seasonStats={player.statsBySeason} />
+      </Row>
       <Row style={{ marginTop: "16px" }}>
         <Col>
           <Table striped>
