@@ -61,29 +61,64 @@ export default function PlayerPage() {
             </Row>
           </Col>
           <Col sm={12} md={6} style={{ padding: 0 }}>
-            <Table striped style={{ textAlign: "center" }}>
-              <thead>
-                <tr>
-                  <th colSpan={5} style={{ textAlign: "left", fontSize: "24px" }}>Career Stats</th>
-                </tr>
-                <tr>
-                  <th className="bg-warning" style={{ color: "black" }}>SP</th>
-                  <th className="bg-warning" style={{ color: "black" }}>GP</th>
-                  <th className="bg-warning" style={{ color: "black" }}>Goals</th>
-                  <th className="bg-warning" style={{ color: "black" }}>G/GP</th>
-                  <th className="bg-warning" style={{ color: "black" }}>Hat</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th>{player.careerStats.sp.length}</th>
-                  <th>{player.careerStats.gp}</th>
-                  <th>{player.careerStats.g}</th>
-                  <th>{player.careerStats.gp > 0 ? (player.careerStats.g / player.careerStats.gp).toFixed(2) : (0.00).toFixed(2)}</th>
-                  <th>{player.careerStats.hat}</th>
-                </tr>
-              </tbody>
-            </Table>
+            {player.careerStats.gp > 0 &&
+              <Table striped style={{ textAlign: "center" }}>
+                <thead>
+                  <tr>
+                    <th colSpan={5} style={{ textAlign: "left", fontSize: "24px" }}>Career Skater Stats</th>
+                  </tr>
+                  <tr>
+                    <th className="bg-warning" style={{ color: "black" }}>SP</th>
+                    <th className="bg-warning" style={{ color: "black" }}>GP</th>
+                    <th className="bg-warning" style={{ color: "black" }}>Goals</th>
+                    <th className="bg-warning" style={{ color: "black" }}>G/GP</th>
+                    <th className="bg-warning" style={{ color: "black" }}>Hat</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>{player.careerStats.sp.length}</th>
+                    <th>{player.careerStats.gp}</th>
+                    <th>{player.careerStats.g}</th>
+                    <th>{player.careerStats.gp > 0 ? (player.careerStats.g / player.careerStats.gp).toFixed(2) : (0.00).toFixed(2)}</th>
+                    <th>{player.careerStats.hat}</th>
+                  </tr>
+                </tbody>
+              </Table>
+            }
+
+            {player.careerStats.goalie.gp > 0 &&
+              <Table striped style={{ textAlign: "center" }}>
+                <thead>
+                  <tr>
+                    <th colSpan={5} style={{ textAlign: "left", fontSize: "24px" }}>Career Goalie Stats</th>
+                  </tr>
+                  <tr>
+                    <th className="bg-warning" style={{ color: "black" }}>SP</th>
+                    <th className="bg-warning" style={{ color: "black" }}>GP</th>
+                    <th className="bg-warning" style={{ color: "black" }}>W</th>
+                    <th className="bg-warning" style={{ color: "black" }}>L</th>
+                    <th className="bg-warning" style={{ color: "black" }}>T</th>
+                    <th className="bg-warning" style={{ color: "black" }}>GAA</th>
+                    <th className="bg-warning" style={{ color: "black" }}>SO</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>{player.careerStats.sp.length}</th>
+                    <th>{player.careerStats.goalie.gp}</th>
+                    <th>{player.careerStats.goalie.wins}</th>
+                    <th>{player.careerStats.goalie.losses}</th>
+                    <th>{player.careerStats.goalie.ties}</th>
+                    <th>{player.careerStats.goalie.gp > 0 ? player.careerStats.goalie.ga / player.careerStats.goalie.gp : (0.00).toFixed(2)}</th>
+                    <th>{player.careerStats.goalie.shutouts}</th>
+
+                  </tr>
+                </tbody>
+              </Table>
+            }
+
+
           </Col>
         </Row>
         <Row style={{ borderBottom: "solid gold 1px", paddingBottom: "2px", marginTop: "16px" }}>
