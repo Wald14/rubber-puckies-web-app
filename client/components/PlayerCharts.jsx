@@ -4,7 +4,6 @@ import { BarChart } from '../components';
 import Col from 'react-bootstrap/Col';
 
 export default function PlayerCharts({ seasonStats }) {
-  console.log(seasonStats)
 
   const goalsScoredData = {
     labels: seasonStats.map((season) => `${captializeString(season.seasonStats.seasonInfo.seasonType)} ${new Date(season.seasonStats.seasonInfo.startDate).getFullYear()}`),
@@ -25,7 +24,6 @@ export default function PlayerCharts({ seasonStats }) {
       }
     ]
   }
-  console.log(goalsPerGameData)
 
   if (!seasonStats) return <></>
 

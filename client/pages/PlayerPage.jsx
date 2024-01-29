@@ -77,11 +77,11 @@ export default function PlayerPage() {
                 </thead>
                 <tbody>
                   <tr>
-                    <th>{player.careerStats.sp.length}</th>
-                    <th>{player.careerStats.gp}</th>
-                    <th>{player.careerStats.g}</th>
-                    <th>{player.careerStats.gp > 0 ? (player.careerStats.g / player.careerStats.gp).toFixed(2) : (0.00).toFixed(2)}</th>
-                    <th>{player.careerStats.hat}</th>
+                    <td>{player.careerStats.sp.length}</td>
+                    <td>{player.careerStats.gp}</td>
+                    <td>{player.careerStats.g}</td>
+                    <td>{player.careerStats.gp > 0 ? (player.careerStats.g / player.careerStats.gp).toFixed(2) : (0.00).toFixed(2)}</td>
+                    <td>{player.careerStats.hat}</td>
                   </tr>
                 </tbody>
               </Table>
@@ -105,13 +105,13 @@ export default function PlayerPage() {
                 </thead>
                 <tbody>
                   <tr>
-                    <th>{player.careerStats.sp.length}</th>
-                    <th>{player.careerStats.goalie.gp}</th>
-                    <th>{player.careerStats.goalie.wins}</th>
-                    <th>{player.careerStats.goalie.losses}</th>
-                    <th>{player.careerStats.goalie.ties}</th>
-                    <th>{player.careerStats.goalie.gp > 0 ? (player.careerStats.goalie.ga / player.careerStats.goalie.gp).toFixed(2) : (0.00).toFixed(2)}</th>
-                    <th>{player.careerStats.goalie.shutouts}</th>
+                    <td>{player.careerStats.sp.length}</td>
+                    <td>{player.careerStats.goalie.gp}</td>
+                    <td>{player.careerStats.goalie.wins}</td>
+                    <td>{player.careerStats.goalie.losses}</td>
+                    <td>{player.careerStats.goalie.ties}</td>
+                    <td>{player.careerStats.goalie.gp > 0 ? (player.careerStats.goalie.ga / player.careerStats.goalie.gp).toFixed(2) : (0.00).toFixed(2)}</td>
+                    <td>{player.careerStats.goalie.shutouts}</td>
 
                   </tr>
                 </tbody>
@@ -128,7 +128,7 @@ export default function PlayerPage() {
         </Row>
       </Container>
 
-      {player.careerStats.gp > 0 && selectedSplit === "stats" &&
+      {selectedSplit === "stats" &&
         <PlayerPageStats player={player} />
       }
       {/* {player.careerStats.gp > 0 && selectedSplit === "splits" &&
