@@ -112,8 +112,6 @@ router.get("/:playerId", async ({ params: { playerId } }, res) => {
           // Find player's indivudal stats for each game
           const playerGameStats = game.players.find(player => player.player._id.toString() === playerId)
 
-          // Find goalie
-          const goalie = game.goalie ? game.goalie.toString() : null
 
           // Update Player Stats if it's a regular season game
           if (playerGameStats.played && game.gameType === "regular") {
@@ -138,64 +136,71 @@ router.get("/:playerId", async ({ params: { playerId } }, res) => {
             playerGameStats.goals > 2 ? seasonStats.totals.phat++ : playerGameStats.goals
           }
 
-          // Calculate Goalie Stats
-          if (playerId === goalie) {
 
-            const isHome = game.homeTeam.name === "Rubber Puckies" ? true : false
 
-            let opponentGoals = isHome ? game.awayGoals : game.homeGoals
+          // // Find goalie
+          // const goalie = game.goalie ? game.goalie.toString() : null
 
-            // Regular Stats
-            if (game.gameType === "regular") {
-              careerStats.goalie.gp++
-              careerStats.goalie.ga += opponentGoals
+          // // Calculate Goalie Stats
+          // if (playerId === goalie) {
 
-              // Goalie Record Stats
-              if (game.homeGoals === game.awayGoals) {
-                careerStats.goalie.ties++
-                careerStats.goalie.shutouts += opponentGoals === 0 ? 1 : 0
-              } else if (isHome && game.homeGoals > game.awayGoals || !isHome && game.awayGoals > game.homeGoals) {
-                careerStats.goalie.wins++
-                careerStats.goalie.shutouts += opponentGoals === 0 ? 1 : 0
-              } else if (isHome && game.homeGoals < game.awayGoals || !isHome && game.homeGoals > game.awayGoals) {
-                careerStats.goalie.losses++
-              }
+          //   const isHome = game.homeTeam.name === "Rubber Puckies" ? true : false
 
-              // Playoff Stats
-            } else {
-              careerStats.goalie.pgp++
-              careerStats.goalie.pga += opponentGoals
+          //   let opponentGoals = isHome ? game.awayGoals : game.homeGoals
 
-              // console.log(team)
-              // console.log(game.endedIn)
-              // console.log(game.gameType)
-              switch (game.endedIn) {
-                case "regulation" || "overtime":
-                  if ((isHomeTeam && game.homeGoals > game.awayGoals) || (!isHomeTeam && game.awayGoals > game.homeGoals)) {
-                    careerStats.goalie.pwins++;
-                    careerStats.goalie.pshutouts += opponentGoals === 0 ? 1 : 0
-                  } else {
-                    careerStats.goalie.plosses++;
-                  }
-                  break;
+          //   // Regular Stats
+          //   if (game.gameType === "regular") {
+          //     careerStats.goalie.gp++
+          //     careerStats.goalie.ga += opponentGoals
 
-                case "shootout":
-                  if (game.gameType === "semifinal") {
-                    team.playoffPlace > 2 ? (
-                      careerStats.goalie.plosses++, 
-                      careerStats.goalie.sol++ 
-                      ) : (
-                      careerStats.goalie.pwins++, 
-                      careerStats.goalie.sow++,
-                      careerStats.goalie.pshutouts += opponentGoals === 0 ? 1 : 0
-                      )
-                  }
-                  if (game.gameType === "championship") {
-                    team.playoffPlace === 2 ? (careerStats.goalie.plosses++, careerStats.goalie.sol++) : (careerStats.goalie.pwins++, careerStats.goalie.sow++)
-                  }
-              }
-            }
-          }
+          //     // Goalie Record Stats
+          //     if (game.homeGoals === game.awayGoals) {
+          //       careerStats.goalie.ties++
+          //       careerStats.goalie.shutouts += opponentGoals === 0 ? 1 : 0
+          //     } else if (isHome && game.homeGoals > game.awayGoals || !isHome && game.awayGoals > game.homeGoals) {
+          //       careerStats.goalie.wins++
+          //       careerStats.goalie.shutouts += opponentGoals === 0 ? 1 : 0
+          //     } else if (isHome && game.homeGoals < game.awayGoals || !isHome && game.homeGoals > game.awayGoals) {
+          //       careerStats.goalie.losses++
+          //     }
+
+          //     // Playoff Stats
+          //   } else {
+          //     careerStats.goalie.pgp++
+          //     careerStats.goalie.pga += opponentGoals
+
+          //     // console.log(team)
+          //     // console.log(game.endedIn)
+          //     // console.log(game.gameType)
+          //     switch (game.endedIn) {
+          //       case "regulation" || "overtime":
+          //         if ((isHomeTeam && game.homeGoals > game.awayGoals) || (!isHomeTeam && game.awayGoals > game.homeGoals)) {
+          //           careerStats.goalie.pwins++;
+          //           careerStats.goalie.pshutouts += opponentGoals === 0 ? 1 : 0
+          //         } else {
+          //           careerStats.goalie.plosses++;
+          //         }
+          //         break;
+
+          //       case "shootout":
+          //         if (game.gameType === "semifinal") {
+          //           team.playoffPlace > 2 ? (
+          //             careerStats.goalie.plosses++, 
+          //             careerStats.goalie.sol++ 
+          //             ) : (
+          //             careerStats.goalie.pwins++, 
+          //             careerStats.goalie.sow++,
+          //             careerStats.goalie.pshutouts += opponentGoals === 0 ? 1 : 0
+          //             )
+          //         }
+          //         if (game.gameType === "championship") {
+          //           team.playoffPlace === 2 ? (careerStats.goalie.plosses++, careerStats.goalie.sol++) : (careerStats.goalie.pwins++, careerStats.goalie.sow++)
+          //         }
+          //     }
+          //   }
+          // }
+
+          
 
           seasonStats.games.push({
             _id: game._id.toString(),
