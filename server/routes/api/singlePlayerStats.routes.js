@@ -4,6 +4,8 @@ const { getAllGames, getAllGamesByTeamId, getGameById, createGame, updateGameByI
 const { getAllSeasons, getCurrentSeason, getSeasonById, createSeason, updateSeasonById, deleteSeasonById } = require('../../controllers/season.controller');
 const { getAllPlayers, getAllPlayersByTeamId, getPlayerById, createPlayer, updatePlayerById, deletePlayerById } = require('../../controllers/player.controller');
 
+
+
 // Declare the routes that point to the controllers above
 const router = require('express').Router();
 
@@ -23,14 +25,35 @@ router.get("/:playerId", async ({ params: { playerId } }, res) => {
 
 
     const careerStats = {
+      //skater regular season
       sp: [],
       gp: 0,
       g: 0,
       hat: 0,
+
+      //skater playoff
       psp: 0,
       pgp: 0,
       pg: 0,
-      phat: 0
+      phat: 0,
+
+      // goalie regular season
+      goalie: {
+        gp: 0,
+        wins: 0,
+        losses: 0,
+        ties: 0,
+        ga: 0,
+        shutouts: 0,
+        
+        // goalie playoff season
+        pgp: 0,
+        pwins: 0,
+        plosses: 0,
+        pties: 0,
+        pga: 0,
+        pshutouts: 0,
+      }
     }
 
 
@@ -44,13 +67,30 @@ router.get("/:playerId", async ({ params: { playerId } }, res) => {
             seasonType: team.season.seasonType
           },
           totals: {
+            // Skater Regular
             gp: 0,
             g: 0,
             hat: 0,
+            // Skater Playoff
             psp: 0,
             pgp: 0,
             pg: 0,
-            phat: 0
+            phat: 0,
+            // Goalie Regular
+            goaliegp: 0,
+            wins: 0,
+            losses: 0,
+            ties: 0,
+            ga: 0,
+            shutouts: 0,
+            // Goalie Playoff
+            pgoaliegp: 0,
+            pwins: 0,
+            plosses: 0,
+            pties: 0,
+            pga: 0,
+            pshutouts: 0,
+
           },
           games: []
         }
@@ -67,6 +107,9 @@ router.get("/:playerId", async ({ params: { playerId } }, res) => {
 
           // Find player's indivudal stats for each game
           const playerGameStats = game.players.find(player => player.player._id.toString() === playerId)
+
+          // Find goalie
+          const goalie = game.goalie ? game.goalie.toString() : null
 
           // Update Player Stats if it's a regular season game
           if (playerGameStats.played && game.gameType === "regular") {
@@ -91,14 +134,47 @@ router.get("/:playerId", async ({ params: { playerId } }, res) => {
             playerGameStats.goals > 2 ? seasonStats.totals.phat++ : playerGameStats.goals
           }
 
+          // Calculate Goalie Stats
+          if (playerId === goalie) {
+
+            let opponentGoals = game.homeTeam.name === "Rubber Puckies" ? game.awayGoals : game.homeGoals
+
+            // Regular Stats
+            if (game.gameType === "regular") {
+              careerStats.goalie.gp++
+              careerStats.goalie.ga += opponentGoals
+              careerStats.goalie.shutouts += opponentGoals === 0 ? 1 : 0
+
+              // Goalie Record Stats
+              if (game.homeGoals === game.awayGoals) {
+                careerStats.goalie.ties++
+              } else if (game.homeTeam.name === "Rubber Puckies" && game.homeGoals > game.awayGoals) {
+                careerStats.goalie.wins++
+              } else if (game.awayTeam.name === "Rubber Puckies" && game.awayGoals > game.homeGoals) {
+                careerStats.goalie.wins++
+              } else if (game.homeTeam.name === "Rubber Puckies" && game.homeGoals < game.awayGoals) {
+                careerStats.goalie.losses++
+              } else if (game.awayTeam.name === "Rubber Puckies" && game.homeGoals > game.awayGoals) {
+                careerStats.goalie.losses++
+              }
+
+            // Playoff Stats
+            } else {
+              careerStats.goalie.pgp++
+              careerStats.goalie.pga += opponentGoals
+              careerStats.goalie.pshutouts += opponentGoals === 0 ? 1 : 0
+            }
+          }
+
           seasonStats.games.push({
             _id: game._id.toString(),
             startTime: game.startTime,
             gameType: game.gameType,
+            homeOrAway: game.homeTeam.name === "Rubber Puckies" ? "home" : "away",
             opponent: game.homeTeam.name === "Rubber Puckies" ? game.awayTeam.name : game.homeTeam.name,
             playerGoals: playerGameStats.goals,
             playerHat: playerGameStats.goals > 2 ? 1 : 0,
-            played: playerGameStats.played
+            played: playerGameStats.played,
           })
         })
 

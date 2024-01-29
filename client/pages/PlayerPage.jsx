@@ -28,6 +28,7 @@ export default function PlayerPage() {
     setPlayer(playerInfo)
   }
 
+  console.log(player)
 
   useEffect(() => {
     getPlayerFromQuery()

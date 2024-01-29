@@ -16,7 +16,7 @@ async function getAllGamesByTeamId(teamId) {
         {awayTeam: teamId},
         {homeTeam: teamId}
       ]
-    }).populate({path: "homeTeam awayTeam", select: "-_id name"});
+    }).populate({path: "homeTeam awayTeam", select: "_id name"});
   } catch (err) {
     throw new Error(err)
   }
