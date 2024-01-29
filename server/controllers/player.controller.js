@@ -21,7 +21,7 @@ async function getAllPlayersByTeamId(teamId) {
 async function getPlayerById(id) {
   try {
     return await Player.findById(id)
-      .populate({path: "teams", select: "_id name season captain", populate: {path: "season", select: "_id startDate seasonType"}})
+      .populate({path: "teams", populate: {path: "season", select: "_id startDate seasonType"}})
     ;
   } catch (err) {
     throw new Error(err)
