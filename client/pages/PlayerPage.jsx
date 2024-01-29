@@ -110,7 +110,7 @@ export default function PlayerPage() {
                     <th>{player.careerStats.goalie.wins}</th>
                     <th>{player.careerStats.goalie.losses}</th>
                     <th>{player.careerStats.goalie.ties}</th>
-                    <th>{player.careerStats.goalie.gp > 0 ? player.careerStats.goalie.ga / player.careerStats.goalie.gp : (0.00).toFixed(2)}</th>
+                    <th>{player.careerStats.goalie.gp > 0 ? (player.careerStats.goalie.ga / player.careerStats.goalie.gp).toFixed(2) : (0.00).toFixed(2)}</th>
                     <th>{player.careerStats.goalie.shutouts}</th>
 
                   </tr>
