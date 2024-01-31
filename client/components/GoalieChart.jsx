@@ -33,12 +33,14 @@ export default function GoalieChart({ seasonStats }) {
         <BarChart
           chartTitle="Goals Against Average Per Season"
           data={goalsAgainstData}
+          stepSize={(0.5)}
         />
       </Col>
       <Col sm={12} md={6}>
         <BarChart
           chartTitle="Win% per Season"
           data={winPercentData}
+          stepSize={(0.2)}
         />
       </Col>
     </>
