@@ -89,11 +89,12 @@ export default function PlayerPage() {
               <Table striped style={{ textAlign: "center" }}>
                 <thead>
                   <tr>
-                    <th colSpan={5} style={{ textAlign: "left", fontSize: "24px" }}>Career Goalie Stats</th>
+                    <th colSpan={8} style={{ textAlign: "left", fontSize: "24px" }}>Career Goalie Stats</th>
                   </tr>
                   <tr>
                     <th className="bg-warning" style={{ color: "black" }}>SP</th>
                     <th className="bg-warning" style={{ color: "black" }}>GP</th>
+                    <th className="bg-warning" style={{ color: "black" }}>W%</th>
                     <th className="bg-warning" style={{ color: "black" }}>W</th>
                     <th className="bg-warning" style={{ color: "black" }}>L</th>
                     <th className="bg-warning" style={{ color: "black" }}>T</th>
@@ -105,6 +106,7 @@ export default function PlayerPage() {
                   <tr>
                     <td>{player.careerStats.sp.length}</td>
                     <td>{player.careerStats.goalie.gp}</td>
+                    <td>{(player.careerStats.goalie.wins / player.careerStats.goalie.gp).toFixed(3)}</td>
                     <td>{player.careerStats.goalie.wins}</td>
                     <td>{player.careerStats.goalie.losses}</td>
                     <td>{player.careerStats.goalie.ties}</td>

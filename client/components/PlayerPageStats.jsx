@@ -83,7 +83,6 @@ export default function PlayerPageStats({ player }) {
                           </tr>
                         )
                       }
-
                     })
                   }
                 </tbody>
