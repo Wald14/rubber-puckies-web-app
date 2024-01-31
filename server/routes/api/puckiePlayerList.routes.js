@@ -18,6 +18,7 @@ router.get("/:teamName", async ({params: {teamName}}, res) => {
       const playerTeamList = []
       player.teams.map(team => playerTeamList.push(team._id.toString()))
       const playerPuckieTeams = playerTeamList.filter(team => teamIds.includes(team))
+
       if (playerPuckieTeams.length > 0) {
         puckiePlayerList.push({
           _id: player._id,
@@ -31,6 +32,7 @@ router.get("/:teamName", async ({params: {teamName}}, res) => {
       }
     })
 
+    // Sort list alphabetically 
     puckiePlayerList.sort(function (a, b) {
       let x = a.firstName.toLowerCase();
       let y = b.firstName.toLowerCase();

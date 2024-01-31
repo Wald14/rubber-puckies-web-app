@@ -18,4 +18,5 @@ export { default as PlayerPageStats } from "./PlayerPageStats";
 export { default as PlayerPageSplits } from "./PlayerPageSplits";
 export { default as PlayerPageGameLog } from "./PlayerPageGameLog";
 export { default as PlayerCharts } from "./PlayerCharts";
+export { default as GoalieChart } from "./GoalieChart";
 export { default as BarChart } from "./BarChart";

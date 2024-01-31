@@ -3,28 +3,27 @@ import { BarChart } from '../components';
 
 import Col from 'react-bootstrap/Col';
 
-export default function PlayerCharts({ seasonStats }) {
+export default function GoalieChart({ seasonStats }) {
 
-  const goalsScoredData = {
+  const goalsAgainstData = {
     labels: seasonStats.map((season) => `${captializeString(season.seasonStats.seasonInfo.seasonType)} ${new Date(season.seasonStats.seasonInfo.startDate).getFullYear()}`),
     datasets: [
       {
-        data: seasonStats.map((season) => `${season.seasonStats.totals.g}`),
+        data: seasonStats.map((season) => `${season.seasonStats.totals.goalie.gp ? (season.seasonStats.totals.goalie.ga / season.seasonStats.totals.goalie.gp.toFixed(2)) : (0.00).toFixed(2)}`),
         backgroundColor: 'goldenrod',
       }
     ]
   }
 
-  const goalsPerGameData = {
+  const winPercentData = {
     labels: seasonStats.map((season) => `${captializeString(season.seasonStats.seasonInfo.seasonType)} ${new Date(season.seasonStats.seasonInfo.startDate).getFullYear()}`),
     datasets: [
       {
-        data: seasonStats.map((season) => `${(season.seasonStats.totals.g / season.seasonStats.totals.gp).toFixed(2)}`),
+        data: seasonStats.map((season) => `${season.seasonStats.totals.goalie.gp ? (season.seasonStats.totals.goalie.wins / season.seasonStats.totals.goalie.gp.toFixed(2)) : (0.00).toFixed(2)}`),
         backgroundColor: 'goldenrod',
       }
     ]
   }
-  console.log(seasonStats)
 
   if (!seasonStats) return <></>
 
@@ -32,15 +31,14 @@ export default function PlayerCharts({ seasonStats }) {
     <>
       <Col sm={12} md={6}>
         <BarChart
-          chartTitle="Goals"
-          data={goalsScoredData}
+          chartTitle="Goals Against Average Per Season"
+          data={goalsAgainstData}
         />
       </Col>
       <Col sm={12} md={6}>
         <BarChart
-          chartTitle="Goals Per Game Played"
-          data={goalsPerGameData}
-          stepSize={0.5}
+          chartTitle="Win% per Season"
+          data={winPercentData}
         />
       </Col>
     </>

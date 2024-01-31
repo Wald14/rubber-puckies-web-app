@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { PlayerCharts } from '../components';
+import { PlayerCharts, GoalieChart } from '../components';
 
 import { getPlayer } from '../utils/queries.js';
 import captializeString from '../utils/stringAdjustments.js';
@@ -98,6 +98,9 @@ export default function PlayerPageStats({ player }) {
       ---------------------------------------------*/}
       {player.careerStats.goalie.gp > 0 &&
         <>
+          <Row>
+            <GoalieChart seasonStats={player.statsBySeason} />
+          </Row>
           <Row style={{ marginTop: "16px" }}>
             <Col>
               <Table striped>
