@@ -1,7 +1,7 @@
-# Rubber Puckies Web Application
+# Rubber Puckies Web App
 
 ## Description
-This is a MERN web application that displays the stats of the infamous Rubber Puckies hockey team. The user can look up the current roster stats, stats for each individual player, as well as viewing the historical log of all seasons and games played by the team.
+This is a MERN stack web application that displays the stats of the infamous Rubber Puckies hockey team. The user can look up the current roster stats, stats for each individual player, as well as viewing the historical log of all seasons and games played by the team.
 
 In addition, this web app features an admin only view for adding, updating, and deleteing Seasons, Teams, Players, and Games. These admin tools will dynamically update the web app and database.
 
@@ -47,22 +47,22 @@ Starter code for generic login/logout functionality was provided by Gary Almes' 
 The following images share the application's apperance for both the typical user and admin view:
 
 ### Front Page
-![Image preview of the apps front page](./public/assets/images/app-preview-images/rp-webapp-front-page)
+![Image preview of the apps front page](./client/public/assets/images/app-preview-images/rp-webapp-front-page.jpeg)
 
 ### Admin Page
-![Image preview of the apps admin page](./public/assets/images/app-preview-images/rp-webapp-admin-page)
+![Image preview of the apps admin page](./client/public/assets/images/app-preview-images/rp-webapp-admin-page.jpeg)
 
 ### Admin Tools - Update Player 
-![Image preview of the apps admin's update player tool](./public/assets/images/app-preview-images/rp-webapp-admin-tools-update-player)
+![Image preview of the apps admin's update player tool](./client/public/assets/images/app-preview-images/rp-webapp-admin-tools-update-player.jpeg)
 
 ### Current Roster Page
-![Image preview of the apps current roster page](./public/assets/images/app-preview-images/rp-webapp-current-roster)
+![Image preview of the apps current roster page](./client/public/assets/images/app-preview-images/rp-webapp-current-roster.jpeg)
 
 ### Team History Page
-![Image preview of the apps team history page](./public/assets/images/app-preview-images/rp-webapp-team-history)
+![Image preview of the apps team history page](./client/public/assets/images/app-preview-images/rp-webapp-team-history.jpeg)
 
 ### Individual Player Pages
-![Image preview of the apps individual player pages](./public/assets/images/app-preview-images/rp-webapp-individual-player-page-luke-wald)
+![Image preview of the apps individual player pages](./client/public/assets/images/app-preview-images/rp-webapp-individual-player-page-luke-wald.jpeg)
 
 ### Season Log Page
-![Image preview of the apps season log pages](./public/assets/images/app-preview-images/rp-webapp-season-log)
+![Image preview of the apps season log pages](./client/public/assets/images/app-preview-images/rp-webapp-season-log.jpeg)
