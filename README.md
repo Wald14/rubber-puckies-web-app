@@ -49,12 +49,6 @@ The following images share the application's apperance for both the typical user
 ### Front Page
 ![Image preview of the apps front page](./client/public/assets/images/app-preview-images/rp-webapp-front-page.jpeg)
 
-### Admin Page
-![Image preview of the apps admin page](./client/public/assets/images/app-preview-images/rp-webapp-admin-page.jpeg)
-
-### Admin Tools - Update Player 
-![Image preview of the apps admin's update player tool](./client/public/assets/images/app-preview-images/rp-webapp-admin-tools-update-player.jpeg)
-
 ### Current Roster Page
 ![Image preview of the apps current roster page](./client/public/assets/images/app-preview-images/rp-webapp-current-roster.jpeg)
 
@@ -66,3 +60,12 @@ The following images share the application's apperance for both the typical user
 
 ### Season Log Page
 ![Image preview of the apps season log pages](./client/public/assets/images/app-preview-images/rp-webapp-season-log.jpeg)
+
+### Admin Login
+![Image preview of the apps admin page](./client/public/assets/images/app-preview-images/rp-webapp-admin-login.jpeg)
+
+### Admin Page
+![Image preview of the apps admin page](./client/public/assets/images/app-preview-images/rp-webapp-admin-page.jpeg)
+
+### Admin Tools - Update Player 
+![Image preview of the apps admin's update player tool](./client/public/assets/images/app-preview-images/rp-webapp-admin-tools-update-player.jpeg)
