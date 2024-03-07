@@ -9,7 +9,7 @@ const router = require('express').Router();
 
 
 
-router.get("/:teamName", async ({params: {teamName}}, res) => {
+router.get("/:teamName", async ({ params: { teamName } }, res) => {
   try {
     // Grab most recent season info
     const curSeason = await getCurrentSeason()
@@ -53,12 +53,28 @@ router.get("/:teamName", async ({params: {teamName}}, res) => {
         let playedSeasonArr = []
 
         let goaliegp = 0,
-        wins = 0,
-        losses = 0,
-        ties = 0,
-        goalsagainst = 0,
-        shutouts = 0
+          wins = 0,
+          losses = 0,
+          ties = 0,
+          goalsagainst = 0,
+          shutouts = 0
         let goaliePlayedSeasonArr = []
+
+        let currentSeasonStats = {
+          skater: {
+            gp: 0,
+            goals: 0,
+            hat: 0
+          },
+          goalie: {
+            gp: 0,
+            wins: 0,
+            losses: 0,
+            ties: 0,
+            goalsagainst: 0,
+            shutouts: 0
+          }
+        }
 
         const handedness = player.handedness === "left" ? "L" : player.handedness === "right" ? "R" : null
 
@@ -66,6 +82,7 @@ router.get("/:teamName", async ({params: {teamName}}, res) => {
 
         const gamesArr = await getAllGamesByPlayerId(player._id)
         gamesArr.forEach((game) => {
+
           if (game.gameType === "regular") {
             const gamesSeaon = game.season.toString()
             if (playedSeasonArr.indexOf(gamesSeaon) === -1) {
@@ -78,6 +95,12 @@ router.get("/:teamName", async ({params: {teamName}}, res) => {
                 goals += playerInGame.goals;
                 if (playerInGame.goals > 2) {
                   hat++;
+                }
+
+                if (seasonInfo._id.toString() === game.season.toString()) {
+                  currentSeasonStats.skater.gp++
+                  currentSeasonStats.skater.goals += playerInGame.goals
+                  if (playerInGame.goals > 2) { currentSeasonStats.skater.hat++ }
                 }
               }
             });
@@ -108,42 +131,78 @@ router.get("/:teamName", async ({params: {teamName}}, res) => {
 
               // Track number of games played as goalie
               goaliegp++
-              
+              if (seasonInfo._id.toString() === game.season.toString()) {
+                currentSeasonStats.goalie.gp++
+              }
+
               // Track goalie regular season record AND goals against
               if (game.homeGoals === game.awayGoals) {
                 ties++
                 goalsagainst += game.homeGoals
-              } 
+                // current season check
+                if (seasonInfo._id.toString() === game.season.toString()) {
+                  currentSeasonStats.goalie.ties++
+                  currentSeasonStats.goalie.goalsagainst += game.homeGoals
+                }
+              }
+
               else if (game.homeTeam.name === teamName && game.homeGoals > game.awayGoals) {
                 wins++
                 goalsagainst += game.awayGoals
                 if (game.awayGoals === 0) {
                   shutouts++
                 }
+                // current season check
+                if (seasonInfo._id.toString() === game.season.toString()) {
+                  currentSeasonStats.goalie.wins++
+                  currentSeasonStats.goalie.goalsagainst += game.awayGoals
+                  if (game.awayGoals === 0) { currentSeasonStats.goalie.shutouts++ }
+                }
+
               } else if (game.awayTeam.name === teamName && game.awayGoals > game.homeGoals) {
                 wins++
                 goalsagainst += game.homeGoals
                 if (game.homeGoals === 0) {
                   shutouts++
                 }
-              }  else if (game.homeTeam.name === teamName &&  game.homeGoals < game.awayGoals){
+                // current season check
+                if (seasonInfo._id.toString() === game.season.toString()) {
+                  currentSeasonStats.goalie.wins++
+                  currentSeasonStats.goalie.goalsagainst += game.homeGoals
+                  if (game.homeGoals === 0) { currentSeasonStats.goalie.shutouts++ }
+                }
+
+
+              } else if (game.homeTeam.name === teamName && game.homeGoals < game.awayGoals) {
                 losses++
                 goalsagainst += game.awayGoals
-              } else if (game.awayTeam.name === teamName && game.homeGoals > game.awayGoals){
+                // current season check
+                if (seasonInfo._id.toString() === game.season.toString()) {
+                  currentSeasonStats.goalie.losses++
+                  currentSeasonStats.goalie.goalsagainst += game.awayGoals
+                }
+
+              } else if (game.awayTeam.name === teamName && game.homeGoals > game.awayGoals) {
                 losses++
                 goalsagainst += game.homeGoals
+                if (seasonInfo._id.toString() === game.season.toString()) {
+                  currentSeasonStats.goalie.losses++
+                  currentSeasonStats.goalie.goalsagainst += game.homeGoals
+                }
+
+
               }
             }
           }
 
         });
 
-        const goalsPerGamePlayed = !goals ? (0.00).toFixed(2) : (goals/gp).toFixed(2)
-        const playoffgoalsPerGamePlayed = !playoffgoals ? (0.00).toFixed(2) : (playoffgoals/playoffgp).toFixed(2)
+        const goalsPerGamePlayed = !goals ? (0.00).toFixed(2) : (goals / gp).toFixed(2)
+        const playoffgoalsPerGamePlayed = !playoffgoals ? (0.00).toFixed(2) : (playoffgoals / playoffgp).toFixed(2)
 
-        const goalsagainstavg = !goalsagainst && !goaliegp ? (0.00).toFixed(2) : (goalsagainst/goaliegp).toFixed(2)
-        const winpercent = !wins && !goaliegp ? (0.00).toFixed(3) : (wins/goaliegp).toFixed(3)
-        const shutoutspercent = !shutouts && !goaliegp ? (0.00).toFixed(3) : (shutouts/goaliegp).toFixed(3)
+        const goalsagainstavg = !goalsagainst && !goaliegp ? (0.00).toFixed(2) : (goalsagainst / goaliegp).toFixed(2)
+        const winpercent = !wins && !goaliegp ? (0.00).toFixed(3) : (wins / goaliegp).toFixed(3)
+        const shutoutspercent = !shutouts && !goaliegp ? (0.00).toFixed(3) : (shutouts / goaliegp).toFixed(3)
 
         return {
           _id: player._id,
@@ -162,6 +221,7 @@ router.get("/:teamName", async ({params: {teamName}}, res) => {
           playoffgoals: playoffgoals,
           playoffgoalsPerGamePlayed: playoffgoalsPerGamePlayed,
           playoffhat: playoffhat,
+          currentSeason: currentSeasonStats,
           goaliestats: {
             sp: goaliePlayedSeasonArr.length,
             gp: goaliegp,
