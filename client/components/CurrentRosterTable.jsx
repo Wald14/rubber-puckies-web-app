@@ -165,12 +165,12 @@ export default function CurrentRosterTable() {
             {/* Current Season */}
             <th>
               <a
-                name="gp"
+                name="currentSeasonGP"
                 defaultsort="DEC"
-                // onClick={(sortCurRosInfo)}
+                onClick={(sortCurRosInfo)}
                 style={{
                   cursor: "pointer",
-                  color: sortedByColumn === "gp" ? "gold" : "white",
+                  color: sortedByColumn === "currentSeasonGP" ? "gold" : "white",
                   textDecoration: "underline"
                 }}
               >
@@ -179,12 +179,12 @@ export default function CurrentRosterTable() {
             </th>
             <th>
               <a
-                name="goals"
+                name="currentSeasonGoals"
                 defaultsort="DEC"
-                // onClick={(sortCurRosInfo)}
+                onClick={(sortCurRosInfo)}
                 style={{
                   cursor: "pointer",
-                  color: sortedByColumn === "goals" ? "gold" : "white",
+                  color: sortedByColumn === "currentSeasonGoals" ? "gold" : "white",
                   textDecoration: "underline"
                 }}
               >
@@ -196,12 +196,12 @@ export default function CurrentRosterTable() {
                 borderRight: `solid 1px ${fColor2}`
               }}>
               <a
-                name="hat"
+                name="currentSeasonHATs"
                 defaultsort="DEC"
-                // onClick={(sortCurRosInfo)}
+                onClick={(sortCurRosInfo)}
                 style={{
                   cursor: "pointer",
-                  color: sortedByColumn === "hat" ? "gold" : "white",
+                  color: sortedByColumn === "currentSeasonHATs" ? "gold" : "white",
                   textDecoration: "underline"
                 }}
               >
@@ -361,9 +361,9 @@ export default function CurrentRosterTable() {
                         <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.handedness}</td>
                       </>
                     }
-                    <td>{player.currentSeason.skater.gp}</td>
-                    <td>{player.currentSeason.skater.goals}</td>
-                    <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.currentSeason.skater.hat}</td>
+                    <td>{player.currentSeasonGP}</td>
+                    <td>{player.currentSeasonGoals}</td>
+                    <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.currentSeasonHATs}</td>
 
                     <td>{player.sp}</td>
                     <td>{player.gp}</td>
