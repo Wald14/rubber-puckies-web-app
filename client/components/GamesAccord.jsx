@@ -15,6 +15,7 @@ export default function GamesAccord(props) {
     const result = await query.json();
     const payload = result.payload;
     setGames(payload)
+    console.log(payload)
   }
 
   function determineOutcome(endedIn, homeGoals, awayGoals, homeTeamName, gameType) {
@@ -60,15 +61,19 @@ export default function GamesAccord(props) {
                     <div style={{ width: "100px" }}>
                       @ {grabTimeFromISO(game.startTime)}
                     </div>
+                      {game.completed &&
                     <div style={{ width: "90px" }}>
+
                       {determineOutcome(
                         game.endedIn,
                         game.homeGoals,
                         game.awayGoals,
                         game.homeTeam.name,
                         game.gameType
-                      )} {game.homeGoals} - {game.awayGoals}
+                        )} {game.homeGoals} - {game.awayGoals}
+
                     </div>
+                      }
                     <div>
                       vs. {game.homeTeam.name === "Rubber Puckies" ? game.awayTeam.name : game.homeTeam.name}
                     </div>
@@ -79,6 +84,7 @@ export default function GamesAccord(props) {
                     <p><span style={{ fontWeight: "bold" }}>Home Team:</span> {game.homeTeam.name}</p>
                     <p><span style={{ fontWeight: "bold" }}>Away Team:</span> {game.awayTeam.name}</p>
                   </div>
+                  {game.completed &&
                   <Table responsive className="text-nowrap">
                     <thead>
                       <tr>
@@ -136,6 +142,7 @@ export default function GamesAccord(props) {
                       </tr>
                     </tbody>
                   </Table>
+              }
                 </Accordion.Body>
               </Accordion.Item>
             )
