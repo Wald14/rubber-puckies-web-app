@@ -80,16 +80,80 @@ export default function CurrentRosterTable() {
     <>
       <Table responsive striped variant="dark" className="text-nowrap">
         <thead>
+          {/* Skaters Table - Main header*/}
           <tr style={{ textAlign: "center" }}>
-            <th colSpan={1} style={{ borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1, fontSize: "24px", textAlign: "left" }}>Skaters</th>
+            <th
+              colSpan={1}
+              style={{
+                borderRight: `solid 1px ${fColor2}`,
+                position: "sticky",
+                left: 0,
+                zIndex: 1,
+                fontSize: "24px",
+                textAlign: "left"
+              }}
+            >
+              Skaters
+            </th>
+
             {!isMobile &&
-              <th colSpan={3} style={{ borderRight: `solid 1px ${fColor2}` }}></th>
+              <th
+                colSpan={3}
+                style={{
+                  borderRight: `solid 1px ${fColor2}`
+                }}>
+              </th>
             }
-            <th colSpan={5} style={{ borderRight: `solid 1px ${fColor2}` }}>Regular Season</th>
-            <th colSpan={4} style={{ borderRight: `solid 1px ${fColor2}` }}>Playoffs</th>
+
+            <th
+              colSpan={3}
+              style={{ borderRight: `solid 1px ${fColor2}` }}
+            >
+              {curRosInfo.seasonInfo.seasonName}
+            </th>
+
+            <th
+              colSpan={5}
+              style={{ borderRight: `solid 1px ${fColor2}` }}
+            >
+              Career Regular Season
+            </th>
+
+            <th
+              colSpan={4}
+              style={{ borderRight: `solid 1px ${fColor2}` }}
+            >
+              Career Playoffs
+            </th>
+
           </tr>
-          <tr style={{ textAlign: "center" }}>
-            <th style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1 }}><a name="firstName" defaultsort="ASC" onClick={(sortCurRosInfo)} style={{ cursor: "pointer", color: sortedByColumn === "firstName" ? "gold" : "white", textDecoration: "underline" }}>Player</a></th>
+
+          {/* Skaters Table - Subheader */}
+          <tr
+            style={{ textAlign: "center" }}
+          >
+            <th
+              style={{
+                textAlign: "left",
+                borderRight: `solid 1px ${fColor2}`,
+                position: "sticky",
+                left: 0,
+                zIndex: 1
+              }}>
+              <a
+                name="firstName"
+                defaultsort="ASC"
+                onClick={(sortCurRosInfo)}
+                style={{
+                  cursor: "pointer",
+                  color: sortedByColumn === "firstName" ? "gold" : "white",
+                  textDecoration: "underline"
+                }}
+              >
+                Player
+              </a>
+            </th>
+            {/* Player Info */}
             {!isMobile &&
               <>
                 <th>#</th>
@@ -97,51 +161,232 @@ export default function CurrentRosterTable() {
                 <th style={{ borderRight: `solid 1px ${fColor2}` }}>Sh</th>
               </>
             }
-            <th><a name="sp" defaultsort="DEC" onClick={(sortCurRosInfo)} style={{ cursor: "pointer", color: sortedByColumn === "sp" ? "gold" : "white", textDecoration: "underline" }}>SP</a></th>
-            <th><a name="gp" defaultsort="DEC" onClick={(sortCurRosInfo)} style={{ cursor: "pointer", color: sortedByColumn === "gp" ? "gold" : "white", textDecoration: "underline" }}>GP</a></th>
-            <th><a name="goals" defaultsort="DEC" onClick={(sortCurRosInfo)} style={{ cursor: "pointer", color: sortedByColumn === "goals" ? "gold" : "white", textDecoration: "underline" }}>G</a></th>
-            <th><a name="goalsPerGamePlayed" defaultsort="DEC" onClick={(sortCurRosInfo)} style={{ cursor: "pointer", color: sortedByColumn === "goalsPerGamePlayed" ? "gold" : "white", textDecoration: "underline" }}>G/GP</a></th>
-            <th style={{ borderRight: `solid 1px ${fColor2}` }}><a name="hat" defaultsort="DEC" onClick={(sortCurRosInfo)} style={{ cursor: "pointer", color: sortedByColumn === "hat" ? "gold" : "white", textDecoration: "underline" }}>HAT</a></th>
-            <th><a name="playoffgp" defaultsort="DEC" onClick={(sortCurRosInfo)} style={{ cursor: "pointer", color: sortedByColumn === "playoffgp" ? "gold" : "white", textDecoration: "underline" }}>GP</a></th>
-            <th><a name="playoffgoals" defaultsort="DEC" onClick={(sortCurRosInfo)} style={{ cursor: "pointer", color: sortedByColumn === "playoffgoals" ? "gold" : "white", textDecoration: "underline" }}>G</a></th>
-            <th><a name="playoffgoalsPerGamePlayed" defaultsort="DEC" onClick={(sortCurRosInfo)} style={{ cursor: "pointer", color: sortedByColumn === "playoffgoalsPerGamePlayed" ? "gold" : "white", textDecoration: "underline" }}>G/GP</a></th>
-            <th style={{ borderRight: `solid 1px ${fColor2}` }}><a name="playoffhat" defaultsort="DEC" onClick={(sortCurRosInfo)} style={{ cursor: "pointer", color: sortedByColumn === "playoffhat" ? "gold" : "white", textDecoration: "underline" }}>HAT</a></th>
+
+            {/* Current Season */}
+            <th>
+              <a
+                name="gp"
+                defaultsort="DEC"
+                // onClick={(sortCurRosInfo)}
+                style={{
+                  cursor: "pointer",
+                  color: sortedByColumn === "gp" ? "gold" : "white",
+                  textDecoration: "underline"
+                }}
+              >
+                GP
+              </a>
+            </th>
+            <th>
+              <a
+                name="goals"
+                defaultsort="DEC"
+                // onClick={(sortCurRosInfo)}
+                style={{
+                  cursor: "pointer",
+                  color: sortedByColumn === "goals" ? "gold" : "white",
+                  textDecoration: "underline"
+                }}
+              >
+                G
+              </a>
+            </th>
+            <th
+              style={{
+                borderRight: `solid 1px ${fColor2}`
+              }}>
+              <a
+                name="hat"
+                defaultsort="DEC"
+                // onClick={(sortCurRosInfo)}
+                style={{
+                  cursor: "pointer",
+                  color: sortedByColumn === "hat" ? "gold" : "white",
+                  textDecoration: "underline"
+                }}
+              >
+                HAT
+              </a>
+            </th>
+
+            {/* All Time */}
+            <th>
+              <a
+                name="sp"
+                defaultsort="DEC"
+                onClick={(sortCurRosInfo)}
+                style={{
+                  cursor: "pointer",
+                  color: sortedByColumn === "sp" ? "gold" : "white",
+                  textDecoration: "underline"
+                }}
+              >
+                SP
+              </a>
+            </th>
+            <th>
+              <a
+                name="gp"
+                defaultsort="DEC"
+                onClick={(sortCurRosInfo)}
+                style={{
+                  cursor: "pointer",
+                  color: sortedByColumn === "gp" ? "gold" : "white",
+                  textDecoration: "underline"
+                }}
+              >
+                GP
+              </a>
+            </th>
+            <th>
+              <a
+                name="goals"
+                defaultsort="DEC"
+                onClick={(sortCurRosInfo)}
+                style={{
+                  cursor: "pointer",
+                  color: sortedByColumn === "goals" ? "gold" : "white",
+                  textDecoration: "underline"
+                }}
+              >
+                G
+              </a>
+            </th>
+            <th>
+              <a
+                name="goalsPerGamePlayed"
+                defaultsort="DEC"
+                onClick={(sortCurRosInfo)}
+                style={{
+                  cursor: "pointer",
+                  color: sortedByColumn === "goalsPerGamePlayed" ? "gold" : "white",
+                  textDecoration: "underline"
+                }}
+              >
+                G/GP
+              </a>
+            </th>
+            <th
+              style={{
+                borderRight: `solid 1px ${fColor2}`
+              }}>
+              <a
+                name="hat"
+                defaultsort="DEC"
+                onClick={(sortCurRosInfo)}
+                style={{
+                  cursor: "pointer",
+                  color: sortedByColumn === "hat" ? "gold" : "white",
+                  textDecoration: "underline"
+                }}
+              >
+                HAT
+              </a>
+            </th>
+            <th>
+              <a
+                name="playoffgp"
+                defaultsort="DEC"
+                onClick={(sortCurRosInfo)}
+                style={{
+                  cursor: "pointer",
+                  color: sortedByColumn === "playoffgp" ? "gold" : "white",
+                  textDecoration: "underline"
+                }}
+              >
+                GP
+              </a>
+            </th>
+            <th>
+              <a
+                name="playoffgoals"
+                defaultsort="DEC"
+                onClick={(sortCurRosInfo)}
+                style={{
+                  cursor: "pointer",
+                  color: sortedByColumn === "playoffgoals" ? "gold" : "white",
+                  textDecoration: "underline"
+                }}
+              >
+                G
+              </a>
+            </th>
+            <th>
+              <a
+                name="playoffgoalsPerGamePlayed"
+                defaultsort="DEC"
+                onClick={(sortCurRosInfo)}
+                style={{
+                  cursor: "pointer",
+                  color: sortedByColumn === "playoffgoalsPerGamePlayed" ? "gold" : "white",
+                  textDecoration: "underline"
+                }}
+              >
+                G/GP
+              </a>
+            </th>
+            <th
+              style={{
+                borderRight: `solid 1px ${fColor2}`
+              }}
+            >
+              <a
+                name="playoffhat"
+                defaultsort="DEC"
+                onClick={(sortCurRosInfo)}
+                style={{
+                  cursor: "pointer",
+                  color: sortedByColumn === "playoffhat" ? "gold" : "white",
+                  textDecoration: "underline"
+                }}
+              >
+                HAT
+              </a>
+            </th>
           </tr>
         </thead>
+
+        {/* Skater Table - Stats */}
         <tbody>
           {curRosInfo &&
-            curRosInfo.playerInfo.map((player, key) => { if (player.pos !== "G" ){
-              return (
-                <tr key={key} style={{ textAlign: "center" }}>
-                  <td style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1 }}>{player.firstName} {player.lastName}</td>
-                  {!isMobile &&
-                    <>
-                      <td>{player.jerseyNumber}</td>
-                      <td>{player.pos}</td>
-                      <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.handedness}</td>
-                    </>
-                  }
-                  <td>{player.sp}</td>
-                  <td>{player.gp}</td>
-                  <td>{player.goals}</td>
-                  <td>{player.goalsPerGamePlayed}</td>
-                  <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.hat}</td>
-                  <td>{player.playoffgp}</td>
-                  <td>{player.playoffgoals}</td>
-                  <td>{player.playoffgoalsPerGamePlayed}</td>
-                  <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.playoffhat}</td>
-                </tr>
-              )}
+            curRosInfo.playerInfo.map((player, key) => {
+              if (player.pos !== "G") {
+                return (
+                  <tr key={key} style={{ textAlign: "center" }}>
+                    <td style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1 }}>{player.firstName} {player.lastName}</td>
+                    {!isMobile &&
+                      <>
+                        <td>{player.jerseyNumber}</td>
+                        <td>{player.pos}</td>
+                        <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.handedness}</td>
+                      </>
+                    }
+                    <td>{player.currentSeason.skater.gp}</td>
+                    <td>{player.currentSeason.skater.goals}</td>
+                    <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.currentSeason.skater.hat}</td>
+
+                    <td>{player.sp}</td>
+                    <td>{player.gp}</td>
+                    <td>{player.goals}</td>
+                    <td>{player.goalsPerGamePlayed}</td>
+                    <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.hat}</td>
+                    <td>{player.playoffgp}</td>
+                    <td>{player.playoffgoals}</td>
+                    <td>{player.playoffgoalsPerGamePlayed}</td>
+                    <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.playoffhat}</td>
+                  </tr>
+                )
+              }
             })}
         </tbody>
       </Table>
 
 
-      <Table responsive striped variant="dark" className="text-nowrap" style={{marginTop: "50px"}}>
+      <Table responsive striped variant="dark" className="text-nowrap" style={{ marginTop: "50px" }}>
         <thead>
 
           <tr style={{ textAlign: "center" }}>
-            <th colSpan={1} style={{ borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1, fontSize: "24px", textAlign: "left"}}> Goalies</th>
+            <th colSpan={1} style={{ borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1, fontSize: "24px", textAlign: "left" }}> Goalies</th>
             {!isMobile &&
               <th colSpan={2} style={{ borderRight: `solid 1px ${fColor2}` }}></th>
             }
@@ -171,28 +416,30 @@ export default function CurrentRosterTable() {
         </thead>
         <tbody>
           {curRosInfo &&
-            curRosInfo.playerInfo.map((player, key) => { if (player.pos === "G" || player.pos === "F, G" || player.pos === "D, G" || player.pos === "F, D, G"){
-              return (
-                <tr key={key} style={{ textAlign: "center" }}>
-                  <td style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1 }}>{player.firstName} {player.lastName}</td>
-                  {!isMobile &&
-                    <>
-                      <td>{player.jerseyNumber}</td>
-                      <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.handedness}</td>
-                    </>
-                  }
-                  <td>{player.goaliestats.sp}</td>
-                  <td>{player.goaliestats.gp}</td>
-                  <td>{player.goaliestats.winpercent}</td>
-                  <td>{player.goaliestats.wins}</td>
-                  <td>{player.goaliestats.losses}</td>
-                  <td>{player.goaliestats.ties}</td>
-                  <td>{player.goaliestats.ga}</td>
-                  <td>{player.goaliestats.gaa}</td>
-                  <td>{player.goaliestats.shutouts}</td>
-                  <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.goaliestats.shutoutpercent}</td>
-                </tr>
-              )}
+            curRosInfo.playerInfo.map((player, key) => {
+              if (player.pos === "G" || player.pos === "F, G" || player.pos === "D, G" || player.pos === "F, D, G") {
+                return (
+                  <tr key={key} style={{ textAlign: "center" }}>
+                    <td style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1 }}>{player.firstName} {player.lastName}</td>
+                    {!isMobile &&
+                      <>
+                        <td>{player.jerseyNumber}</td>
+                        <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.handedness}</td>
+                      </>
+                    }
+                    <td>{player.goaliestats.sp}</td>
+                    <td>{player.goaliestats.gp}</td>
+                    <td>{player.goaliestats.winpercent}</td>
+                    <td>{player.goaliestats.wins}</td>
+                    <td>{player.goaliestats.losses}</td>
+                    <td>{player.goaliestats.ties}</td>
+                    <td>{player.goaliestats.ga}</td>
+                    <td>{player.goaliestats.gaa}</td>
+                    <td>{player.goaliestats.shutouts}</td>
+                    <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.goaliestats.shutoutpercent}</td>
+                  </tr>
+                )
+              }
             })}
         </tbody>
       </Table>
