@@ -22,7 +22,7 @@ export default function PlayerPageStats({ player }) {
       <Row style={{ marginTop: "16px", whiteSpace: "nowrap" }}>
         {player.statsBySeason.map((season, key) => {
           return (
-            <Col key={key} style={{maxWidth:"375px"}}>
+            <Col key={key}>
               <Table striped responsive style={{fontSize: "14px"}}>
                 <thead>
                   <tr style={{ fontSize: "18px" }}>
