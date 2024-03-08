@@ -105,7 +105,7 @@ export default function GamesAccord(props) {
   return (
     <>
       <p style={{ fontSize: "18px"}}>Season Summary</p>
-      <Table style={{ textAlign: "center" }}>
+      <Table style={{ textAlign: "center", maxWidth: "400px" }}>
         <thead>
           <tr>
             <th className="bg-warning" style={{ color: "black", borderRadius: "10px 0px 0px 0px" }}>GP</th>
@@ -125,7 +125,7 @@ export default function GamesAccord(props) {
       </Table>
 
       <p style={{ fontSize: "18px", borderTop: "olive 1px solid", paddingTop: "10px" }}>Roster</p>
-      <Table responsive style={{textAlign: "center" }}>
+      <Table responsive style={{textAlign: "center", maxWidth: "400px" }}>
         <thead>
           <tr>
             <th className="bg-warning" style={{ color: "black", borderRadius: "10px 0px 0px 0px" }}>Player</th>

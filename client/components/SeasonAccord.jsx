@@ -32,7 +32,7 @@ export default function SeasonAccord() {
         {seasonArr &&
           seasonArr.map((season, key) => {
             return (
-              <Accordion.Item eventKey={key} key={key} style={{ backgroundColor: "#141414" }}>
+              <Accordion.Item eventKey={key} key={key} style={{ backgroundColor: "#141414", maxWidth: "800px" }}>
                 <Accordion.Header>{capitalizeString(season.season.seasonType)} {new Date(season.season.startDate).getFullYear()} - {season.season.rink}</Accordion.Header>
                 <Accordion.Body>
 
