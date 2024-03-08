@@ -17,7 +17,7 @@ export default function SeasonAccord() {
       return new Date (b.season.startDate) - new Date (a.season.startDate)
     })
     setSeasonArr(payload)
-    console.log(result)
+    // console.log(result)
   }
 
   useEffect(() => {
@@ -25,7 +25,6 @@ export default function SeasonAccord() {
   }, [])
 
   if (!seasonArr) return <></>
-
 
   return (
     <>
@@ -36,9 +35,8 @@ export default function SeasonAccord() {
               <Accordion.Item eventKey={key} key={key} style={{ backgroundColor: "#141414" }}>
                 <Accordion.Header>{capitalizeString(season.season.seasonType)} {new Date(season.season.startDate).getFullYear()} - {season.season.rink}</Accordion.Header>
                 <Accordion.Body>
-                  <p style={{ fontSize: "18px" }}>Games</p>
 
-                  <GamesAccord teamId={season.season._id} playoffPlace={season.playoffPlace} />
+                  <GamesAccord teamId={season.season._id} playoffPlace={season.playoffPlace}/>
 
                 </Accordion.Body>
               </Accordion.Item>
