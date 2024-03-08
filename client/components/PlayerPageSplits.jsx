@@ -12,7 +12,7 @@ import Table from 'react-bootstrap/Table';
 
 
 export default function PlayerPageStats({ player }) {
-  console.log(player)
+  // console.log(player)
 
   const [splits, setSplits] = useState()
 
@@ -93,15 +93,21 @@ export default function PlayerPageStats({ player }) {
       },
     }
 
+    const opponents = []
+
     player.statsBySeason.forEach((season) => {
       season.seasonStats.games.forEach((game) => {
         if (game.played && game.gameType === "regular") {
+          //-------------------------
           // Home/Away Split
+          //-------------------------
           game.homeOrAway === "home" ? homeAway.home.gp++ : homeAway.away.gp++
           game.homeOrAway === "home" ? homeAway.home.goals += game.playerGoals : homeAway.away.goals += game.playerGoals
           game.homeOrAway === "home" ? homeAway.home.hats += game.playerHat : homeAway.away.hats += game.playerHat
           game.homeOrAway === "home" ? homeAway.home.teamGoals += game.homeGoals : homeAway.away.teamGoals += game.awayGoals
+          //-------------------------
           // Season Type
+          //-------------------------
           switch (season.seasonStats.seasonInfo.seasonType) {
             case "winter":
               game.homeOrAway === "home" ? seasonType.winter.gp++ : seasonType.winter.gp++
@@ -128,7 +134,9 @@ export default function PlayerPageStats({ player }) {
               game.homeOrAway === "home" ? seasonType.fall.teamGoals += game.homeGoals : seasonType.fall.teamGoals += game.awayGoals
               break;
           }
+          //-------------------------
           // Start Time
+          //-------------------------
           switch (new Date(game.startTime).getHours()) {
             case 18:
               game.homeOrAway === "home" ? startTime.sixPM.gp++ : startTime.sixPM.gp++
@@ -161,6 +169,24 @@ export default function PlayerPageStats({ player }) {
               game.homeOrAway === "home" ? startTime.tenPM.teamGoals += game.homeGoals : startTime.tenPM.teamGoals += game.awayGoals
               break;
           }
+          //-------------------------
+          // Opponent
+          //-------------------------
+          const idx = opponents.findIndex(obj => obj.opponent === game.opponent)
+          if (idx === -1) {
+            opponents.push({
+              opponent: game.opponent,
+              gp: 1,
+              goals: game.playerGoals ? game.playerGoals : 0,
+              hats: game.playerHats ? game.playerHats : 0,
+              teamGoals: game.homeOrAway === "home" ? game.homeGoals : game.awayGoals,
+            })
+          } else {
+            opponents[idx].gp++
+            opponents[idx].goals += game.playerGoals
+            game.playerHats ? opponents[idx].hats += game.playerHats : opponents[idx].hats
+            opponents[idx].teamGoals += game.homeOrAway === "home" ? game.homeGoals : game.awayGoals
+          }
         }
       })
     })
@@ -168,11 +194,13 @@ export default function PlayerPageStats({ player }) {
       homeAway: homeAway,
       seasonType: seasonType,
       startTime: startTime,
+      opponents: opponents,
     })
     setSplits({
       homeAway: homeAway,
       seasonType: seasonType,
       startTime: startTime,
+      opponents: opponents,
     })
   }
 
@@ -184,16 +212,45 @@ export default function PlayerPageStats({ player }) {
 
   return (
     <>
-      {/* HOME VS AWAY */}
-      <Table style={{ marginTop: "25px", textAlign: "center" }}>
+          {/* Opponent */}
+          <Table style={{ marginTop: "25px", textAlign: "center", maxWidth: "600px" }}>
         <thead>
           <tr>
-            <th className="bg-info" style={{ color: "black", borderRadius: "10px 0px 0px 0px" }}>Home/Away</th>
-            <th className="bg-info" style={{ color: "black" }}>GP</th>
-            <th className="bg-info" style={{ color: "black" }}>G</th>
-            <th className="bg-info" style={{ color: "black" }}>G/GP</th>
-            <th className="bg-info" style={{ color: "black" }}>HAT</th>
-            <th className="bg-info" style={{ color: "black", borderRadius: "0px 10px 0px 0px" }}>TG/GP%</th>
+            <th style={{ color: "black", backgroundColor: "#f25f5c", borderRadius: "10px 0px 0px 0px" }}>Opponent</th>
+            <th style={{ color: "black", backgroundColor: "#f25f5c" }}>GP</th>
+            <th style={{ color: "black", backgroundColor: "#f25f5c" }}>G</th>
+            <th style={{ color: "black", backgroundColor: "#f25f5c" }}>G/GP</th>
+            <th style={{ color: "black", backgroundColor: "#f25f5c" }}>HAT</th>
+            <th style={{ color: "black", backgroundColor: "#f25f5c", borderRadius: "0px 10px 0px 0px" }}>TG/GP%</th>
+          </tr>
+        </thead>
+        <tbody>
+          {splits.opponents.map((opponent, index) => {
+            return (
+              <tr key={index}>
+                <td>{opponent.opponent}</td>
+                <td>{opponent.gp}</td>
+                <td>{opponent.goals}</td>
+                <td>{opponent.gp ? (opponent.goals / opponent.gp).toFixed(2) : (0).toFixed(2)}</td>
+                <td>{opponent.hats}</td>
+                <td>{opponent.gp ? (opponent.goals / opponent.teamGoals).toFixed(2) : (0).toFixed(2)}</td>
+              </tr>
+            )
+          })}
+
+        </tbody>
+      </Table>
+
+      {/* HOME VS AWAY */}
+      <Table style={{ marginTop: "25px", textAlign: "center", maxWidth: "600px" }}>
+        <thead>
+          <tr>
+            <th style={{ color: "black", backgroundColor: "#ffe066", borderRadius: "10px 0px 0px 0px" }}>Home/Away</th>
+            <th style={{ color: "black", backgroundColor: "#ffe066" }}>GP</th>
+            <th style={{ color: "black", backgroundColor: "#ffe066" }}>G</th>
+            <th style={{ color: "black", backgroundColor: "#ffe066" }}>G/GP</th>
+            <th style={{ color: "black", backgroundColor: "#ffe066" }}>HAT</th>
+            <th style={{ color: "black", backgroundColor: "#ffe066", borderRadius: "0px 10px 0px 0px" }}>TG/GP%</th>
           </tr>
         </thead>
         <tbody>
@@ -217,15 +274,15 @@ export default function PlayerPageStats({ player }) {
       </Table>
 
       {/* SEASON TYPE */}
-      <Table style={{ marginTop: "25px", textAlign: "center" }}>
+      <Table style={{ marginTop: "25px", textAlign: "center", maxWidth: "600px" }}>
         <thead>
           <tr>
-            <th className="bg-primary" style={{ color: "black", borderRadius: "10px 0px 0px 0px" }}>Season Type</th>
-            <th className="bg-primary" style={{ color: "black" }}>GP</th>
-            <th className="bg-primary" style={{ color: "black" }}>G</th>
-            <th className="bg-primary" style={{ color: "black" }}>G/GP</th>
-            <th className="bg-primary" style={{ color: "black" }}>HAT</th>
-            <th className="bg-primary" style={{ color: "black", borderRadius: "0px 10px 0px 0px" }}>TG/GP%</th>
+            <th style={{ color: "black", backgroundColor: "#53b3cb", borderRadius: "10px 0px 0px 0px" }}>Season Type</th>
+            <th style={{ color: "black", backgroundColor: "#53b3cb" }}>GP</th>
+            <th style={{ color: "black", backgroundColor: "#53b3cb" }}>G</th>
+            <th style={{ color: "black", backgroundColor: "#53b3cb" }}>G/GP</th>
+            <th style={{ color: "black", backgroundColor: "#53b3cb" }}>HAT</th>
+            <th style={{ color: "black", backgroundColor: "#53b3cb", borderRadius: "0px 10px 0px 0px" }}>TG/GP%</th>
           </tr>
         </thead>
         <tbody>
@@ -265,16 +322,16 @@ export default function PlayerPageStats({ player }) {
       </Table>
 
       {/* Start Time */}
-      <Table style={{ marginTop: "25px", textAlign: "center" }}>
+      <Table style={{ marginTop: "25px", textAlign: "center", maxWidth: "600px" }}>
         <caption>TG%/GP = Percentage of team goals scored by the player when they're in the lineup.</caption>
         <thead>
           <tr>
-            <th className="bg-success" style={{ color: "black", borderRadius: "10px 0px 0px 0px" }}>Start Hour</th>
-            <th className="bg-success" style={{ color: "black" }}>GP</th>
-            <th className="bg-success" style={{ color: "black" }}>G</th>
-            <th className="bg-success" style={{ color: "black" }}>G/GP</th>
-            <th className="bg-success" style={{ color: "black" }}>HAT</th>
-            <th className="bg-success" style={{ color: "black", borderRadius: "0px 10px 0px 0px" }}>TG/GP%</th>
+            <th style={{ color: "black", backgroundColor: "#16db65", borderRadius: "10px 0px 0px 0px" }}>Start Hour</th>
+            <th style={{ color: "black", backgroundColor: "#16db65" }}>GP</th>
+            <th style={{ color: "black", backgroundColor: "#16db65" }}>G</th>
+            <th style={{ color: "black", backgroundColor: "#16db65" }}>G/GP</th>
+            <th style={{ color: "black", backgroundColor: "#16db65" }}>HAT</th>
+            <th style={{ color: "black", backgroundColor: "#16db65", borderRadius: "0px 10px 0px 0px" }}>TG/GP%</th>
           </tr>
         </thead>
         <tbody>
