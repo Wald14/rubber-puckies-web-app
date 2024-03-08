@@ -60,6 +60,39 @@ export default function PlayerPageStats({ player }) {
       }
     }
 
+    const startTime = {
+      sixPM: {
+        gp: 0,
+        goals: 0,
+        hats: 0,
+        teamGoals: 0,
+      },
+      sevenPM: {
+        gp: 0,
+        goals: 0,
+        hats: 0,
+        teamGoals: 0,
+      },
+      eightPM: {
+        gp: 0,
+        goals: 0,
+        hats: 0,
+        teamGoals: 0,
+      },
+      ninePM: {
+        gp: 0,
+        goals: 0,
+        hats: 0,
+        teamGoals: 0,
+      },
+      tenPM: {
+        gp: 0,
+        goals: 0,
+        hats: 0,
+        teamGoals: 0,
+      },
+    }
+
     player.statsBySeason.forEach((season) => {
       season.seasonStats.games.forEach((game) => {
         if (game.played && game.gameType === "regular") {
@@ -95,16 +128,51 @@ export default function PlayerPageStats({ player }) {
               game.homeOrAway === "home" ? seasonType.fall.teamGoals += game.homeGoals : seasonType.fall.teamGoals += game.awayGoals
               break;
           }
+          // Start Time
+          switch (new Date(game.startTime).getHours()) {
+            case 18:
+              game.homeOrAway === "home" ? startTime.sixPM.gp++ : startTime.sixPM.gp++
+              game.homeOrAway === "home" ? startTime.sixPM.goals += game.playerGoals : startTime.sixPM.goals += game.playerGoals
+              game.homeOrAway === "home" ? startTime.sixPM.hats += game.playerHat : startTime.sixPM.hats += game.playerHat
+              game.homeOrAway === "home" ? startTime.sixPM.teamGoals += game.homeGoals : startTime.sixPM.teamGoals += game.awayGoals
+              break;
+            case 19:
+              game.homeOrAway === "home" ? startTime.sevenPM.gp++ : startTime.sevenPM.gp++
+              game.homeOrAway === "home" ? startTime.sevenPM.goals += game.playerGoals : startTime.sevenPM.goals += game.playerGoals
+              game.homeOrAway === "home" ? startTime.sevenPM.hats += game.playerHat : startTime.sevenPM.hats += game.playerHat
+              game.homeOrAway === "home" ? startTime.sevenPM.teamGoals += game.homeGoals : startTime.sevenPM.teamGoals += game.awayGoals
+              break;
+            case 20:
+              game.homeOrAway === "home" ? startTime.eightPM.gp++ : startTime.eightPM.gp++
+              game.homeOrAway === "home" ? startTime.eightPM.goals += game.playerGoals : startTime.eightPM.goals += game.playerGoals
+              game.homeOrAway === "home" ? startTime.eightPM.hats += game.playerHat : startTime.eightPM.hats += game.playerHat
+              game.homeOrAway === "home" ? startTime.eightPM.teamGoals += game.homeGoals : startTime.eightPM.teamGoals += game.awayGoals
+              break;
+            case 21:
+              game.homeOrAway === "home" ? startTime.ninePM.gp++ : startTime.ninePM.gp++
+              game.homeOrAway === "home" ? startTime.ninePM.goals += game.playerGoals : startTime.ninePM.goals += game.playerGoals
+              game.homeOrAway === "home" ? startTime.ninePM.hats += game.playerHat : startTime.ninePM.hats += game.playerHat
+              game.homeOrAway === "home" ? startTime.ninePM.teamGoals += game.homeGoals : startTime.ninePM.teamGoals += game.awayGoals
+              break;
+            case 22:
+              game.homeOrAway === "home" ? startTime.tenPM.gp++ : startTime.tenPM.gp++
+              game.homeOrAway === "home" ? startTime.tenPM.goals += game.playerGoals : startTime.tenPM.goals += game.playerGoals
+              game.homeOrAway === "home" ? startTime.tenPM.hats += game.playerHat : startTime.tenPM.hats += game.playerHat
+              game.homeOrAway === "home" ? startTime.tenPM.teamGoals += game.homeGoals : startTime.tenPM.teamGoals += game.awayGoals
+              break;
+          }
         }
       })
     })
     console.log({
       homeAway: homeAway,
-      seasonType: seasonType
+      seasonType: seasonType,
+      startTime: startTime,
     })
     setSplits({
       homeAway: homeAway,
-      seasonType: seasonType
+      seasonType: seasonType,
+      startTime: startTime,
     })
   }
 
@@ -150,7 +218,6 @@ export default function PlayerPageStats({ player }) {
 
       {/* SEASON TYPE */}
       <Table style={{ marginTop: "25px", textAlign: "center" }}>
-        <caption>TG%/GP = Percentage of team goals scored by the player when they're in the lineup.</caption>
         <thead>
           <tr>
             <th className="bg-primary" style={{ color: "black", borderRadius: "10px 0px 0px 0px" }}>Season Type</th>
@@ -163,7 +230,7 @@ export default function PlayerPageStats({ player }) {
         </thead>
         <tbody>
           <tr>
-            <td style={{color: "deepskyblue"}}>Winter</td>
+            <td style={{ color: "deepskyblue" }}>Winter</td>
             <td>{splits.seasonType.winter.gp}</td>
             <td>{splits.seasonType.winter.goals}</td>
             <td>{splits.seasonType.winter.gp ? (splits.seasonType.winter.goals / splits.seasonType.winter.gp).toFixed(2) : (0).toFixed(2)}</td>
@@ -171,7 +238,7 @@ export default function PlayerPageStats({ player }) {
             <td>{splits.seasonType.winter.gp ? (splits.seasonType.winter.goals / splits.seasonType.winter.teamGoals).toFixed(2) : (0).toFixed(2)}</td>
           </tr>
           <tr>
-            <td style={{color: "limegreen"}}>Spring</td>
+            <td style={{ color: "limegreen" }}>Spring</td>
             <td>{splits.seasonType.spring.gp}</td>
             <td>{splits.seasonType.spring.goals}</td>
             <td>{splits.seasonType.spring.gp ? (splits.seasonType.spring.goals / splits.seasonType.spring.gp).toFixed(2) : (0).toFixed(2)}</td>
@@ -179,7 +246,7 @@ export default function PlayerPageStats({ player }) {
             <td>{splits.seasonType.spring.gp ? (splits.seasonType.spring.goals / splits.seasonType.spring.teamGoals).toFixed(2) : (0).toFixed(2)}</td>
           </tr>
           <tr>
-            <td style={{color: "yellow"}}>Summer</td>
+            <td style={{ color: "yellow" }}>Summer</td>
             <td>{splits.seasonType.summer.gp}</td>
             <td>{splits.seasonType.summer.goals}</td>
             <td>{splits.seasonType.summer.gp ? (splits.seasonType.summer.goals / splits.seasonType.summer.gp).toFixed(2) : (0).toFixed(2)}</td>
@@ -187,12 +254,69 @@ export default function PlayerPageStats({ player }) {
             <td>{splits.seasonType.summer.gp ? (splits.seasonType.summer.goals / splits.seasonType.summer.teamGoals).toFixed(2) : (0).toFixed(2)}</td>
           </tr>
           <tr>
-            <td style={{color: "orange"}}>Fall</td>
+            <td style={{ color: "orange" }}>Fall</td>
             <td>{splits.seasonType.fall.gp}</td>
             <td>{splits.seasonType.fall.goals}</td>
             <td>{splits.seasonType.fall.gp ? (splits.seasonType.fall.goals / splits.seasonType.fall.gp).toFixed(2) : (0).toFixed(2)}</td>
             <td>{splits.seasonType.fall.hats}</td>
             <td>{splits.seasonType.fall.gp ? (splits.seasonType.fall.goals / splits.seasonType.fall.teamGoals).toFixed(2) : (0).toFixed(2)}</td>
+          </tr>
+        </tbody>
+      </Table>
+
+      {/* Start Time */}
+      <Table style={{ marginTop: "25px", textAlign: "center" }}>
+        <caption>TG%/GP = Percentage of team goals scored by the player when they're in the lineup.</caption>
+        <thead>
+          <tr>
+            <th className="bg-success" style={{ color: "black", borderRadius: "10px 0px 0px 0px" }}>Start Hour</th>
+            <th className="bg-success" style={{ color: "black" }}>GP</th>
+            <th className="bg-success" style={{ color: "black" }}>G</th>
+            <th className="bg-success" style={{ color: "black" }}>G/GP</th>
+            <th className="bg-success" style={{ color: "black" }}>HAT</th>
+            <th className="bg-success" style={{ color: "black", borderRadius: "0px 10px 0px 0px" }}>TG/GP%</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>6pm</td>
+            <td>{splits.startTime.sixPM.gp}</td>
+            <td>{splits.startTime.sixPM.goals}</td>
+            <td>{splits.startTime.sixPM.gp ? (splits.startTime.sixPM.goals / splits.startTime.sixPM.gp).toFixed(2) : (0).toFixed(2)}</td>
+            <td>{splits.startTime.sixPM.hats}</td>
+            <td>{splits.startTime.sixPM.gp ? (splits.startTime.sixPM.goals / splits.startTime.sixPM.teamGoals).toFixed(2) : (0).toFixed(2)}</td>
+          </tr>
+          <tr>
+            <td>7pm</td>
+            <td>{splits.startTime.sevenPM.gp}</td>
+            <td>{splits.startTime.sevenPM.goals}</td>
+            <td>{splits.startTime.sevenPM.gp ? (splits.startTime.sevenPM.goals / splits.startTime.sevenPM.gp).toFixed(2) : (0).toFixed(2)}</td>
+            <td>{splits.startTime.sevenPM.hats}</td>
+            <td>{splits.startTime.sevenPM.gp ? (splits.startTime.sevenPM.goals / splits.startTime.sevenPM.teamGoals).toFixed(2) : (0).toFixed(2)}</td>
+          </tr>
+          <tr>
+            <td>8pm</td>
+            <td>{splits.startTime.eightPM.gp}</td>
+            <td>{splits.startTime.eightPM.goals}</td>
+            <td>{splits.startTime.eightPM.gp ? (splits.startTime.eightPM.goals / splits.startTime.eightPM.gp).toFixed(2) : (0).toFixed(2)}</td>
+            <td>{splits.startTime.eightPM.hats}</td>
+            <td>{splits.startTime.eightPM.gp ? (splits.startTime.eightPM.goals / splits.startTime.eightPM.teamGoals).toFixed(2) : (0).toFixed(2)}</td>
+          </tr>
+          <tr>
+            <td>9pm</td>
+            <td>{splits.startTime.ninePM.gp}</td>
+            <td>{splits.startTime.ninePM.goals}</td>
+            <td>{splits.startTime.ninePM.gp ? (splits.startTime.ninePM.goals / splits.startTime.ninePM.gp).toFixed(2) : (0).toFixed(2)}</td>
+            <td>{splits.startTime.ninePM.hats}</td>
+            <td>{splits.startTime.ninePM.gp ? (splits.startTime.ninePM.goals / splits.startTime.ninePM.teamGoals).toFixed(2) : (0).toFixed(2)}</td>
+          </tr>
+          <tr>
+            <td>10pm</td>
+            <td>{splits.startTime.tenPM.gp}</td>
+            <td>{splits.startTime.tenPM.goals}</td>
+            <td>{splits.startTime.tenPM.gp ? (splits.startTime.tenPM.goals / splits.startTime.tenPM.gp).toFixed(2) : (0).toFixed(2)}</td>
+            <td>{splits.startTime.tenPM.hats}</td>
+            <td>{splits.startTime.tenPM.gp ? (splits.startTime.tenPM.goals / splits.startTime.tenPM.teamGoals).toFixed(2) : (0).toFixed(2)}</td>
           </tr>
         </tbody>
       </Table>
