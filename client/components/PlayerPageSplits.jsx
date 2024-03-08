@@ -9,6 +9,16 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
 
+// red f25f5c
+// blue 53b3cb
+// green 16DB65
+// yellow ffe066
+const tableColors = {
+  homeAway: "#f25f5c",
+  seasonType: "#53b3cb",
+  startTime: "#16DB65",
+  opponent: "#ffe066"
+}
 
 
 export default function PlayerPageStats({ player }) {
@@ -200,7 +210,12 @@ export default function PlayerPageStats({ player }) {
       homeAway: homeAway,
       seasonType: seasonType,
       startTime: startTime,
-      opponents: opponents,
+      opponents: opponents.sort(function(a,b) {
+        const x = a.gp
+        const y = b.gp
+        return y-x;
+      })
+      ,
     })
   }
 
@@ -212,45 +227,16 @@ export default function PlayerPageStats({ player }) {
 
   return (
     <>
-          {/* Opponent */}
-          <Table style={{ marginTop: "25px", textAlign: "center", maxWidth: "600px" }}>
-        <thead>
-          <tr>
-            <th style={{ color: "black", backgroundColor: "#f25f5c", borderRadius: "10px 0px 0px 0px" }}>Opponent</th>
-            <th style={{ color: "black", backgroundColor: "#f25f5c" }}>GP</th>
-            <th style={{ color: "black", backgroundColor: "#f25f5c" }}>G</th>
-            <th style={{ color: "black", backgroundColor: "#f25f5c" }}>G/GP</th>
-            <th style={{ color: "black", backgroundColor: "#f25f5c" }}>HAT</th>
-            <th style={{ color: "black", backgroundColor: "#f25f5c", borderRadius: "0px 10px 0px 0px" }}>TG/GP%</th>
-          </tr>
-        </thead>
-        <tbody>
-          {splits.opponents.map((opponent, index) => {
-            return (
-              <tr key={index}>
-                <td>{opponent.opponent}</td>
-                <td>{opponent.gp}</td>
-                <td>{opponent.goals}</td>
-                <td>{opponent.gp ? (opponent.goals / opponent.gp).toFixed(2) : (0).toFixed(2)}</td>
-                <td>{opponent.hats}</td>
-                <td>{opponent.gp ? (opponent.goals / opponent.teamGoals).toFixed(2) : (0).toFixed(2)}</td>
-              </tr>
-            )
-          })}
-
-        </tbody>
-      </Table>
-
       {/* HOME VS AWAY */}
       <Table style={{ marginTop: "25px", textAlign: "center", maxWidth: "600px" }}>
         <thead>
           <tr>
-            <th style={{ color: "black", backgroundColor: "#ffe066", borderRadius: "10px 0px 0px 0px" }}>Home/Away</th>
-            <th style={{ color: "black", backgroundColor: "#ffe066" }}>GP</th>
-            <th style={{ color: "black", backgroundColor: "#ffe066" }}>G</th>
-            <th style={{ color: "black", backgroundColor: "#ffe066" }}>G/GP</th>
-            <th style={{ color: "black", backgroundColor: "#ffe066" }}>HAT</th>
-            <th style={{ color: "black", backgroundColor: "#ffe066", borderRadius: "0px 10px 0px 0px" }}>TG/GP%</th>
+            <th style={{ color: "black", backgroundColor: tableColors.homeAway, borderRadius: "10px 0px 0px 0px" }}>Home/Away</th>
+            <th style={{ color: "black", backgroundColor: tableColors.homeAway }}>GP</th>
+            <th style={{ color: "black", backgroundColor: tableColors.homeAway }}>G</th>
+            <th style={{ color: "black", backgroundColor: tableColors.homeAway }}>G/GP</th>
+            <th style={{ color: "black", backgroundColor: tableColors.homeAway }}>HAT</th>
+            <th style={{ color: "black", backgroundColor: tableColors.homeAway, borderRadius: "0px 10px 0px 0px" }}>TG/GP%</th>
           </tr>
         </thead>
         <tbody>
@@ -277,12 +263,12 @@ export default function PlayerPageStats({ player }) {
       <Table style={{ marginTop: "25px", textAlign: "center", maxWidth: "600px" }}>
         <thead>
           <tr>
-            <th style={{ color: "black", backgroundColor: "#53b3cb", borderRadius: "10px 0px 0px 0px" }}>Season Type</th>
-            <th style={{ color: "black", backgroundColor: "#53b3cb" }}>GP</th>
-            <th style={{ color: "black", backgroundColor: "#53b3cb" }}>G</th>
-            <th style={{ color: "black", backgroundColor: "#53b3cb" }}>G/GP</th>
-            <th style={{ color: "black", backgroundColor: "#53b3cb" }}>HAT</th>
-            <th style={{ color: "black", backgroundColor: "#53b3cb", borderRadius: "0px 10px 0px 0px" }}>TG/GP%</th>
+            <th style={{ color: "black", backgroundColor: tableColors.seasonType, borderRadius: "10px 0px 0px 0px" }}>Season Type</th>
+            <th style={{ color: "black", backgroundColor: tableColors.seasonType }}>GP</th>
+            <th style={{ color: "black", backgroundColor: tableColors.seasonType }}>G</th>
+            <th style={{ color: "black", backgroundColor: tableColors.seasonType }}>G/GP</th>
+            <th style={{ color: "black", backgroundColor: tableColors.seasonType }}>HAT</th>
+            <th style={{ color: "black", backgroundColor: tableColors.seasonType, borderRadius: "0px 10px 0px 0px" }}>TG/GP%</th>
           </tr>
         </thead>
         <tbody>
@@ -326,12 +312,12 @@ export default function PlayerPageStats({ player }) {
         <caption>TG%/GP = Percentage of team goals scored by the player when they're in the lineup.</caption>
         <thead>
           <tr>
-            <th style={{ color: "black", backgroundColor: "#16db65", borderRadius: "10px 0px 0px 0px" }}>Start Hour</th>
-            <th style={{ color: "black", backgroundColor: "#16db65" }}>GP</th>
-            <th style={{ color: "black", backgroundColor: "#16db65" }}>G</th>
-            <th style={{ color: "black", backgroundColor: "#16db65" }}>G/GP</th>
-            <th style={{ color: "black", backgroundColor: "#16db65" }}>HAT</th>
-            <th style={{ color: "black", backgroundColor: "#16db65", borderRadius: "0px 10px 0px 0px" }}>TG/GP%</th>
+            <th style={{ color: "black", backgroundColor: tableColors.startTime, borderRadius: "10px 0px 0px 0px" }}>Start Hour</th>
+            <th style={{ color: "black", backgroundColor: tableColors.startTime }}>GP</th>
+            <th style={{ color: "black", backgroundColor: tableColors.startTime }}>G</th>
+            <th style={{ color: "black", backgroundColor: tableColors.startTime }}>G/GP</th>
+            <th style={{ color: "black", backgroundColor: tableColors.startTime }}>HAT</th>
+            <th style={{ color: "black", backgroundColor: tableColors.startTime, borderRadius: "0px 10px 0px 0px" }}>TG/GP%</th>
           </tr>
         </thead>
         <tbody>
@@ -375,6 +361,34 @@ export default function PlayerPageStats({ player }) {
             <td>{splits.startTime.tenPM.hats}</td>
             <td>{splits.startTime.tenPM.gp ? (splits.startTime.tenPM.goals / splits.startTime.tenPM.teamGoals).toFixed(2) : (0).toFixed(2)}</td>
           </tr>
+        </tbody>
+      </Table>
+      {/* Opponent */}
+      <Table style={{ marginTop: "25px", textAlign: "center", maxWidth: "600px" }}>
+        <thead>
+          <tr>
+            <th style={{ color: "black", backgroundColor: tableColors.opponent, borderRadius: "10px 0px 0px 0px" }}>Opponent</th>
+            <th style={{ color: "black", backgroundColor: tableColors.opponent }}>GP</th>
+            <th style={{ color: "black", backgroundColor: tableColors.opponent }}>G</th>
+            <th style={{ color: "black", backgroundColor: tableColors.opponent }}>G/GP</th>
+            <th style={{ color: "black", backgroundColor: tableColors.opponent }}>HAT</th>
+            <th style={{ color: "black", backgroundColor: tableColors.opponent, borderRadius: "0px 10px 0px 0px" }}>TG/GP%</th>
+          </tr>
+        </thead>
+        <tbody>
+          {splits.opponents.map((opponent, index) => {
+            return (
+              <tr key={index}>
+                <td>{opponent.opponent}</td>
+                <td>{opponent.gp}</td>
+                <td>{opponent.goals}</td>
+                <td>{opponent.gp ? (opponent.goals / opponent.gp).toFixed(2) : (0).toFixed(2)}</td>
+                <td>{opponent.hats}</td>
+                <td>{opponent.gp ? (opponent.goals / opponent.teamGoals).toFixed(2) : (0).toFixed(2)}</td>
+              </tr>
+            )
+          })}
+
         </tbody>
       </Table>
     </>
