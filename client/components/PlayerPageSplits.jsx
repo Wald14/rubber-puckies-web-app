@@ -35,7 +35,7 @@ export default function PlayerPageStats({ player }) {
 
     player.statsBySeason.forEach((season) => {
       season.seasonStats.games.forEach((game) => {
-        if (game.played) {
+        if (game.played && game.gameType === "regular") {
           // Home/Away Split
           game.homeOrAway === "home" ? homeAway.home.gp++ : homeAway.away.gp++
           game.homeOrAway === "home" ? homeAway.home.goals += game.playerGoals : homeAway.away.goals += game.playerGoals
