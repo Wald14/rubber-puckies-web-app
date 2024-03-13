@@ -27,6 +27,17 @@ export default function SeasonAccord() {
     setActiveSeason(activeSeason === index ? null : index);
   };
 
+  const scrollToHash = () => {
+    if (window.location.hash){
+      const hash = window.location.hash.substring(1)
+      const element = document.getElementById(hash)
+      console.log(window.location.hash.substring(1))
+      console.log(element)
+      if (element) {
+        element.scrollIntoView({behavior: 'smooth', block: 'start'})
+      }
+    }
+  }
 
   useEffect(() => {
     getSeasonLogs()
@@ -38,12 +49,12 @@ export default function SeasonAccord() {
       if (index !== -1) {
         setActiveSeason(String(index))
       }
-      console.log("Index:", index, "seasonId:", seasonname)
     }
+    scrollToHash()
   }, [seasonArr, seasonname])
-
+  
   if (!seasonArr) return <></>
-
+  
   return (
     <>
       <Accordion id="seasonAccord" activeKey={activeSeason}>
