@@ -55,7 +55,7 @@ export default function TeamHistoryBySeason() {
                 <tr key={key} style={{ textAlign: "center" }}>
                   <td style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1 }}>
                     <a
-                      href={`/seasonlog#${season.season.toLowerCase().replace(' ', '')}#${season.season.toLowerCase().replace(' ', '')}`}
+                      href={`/seasonlog#${season.season.toLowerCase().replace(' ', '')}`}
                       style={{ textDecoration: "none" }}
                     >
                       {season.season}
