@@ -20,7 +20,7 @@ export default function SeasonAccord() {
       return new Date(b.season.startDate) - new Date(a.season.startDate)
     })
     setSeasonArr(payload)
-    console.log(result)
+    // console.log(result)
   }
 
   const handleAccordionClick = (index) => {
