@@ -55,8 +55,11 @@ The following images share the application's apperance for both the typical user
 ### Team History Page
 ![Image preview of the apps team history page](./client/public/assets/images/app-preview-images/rp-webapp-team-history.jpeg)
 
-### Individual Player Pages
-![Image preview of the apps individual player pages](./client/public/assets/images/app-preview-images/rp-webapp-individual-player-page-luke-wald.jpeg)
+### Individual Player Pages (Stats Tab)
+![Image preview of the apps individual player pages](./client/public/assets/images/app-preview-images/rp-webapp-individual-player-page-luke-wald-1.jpeg)
+
+### Individual Player Pages (Splits Tab)
+![Image preview of the apps individual player pages](./client/public/assets/images/app-preview-images/rp-webapp-individual-player-page-luke-wald-2.jpeg)
 
 ### Season Log Page
 ![Image preview of the apps season log pages](./client/public/assets/images/app-preview-images/rp-webapp-season-log.jpeg)
