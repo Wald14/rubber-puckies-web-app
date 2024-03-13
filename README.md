@@ -9,10 +9,9 @@ The user can:
     - Stats: Shows graphs of the user's goals and goals/game played per season. Also showes a table with these results from the regular and playoff seasons.
     - Splits: Shows the user's stats based off four different splts. Home vs Away, Season Type, the games Start Hour, and Opponent.
     - Game Log: Shows all the games that the player was on the roster for. The user can see if the player played and how many goals they scored.
- 
- , and view the historical log of all seasons and games played by the team. The individual player stats are broken down into 3 tabs: Stats, Splits, and Game Log. 
+ - View the historical log of all seasons and games played by the team. When opening a season accordian, the user is presented with a season summary table, team roster with each players stats from thats eason, and a game accordian showing stats from each individual game. 
 
-In addition, this web app features an admin only view for adding, updating, and deleteing Seasons, Teams, Players, and Games. These admin tools will dynamically update the web app and database.
+In addition, this web app features an admin only view. Here the authenticated admin can add, update, and delete Seasons, Teams, Players, and Games. These admin tools will dynamically update the web app and database.
 
 ## Table of Contents
 - [Website Links](#website-links)
