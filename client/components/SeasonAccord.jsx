@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom";
 import { GamesAccord } from '../components';
 import Accordion from 'react-bootstrap/Accordion';
 import Table from 'react-bootstrap/Table';
@@ -10,7 +9,6 @@ import '../assets/css/accordion.css'
 export default function SeasonAccord() {
   const [seasonArr, setSeasonArr] = useState(null)
   const [activeSeason, setActiveSeason] = useState(null);
-  const { seasonname } = useParams()
 
   async function getSeasonLogs() {
     const query = await fetch("/api/team/name/Rubber Puckies");
@@ -31,8 +29,8 @@ export default function SeasonAccord() {
     if (window.location.hash){
       const hash = window.location.hash.substring(1)
       const element = document.getElementById(hash)
-      console.log(window.location.hash.substring(1))
-      console.log(element)
+      // console.log(window.location.hash.substring(1))
+      // console.log(element)
       if (element) {
         element.scrollIntoView({behavior: 'smooth', block: 'start'})
       }
@@ -45,13 +43,14 @@ export default function SeasonAccord() {
 
   useEffect(() => {
     if (seasonArr) {
-      const index = seasonArr.findIndex(season => (season.season.seasonType.toLowerCase() +  new Date(season.season.startDate).getFullYear()) === seasonname)
+      const index = seasonArr.findIndex( season => 
+        (season.season.seasonType.toLowerCase() +  new Date(season.season.startDate).getFullYear()) === (window.location.hash.substring(1)))
       if (index !== -1) {
         setActiveSeason(String(index))
       }
     }
     scrollToHash()
-  }, [seasonArr, seasonname])
+  }, [seasonArr])
   
   if (!seasonArr) return <></>
   

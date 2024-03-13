@@ -15,7 +15,7 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/roster" element={<RosterPage />} />
             <Route path="/teamhistory" element={<TeamHistory />} />
-            <Route path="/seasonlog/:seasonname?" element={<SeasonLogPage />} />
+            <Route path="/seasonlog" element={<SeasonLogPage />} />
             <Route path="/player/allplayers" element={<AllPlayersPage />} />
             <Route path="/player/:playerid" element={<PlayerPage />} />
 
