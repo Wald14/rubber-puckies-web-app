@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { GamesAccord } from '../components';
 import Accordion from 'react-bootstrap/Accordion';
-import Table from 'react-bootstrap/Table';
 import capitalizeString from '../utils/stringAdjustments.js';
 import '../assets/css/accordion.css'
 
@@ -9,6 +8,7 @@ import '../assets/css/accordion.css'
 export default function SeasonAccord() {
   const [seasonArr, setSeasonArr] = useState(null)
   const [activeSeason, setActiveSeason] = useState(null);
+  const accordionRef = useRef(null)
 
   async function getSeasonLogs() {
     const query = await fetch("/api/team/name/Rubber Puckies");
@@ -48,14 +48,23 @@ export default function SeasonAccord() {
         setActiveSeason(String(index))
       }
     }
-    scrollToHash()
   }, [seasonArr])
+
+  useEffect(() => {
+    if (accordionRef.current) {
+      accordionRef.current.addEventListener('transitionend', scrollToHash);
+      return () => {
+        accordionRef.current.removeEventListener('transitionend', scrollToHash);
+      };
+    }
+  }, [activeSeason])
+
   
   if (!seasonArr) return <></>
   
   return (
     <>
-      <Accordion id="seasonAccord" activeKey={activeSeason}>
+      <Accordion ref={accordionRef} id="seasonAccord" activeKey={activeSeason}>
         {seasonArr &&
           seasonArr.map((season, key) => {
             return (
