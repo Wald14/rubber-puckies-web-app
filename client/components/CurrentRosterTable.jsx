@@ -353,7 +353,16 @@ export default function CurrentRosterTable() {
               if (player.pos !== "G") {
                 return (
                   <tr key={key} style={{ textAlign: "center" }}>
-                    <td style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1 }}>{player.firstName} {player.lastName}</td>
+                    <td
+                      style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1 }}
+                    >
+                      <a
+                        href={`/player/${player._id}`}
+                        style={{ textDecoration: "none" }}
+                      >
+                        {player.firstName} {player.lastName}
+                      </a>
+                    </td>
                     {!isMobile &&
                       <>
                         <td>{player.jerseyNumber}</td>
@@ -420,7 +429,14 @@ export default function CurrentRosterTable() {
               if (player.pos === "G" || player.pos === "F, G" || player.pos === "D, G" || player.pos === "F, D, G") {
                 return (
                   <tr key={key} style={{ textAlign: "center" }}>
-                    <td style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1 }}>{player.firstName} {player.lastName}</td>
+                    <td style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1 }}>
+                    <a
+                        href={`/player/${player._id}`}
+                        style={{ textDecoration: "none" }}
+                      >
+                      {player.firstName} {player.lastName}
+                      </a>
+                      </td>
                     {!isMobile &&
                       <>
                         <td>{player.jerseyNumber}</td>
