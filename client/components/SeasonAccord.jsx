@@ -18,7 +18,6 @@ export default function SeasonAccord() {
       return new Date(b.season.startDate) - new Date(a.season.startDate)
     })
     setSeasonArr(payload)
-    // console.log(result)
   }
 
   const handleAccordionClick = (index) => {
@@ -29,10 +28,10 @@ export default function SeasonAccord() {
     if (window.location.hash){
       const hash = window.location.hash.substring(1)
       const element = document.getElementById(hash)
-      // console.log(window.location.hash.substring(1))
-      // console.log(element)
       if (element) {
-        element.scrollIntoView({behavior: 'smooth', block: 'start'})
+        setTimeout(()=> {
+          element.scrollIntoView({behavior: 'smooth', block: 'start'})
+        }, 500)
       }
     }
   }
