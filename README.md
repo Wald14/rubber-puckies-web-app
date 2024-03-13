@@ -1,7 +1,16 @@
 # Rubber Puckies Web App
 
 ## Description
-This is a MERN stack web application that displays the stats of the infamous Rubber Puckies hockey team. The user can look up the current roster stats, stats for each individual player, as well as viewing the historical log of all seasons and games played by the team.
+Every wanted to see stats on infamous Rubber Puckies hockey team? Are you curious if a certain player scores more in the Home jersey vs the Away? Well this application delivers those stats to you! 
+
+The user can:
+ - Look up the current roster, 
+ - See stats for each individual player
+    - Stats: Shows graphs of the user's goals and goals/game played per season. Also showes a table with these results from the regular and playoff seasons.
+    - Splits: Shows the user's stats based off four different splts. Home vs Away, Season Type, the games Start Hour, and Opponent.
+    - Game Log: Shows all the games that the player was on the roster for. The user can see if the player played and how many goals they scored.
+ 
+ , and view the historical log of all seasons and games played by the team. The individual player stats are broken down into 3 tabs: Stats, Splits, and Game Log. 
 
 In addition, this web app features an admin only view for adding, updating, and deleteing Seasons, Teams, Players, and Games. These admin tools will dynamically update the web app and database.
 
