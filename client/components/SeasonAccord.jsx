@@ -26,53 +26,75 @@ export default function SeasonAccord() {
     setActiveSeason(activeSeason === index ? null : index);
   };
 
-  const scrollToHash = () => {
+  const scrollToHash = async () => {
+    // if (seasonArr) {
+    //   const index = seasonArr.findIndex(season =>
+    //     (season.season.seasonType.toLowerCase() + new Date(season.season.startDate).getFullYear()) === (window.location.hash.substring(1)))
+    //   if (index !== -1) {
+    //     setActiveSeason(String(index))
+    //   }
+
+    if (window.location.hash) {
+      const hash = window.location.hash.substring(1)
+      const element = document.getElementById(hash)
+      if (element) {
+        // setTimeout(() => {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        // }, 1000)
+      }
+    }
+    // }
+  }
+
+  // Load Season Log Info
+  useEffect(() => {
+    getSeasonLogs()
+  }, [])
+
+  // Set active season and setAccordionTransionEnded to true
+  useEffect(() => {
     if (seasonArr) {
       const index = seasonArr.findIndex(season =>
         (season.season.seasonType.toLowerCase() + new Date(season.season.startDate).getFullYear()) === (window.location.hash.substring(1)))
       if (index !== -1) {
         setActiveSeason(String(index))
       }
-
-      if (window.location.hash) {
-        const hash = window.location.hash.substring(1)
-        const element = document.getElementById(hash)
-        if (element) {
-          // setTimeout(() => {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          // }, 1000)
-        }
-      }
+      setTimeout(() => {
+        setAccordionTransitionEnded(true)
+      }, 1000)
     }
-  }
+  }, [seasonArr])
 
+  // When transition has ended, scroll to active
   useEffect(() => {
-    getSeasonLogs()
-  }, [])
+    if (accordionTransitionEnded) {
+      // setTimeout(() => {
+      scrollToHash()
+      // }, 1000)
+    }
+  }, [accordionTransitionEnded])
 
   // useEffect(() => {
   //   scrollToHash()
   // }, [seasonArr])
 
-  useEffect(() => {
-    setTimeout(() => {
-    if (!accordionBodyRef.current?.hidden) {
-      console.log(accordionBodyRef)
-      setAccordionTransitionEnded(true)
-      console.log("here")
-      scrollToHash()
-    }
-  }, 500)
-  }, [accordionBodyRef.current])
+  // useEffect(() => {
+  //   console.log(accordionBodyRef.current)
+  //   setAccordionTransitionEnded(true)
+  //   if (accordionBodyRef.current) {
+  //     console.log("here")
+  //     scrollToHash()
+  //   }
+  // }, [accordionBodyRef.current])
 
-  useEffect(() => {
-    // console.log(accordionBodyRef.current)
-    // setAccordionTransitionEnded(true)
-    if (accordionTransitionEnded) {
-      console.log("here2")
-      scrollToHash()
-    }
-  }, [accordionTransitionEnded])
+  //   useEffect(() => {
+  //   console.log(accordionBodyRef.current)
+  //   setAccordionTransitionEnded(true)
+  //   if (accordionBodyRef.current) {
+  //     console.log("here")
+  //     scrollToHash()
+  //   }
+  // }, [accordionBodyRef.current])
 
 
 
@@ -106,7 +128,7 @@ export default function SeasonAccord() {
                 }}
               >
                 <Accordion.Header>{capitalizeString(season.season.seasonType)} {new Date(season.season.startDate).getFullYear()} - {season.season.rink}</Accordion.Header>
-                <Accordion.Body  ref={accordionBodyRef}>
+                <Accordion.Body ref={accordionBodyRef}>
 
                   <GamesAccord teamId={season.season._id} playoffPlace={season.playoffPlace} />
 
