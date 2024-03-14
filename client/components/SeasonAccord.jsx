@@ -5,7 +5,6 @@ import Table from 'react-bootstrap/Table';
 import capitalizeString from '../utils/stringAdjustments.js';
 import '../assets/css/accordion.css'
 
-
 export default function SeasonAccord() {
   const [seasonArr, setSeasonArr] = useState(null)
   const [activeSeason, setActiveSeason] = useState(null);
@@ -19,6 +18,14 @@ export default function SeasonAccord() {
     payload.sort(function (a, b) {
       return new Date(b.season.startDate) - new Date(a.season.startDate)
     })
+    // Set active season accord if there is a window hash
+    if (window.location.hash) {
+      const index = payload.findIndex(season =>
+        (season.season.seasonType.toLowerCase() + new Date(season.season.startDate).getFullYear()) === (window.location.hash.substring(1)))
+      if (index !== -1) {
+        setActiveSeason(String(index))
+      }
+    }
     setSeasonArr(payload)
   }
 
@@ -27,13 +34,6 @@ export default function SeasonAccord() {
   };
 
   const scrollToHash = async () => {
-    // if (seasonArr) {
-    //   const index = seasonArr.findIndex(season =>
-    //     (season.season.seasonType.toLowerCase() + new Date(season.season.startDate).getFullYear()) === (window.location.hash.substring(1)))
-    //   if (index !== -1) {
-    //     setActiveSeason(String(index))
-    //   }
-
     if (window.location.hash) {
       const hash = window.location.hash.substring(1)
       const element = document.getElementById(hash)
@@ -43,7 +43,6 @@ export default function SeasonAccord() {
         // }, 1000)
       }
     }
-    // }
   }
 
   // Load Season Log Info
@@ -51,28 +50,22 @@ export default function SeasonAccord() {
     getSeasonLogs()
   }, [])
 
-  // Set active season and setAccordionTransionEnded to true
+  // 
   useEffect(() => {
     if (seasonArr) {
-      const index = seasonArr.findIndex(season =>
-        (season.season.seasonType.toLowerCase() + new Date(season.season.startDate).getFullYear()) === (window.location.hash.substring(1)))
-      if (index !== -1) {
-        setActiveSeason(String(index))
-      }
       setTimeout(() => {
-        setAccordionTransitionEnded(true)
+        scrollToHash()
+        // setAccordionTransitionEnded(true)
       }, 1000)
     }
   }, [seasonArr])
 
   // When transition has ended, scroll to active
-  useEffect(() => {
-    if (accordionTransitionEnded) {
-      // setTimeout(() => {
-      scrollToHash()
-      // }, 1000)
-    }
-  }, [accordionTransitionEnded])
+  // useEffect(() => {
+  //   if (accordionTransitionEnded) {
+  //     scrollToHash()
+  //   }
+  // }, [accordionTransitionEnded])
 
   // useEffect(() => {
   //   scrollToHash()
@@ -95,8 +88,6 @@ export default function SeasonAccord() {
   //     scrollToHash()
   //   }
   // }, [accordionBodyRef.current])
-
-
 
   // useEffect(() => {
   //   if (seasonArr) {
