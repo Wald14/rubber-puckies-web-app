@@ -7,9 +7,11 @@ import '../assets/css/accordion.css'
 
 export default function SeasonAccord() {
   const [seasonArr, setSeasonArr] = useState(null)
-  const [activeSeason, setActiveSeason] = useState(null);
-  const [accordionTransitionEnded, setAccordionTransitionEnded] = useState(false);
-  const accordionBodyRef = useRef(null);
+  // const [activeSeason, setActiveSeason] = useState(null);
+  // const [accordionTransitionEnded, setAccordionTransitionEnded] = useState(false);
+  // const accordionBodyRef = useRef(null);
+
+  let defaultActiveSeason
 
   async function getSeasonLogs() {
     const query = await fetch("/api/team/name/Rubber Puckies");
@@ -23,15 +25,26 @@ export default function SeasonAccord() {
       const index = payload.findIndex(season =>
         (season.season.seasonType.toLowerCase() + new Date(season.season.startDate).getFullYear()) === (window.location.hash.substring(1)))
       if (index !== -1) {
-        setActiveSeason(String(index))
+        // setActiveSeason(String(index))
+        defaultActiveSeason = String(index)
       }
     }
     setSeasonArr(payload)
   }
 
-  const handleAccordionClick = (index) => {
-    setActiveSeason(activeSeason === index ? null : index);
-  };
+ function determineDefaultSeason() {
+  if (window.location.hash) {
+    const index = seasonArr.findIndex(season =>
+      (season.season.seasonType.toLowerCase() + new Date(season.season.startDate).getFullYear()) === (window.location.hash.substring(1)))
+    if (index !== -1) {
+      return String(index)
+    }
+  }
+ }
+
+  // const handleAccordionClick = (index) => {
+  //   setActiveSeason(activeSeason === index ? null : index);
+  // };
 
   const scrollToHash = async () => {
     if (window.location.hash) {
@@ -56,7 +69,7 @@ export default function SeasonAccord() {
       setTimeout(() => {
         scrollToHash()
         // setAccordionTransitionEnded(true)
-      }, 1000)
+      }, 500)
     }
   }, [seasonArr])
 
@@ -104,13 +117,17 @@ export default function SeasonAccord() {
 
   return (
     <>
-      <Accordion id="seasonAccord" activeKey={activeSeason}>
+      <Accordion 
+      id="seasonAccord" 
+      // activeKey={activeSeason} 
+      defaultActiveKey={window.location.hash ? determineDefaultSeason : "0"}
+      >
         {seasonArr &&
           seasonArr.map((season, key) => {
             return (
               <Accordion.Item
                 id={`${season.season.seasonType.toLowerCase()}${new Date(season.season.startDate).getFullYear()}`}
-                onClick={() => handleAccordionClick(String(key))}
+                // onClick={() => handleAccordionClick(String(key))}
                 eventKey={String(key)}
                 key={key}
                 style={{
@@ -119,7 +136,9 @@ export default function SeasonAccord() {
                 }}
               >
                 <Accordion.Header>{capitalizeString(season.season.seasonType)} {new Date(season.season.startDate).getFullYear()} - {season.season.rink}</Accordion.Header>
-                <Accordion.Body ref={accordionBodyRef}>
+                <Accordion.Body 
+                // ref={accordionBodyRef}
+                >
 
                   <GamesAccord teamId={season.season._id} playoffPlace={season.playoffPlace} />
 
