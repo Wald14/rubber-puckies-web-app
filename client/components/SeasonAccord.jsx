@@ -24,14 +24,22 @@ export default function SeasonAccord() {
     setActiveSeason(activeSeason === index ? null : index);
   };
 
-  const scrollToHash = () => {
-    if (window.location.hash){
-      const hash = window.location.hash.substring(1)
-      const element = document.getElementById(hash)
-      if (element) {
-        setTimeout(()=> {
-          element.scrollIntoView({behavior: 'smooth', block: 'start'})
-        }, 1000)
+  const scrollToHash = async () => {
+    if (seasonArr) {
+      const index = seasonArr.findIndex(season =>
+        (season.season.seasonType.toLowerCase() + new Date(season.season.startDate).getFullYear()) === (window.location.hash.substring(1)))
+      if (index !== -1) {
+        setActiveSeason(String(index))
+      }
+
+      if (window.location.hash) {
+        const hash = window.location.hash.substring(1)
+        const element = document.getElementById(hash)
+        if (element) {
+          setTimeout(() => {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }, 1000)
+        }
       }
     }
   }
@@ -41,18 +49,22 @@ export default function SeasonAccord() {
   }, [])
 
   useEffect(() => {
-    if (seasonArr) {
-      const index = seasonArr.findIndex( season => 
-        (season.season.seasonType.toLowerCase() +  new Date(season.season.startDate).getFullYear()) === (window.location.hash.substring(1)))
-      if (index !== -1) {
-        setActiveSeason(String(index))
-      }
-    }
     scrollToHash()
   }, [seasonArr])
-  
+
+  // useEffect(() => {
+  //   if (seasonArr) {
+  //     const index = seasonArr.findIndex( season => 
+  //       (season.season.seasonType.toLowerCase() +  new Date(season.season.startDate).getFullYear()) === (window.location.hash.substring(1)))
+  //     if (index !== -1) {
+  //       setActiveSeason(String(index))
+  //     }
+  //   }
+  //   scrollToHash()
+  // }, [seasonArr])
+
   if (!seasonArr) return <></>
-  
+
   return (
     <>
       <Accordion id="seasonAccord" activeKey={activeSeason}>
