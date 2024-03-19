@@ -16,14 +16,6 @@ export default function CustomModal(props) {
         <Modal.Body>
           {props.children}
         </Modal.Body>
-        {/* <Modal.Footer>
-          <Button variant="secondary" onClick={props.close}>
-            {props.closeBtnTitle}
-          </Button>
-          <Button variant={variant} onClick={props.enterFunction}>
-            {props.enterBtnTitle}
-          </Button>
-        </Modal.Footer> */}
       </Modal>
     </>
   );

@@ -2,9 +2,10 @@ import { useEffect, useState } from "react"
 
 import Table from 'react-bootstrap/Table';
 
+import './currentRosterTable.css'
+
 export default function CurrentRosterTable() {
   const isMobile = window.screen.width < 600
-  const fColor2 = "gray"
 
   const [curRosInfo, setCurRosInfo] = useState(null)
   const [sortedByColumn, setSortedByColumn] = useState()
@@ -81,16 +82,13 @@ export default function CurrentRosterTable() {
       <Table responsive striped variant="dark" className="text-nowrap">
         <thead>
           {/* Skaters Table - Main header*/}
-          <tr style={{ textAlign: "center" }}>
+          <tr className='cur-roster-center'>
             <th
               colSpan={1}
+              className="cur-roster-table-th-first"
               style={{
-                borderRight: `solid 1px ${fColor2}`,
-                position: "sticky",
-                left: 0,
-                zIndex: 1,
-                fontSize: "24px",
-                textAlign: "left"
+                borderRight: `solid 1px gray`,
+                fontSize: '24px'
               }}
             >
               Skaters
@@ -100,28 +98,28 @@ export default function CurrentRosterTable() {
               <th
                 colSpan={3}
                 style={{
-                  borderRight: `solid 1px ${fColor2}`
+                  borderRight: `solid 1px gray`
                 }}>
               </th>
             }
 
             <th
               colSpan={3}
-              style={{ borderRight: `solid 1px ${fColor2}` }}
+              style={{ borderRight: `solid 1px gray` }}
             >
               {curRosInfo.seasonInfo.seasonName}
             </th>
 
             <th
               colSpan={5}
-              style={{ borderRight: `solid 1px ${fColor2}` }}
+              style={{ borderRight: `solid 1px gray` }}
             >
               Career Regular Season
             </th>
 
             <th
               colSpan={4}
-              style={{ borderRight: `solid 1px ${fColor2}` }}
+              style={{ borderRight: `solid 1px gray` }}
             >
               Career Playoffs
             </th>
@@ -130,25 +128,22 @@ export default function CurrentRosterTable() {
 
           {/* Skaters Table - Subheader */}
           <tr
-            style={{ textAlign: "center" }}
+            className='cur-roster-center'
           >
             <th
+              className="cur-roster-table-th-first"
               style={{
-                textAlign: "left",
-                borderRight: `solid 1px ${fColor2}`,
-                position: "sticky",
-                left: 0,
-                zIndex: 1
-              }}>
+                borderRight: `solid 1px gray`,
+              }}
+            >
               <a
                 name="firstName"
                 defaultsort="ASC"
                 onClick={(sortCurRosInfo)}
                 style={{
-                  cursor: "pointer",
                   color: sortedByColumn === "firstName" ? "gold" : "white",
-                  textDecoration: "underline"
                 }}
+                className="cur-roster-a"
               >
                 Player
               </a>
@@ -158,7 +153,7 @@ export default function CurrentRosterTable() {
               <>
                 <th>#</th>
                 <th>POS</th>
-                <th style={{ borderRight: `solid 1px ${fColor2}` }}>Sh</th>
+                <th style={{ borderRight: `solid 1px gray` }}>Sh</th>
               </>
             }
 
@@ -168,10 +163,9 @@ export default function CurrentRosterTable() {
                 name="currentSeasonGP"
                 defaultsort="DEC"
                 onClick={(sortCurRosInfo)}
+                className="cur-roster-a"
                 style={{
-                  cursor: "pointer",
                   color: sortedByColumn === "currentSeasonGP" ? "gold" : "white",
-                  textDecoration: "underline"
                 }}
               >
                 GP
@@ -182,10 +176,9 @@ export default function CurrentRosterTable() {
                 name="currentSeasonGoals"
                 defaultsort="DEC"
                 onClick={(sortCurRosInfo)}
+                className="cur-roster-a"
                 style={{
-                  cursor: "pointer",
                   color: sortedByColumn === "currentSeasonGoals" ? "gold" : "white",
-                  textDecoration: "underline"
                 }}
               >
                 G
@@ -193,16 +186,15 @@ export default function CurrentRosterTable() {
             </th>
             <th
               style={{
-                borderRight: `solid 1px ${fColor2}`
+                borderRight: `solid 1px gray`
               }}>
               <a
                 name="currentSeasonHATs"
                 defaultsort="DEC"
                 onClick={(sortCurRosInfo)}
+                className="cur-roster-a"
                 style={{
-                  cursor: "pointer",
                   color: sortedByColumn === "currentSeasonHATs" ? "gold" : "white",
-                  textDecoration: "underline"
                 }}
               >
                 HAT
@@ -215,10 +207,9 @@ export default function CurrentRosterTable() {
                 name="sp"
                 defaultsort="DEC"
                 onClick={(sortCurRosInfo)}
+                className="cur-roster-a"
                 style={{
-                  cursor: "pointer",
                   color: sortedByColumn === "sp" ? "gold" : "white",
-                  textDecoration: "underline"
                 }}
               >
                 SP
@@ -229,10 +220,9 @@ export default function CurrentRosterTable() {
                 name="gp"
                 defaultsort="DEC"
                 onClick={(sortCurRosInfo)}
+                className="cur-roster-a"
                 style={{
-                  cursor: "pointer",
                   color: sortedByColumn === "gp" ? "gold" : "white",
-                  textDecoration: "underline"
                 }}
               >
                 GP
@@ -243,10 +233,9 @@ export default function CurrentRosterTable() {
                 name="goals"
                 defaultsort="DEC"
                 onClick={(sortCurRosInfo)}
+                className="cur-roster-a"
                 style={{
-                  cursor: "pointer",
                   color: sortedByColumn === "goals" ? "gold" : "white",
-                  textDecoration: "underline"
                 }}
               >
                 G
@@ -257,10 +246,9 @@ export default function CurrentRosterTable() {
                 name="goalsPerGamePlayed"
                 defaultsort="DEC"
                 onClick={(sortCurRosInfo)}
+                className="cur-roster-a"
                 style={{
-                  cursor: "pointer",
                   color: sortedByColumn === "goalsPerGamePlayed" ? "gold" : "white",
-                  textDecoration: "underline"
                 }}
               >
                 G/GP
@@ -268,16 +256,15 @@ export default function CurrentRosterTable() {
             </th>
             <th
               style={{
-                borderRight: `solid 1px ${fColor2}`
+                borderRight: `solid 1px gray`
               }}>
               <a
                 name="hat"
                 defaultsort="DEC"
                 onClick={(sortCurRosInfo)}
+                className="cur-roster-a"
                 style={{
-                  cursor: "pointer",
                   color: sortedByColumn === "hat" ? "gold" : "white",
-                  textDecoration: "underline"
                 }}
               >
                 HAT
@@ -288,10 +275,9 @@ export default function CurrentRosterTable() {
                 name="playoffgp"
                 defaultsort="DEC"
                 onClick={(sortCurRosInfo)}
+                className="cur-roster-a"
                 style={{
-                  cursor: "pointer",
                   color: sortedByColumn === "playoffgp" ? "gold" : "white",
-                  textDecoration: "underline"
                 }}
               >
                 GP
@@ -302,10 +288,9 @@ export default function CurrentRosterTable() {
                 name="playoffgoals"
                 defaultsort="DEC"
                 onClick={(sortCurRosInfo)}
+                className="cur-roster-a"
                 style={{
-                  cursor: "pointer",
                   color: sortedByColumn === "playoffgoals" ? "gold" : "white",
-                  textDecoration: "underline"
                 }}
               >
                 G
@@ -316,10 +301,9 @@ export default function CurrentRosterTable() {
                 name="playoffgoalsPerGamePlayed"
                 defaultsort="DEC"
                 onClick={(sortCurRosInfo)}
+                className="cur-roster-a"
                 style={{
-                  cursor: "pointer",
                   color: sortedByColumn === "playoffgoalsPerGamePlayed" ? "gold" : "white",
-                  textDecoration: "underline"
                 }}
               >
                 G/GP
@@ -327,17 +311,16 @@ export default function CurrentRosterTable() {
             </th>
             <th
               style={{
-                borderRight: `solid 1px ${fColor2}`
+                borderRight: `solid 1px gray`
               }}
             >
               <a
                 name="playoffhat"
                 defaultsort="DEC"
                 onClick={(sortCurRosInfo)}
+                className="cur-roster-a"
                 style={{
-                  cursor: "pointer",
                   color: sortedByColumn === "playoffhat" ? "gold" : "white",
-                  textDecoration: "underline"
                 }}
               >
                 HAT
@@ -352,13 +335,14 @@ export default function CurrentRosterTable() {
             curRosInfo.playerInfo.map((player, key) => {
               if (player.pos !== "G") {
                 return (
-                  <tr key={key} style={{ textAlign: "center" }}>
+                  <tr key={key} className='cur-roster-center'>
                     <td
-                      style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1 }}
+                      className="cur-roster-table-th-first"
+                      style={{ borderRight: `solid 1px gray` }}
                     >
                       <a
                         href={`/player/${player._id}`}
-                        style={{ textDecoration: "none" }}
+                        className='cur-roster-no-decor'
                       >
                         {player.firstName} {player.lastName}
                       </a>
@@ -367,22 +351,24 @@ export default function CurrentRosterTable() {
                       <>
                         <td>{player.jerseyNumber}</td>
                         <td>{player.pos}</td>
-                        <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.handedness}</td>
+                        <td style={{ borderRight: `solid 1px gray` }}>
+                          {player.handedness}
+                        </td>
                       </>
                     }
                     <td>{player.currentSeasonGP}</td>
                     <td>{player.currentSeasonGoals}</td>
-                    <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.currentSeasonHATs}</td>
+                    <td style={{ borderRight: `solid 1px gray` }}>{player.currentSeasonHATs}</td>
 
                     <td>{player.sp}</td>
                     <td>{player.gp}</td>
                     <td>{player.goals}</td>
                     <td>{player.goalsPerGamePlayed}</td>
-                    <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.hat}</td>
+                    <td style={{ borderRight: `solid 1px gray` }}>{player.hat}</td>
                     <td>{player.playoffgp}</td>
                     <td>{player.playoffgoals}</td>
                     <td>{player.playoffgoalsPerGamePlayed}</td>
-                    <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.playoffhat}</td>
+                    <td style={{ borderRight: `solid 1px gray` }}>{player.playoffhat}</td>
                   </tr>
                 )
               }
@@ -394,20 +380,31 @@ export default function CurrentRosterTable() {
       <Table responsive striped variant="dark" className="text-nowrap" style={{ marginTop: "50px" }}>
         <thead>
 
-          <tr style={{ textAlign: "center" }}>
-            <th colSpan={1} style={{ borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1, fontSize: "24px", textAlign: "left" }}> Goalies</th>
+          <tr className='cur-roster-center'>
+            <th
+              colSpan={1}
+              className="cur-roster-table-th-first"
+              style={{ borderRight: `solid 1px gray`, fontSize: "24px" }}
+            >
+              Goalies
+            </th>
             {!isMobile &&
-              <th colSpan={2} style={{ borderRight: `solid 1px ${fColor2}` }}></th>
+              <th colSpan={2} style={{ borderRight: `solid 1px gray` }}></th>
             }
-            <th colSpan={10} style={{ borderRight: `solid 1px ${fColor2}` }}>Regular Season</th>
+            <th colSpan={10} style={{ borderRight: `solid 1px gray` }}>Regular Season</th>
           </tr>
 
-          <tr style={{ textAlign: "center" }}>
-            <th style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1 }}>Player</th>
+          <tr className='cur-roster-center'>
+            <th
+              className="cur-roster-table-th-first"
+              style={{ borderRight: `solid 1px gray` }}
+            >
+              Player
+            </th>
             {!isMobile &&
               <>
                 <th>#</th>
-                <th style={{ borderRight: `solid 1px ${fColor2}` }}>Sh</th>
+                <th style={{ borderRight: `solid 1px gray` }}>Sh</th>
               </>
             }
             <th>SP</th>
@@ -419,7 +416,7 @@ export default function CurrentRosterTable() {
             <th>GA</th>
             <th>GAA</th>
             <th>SO</th>
-            <th style={{ borderRight: `solid 1px ${fColor2}` }}>SO%</th>
+            <th style={{ borderRight: `solid 1px gray` }}>SO%</th>
           </tr>
 
         </thead>
@@ -428,19 +425,22 @@ export default function CurrentRosterTable() {
             curRosInfo.playerInfo.map((player, key) => {
               if (player.pos === "G" || player.pos === "F, G" || player.pos === "D, G" || player.pos === "F, D, G") {
                 return (
-                  <tr key={key} style={{ textAlign: "center" }}>
-                    <td style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1 }}>
-                    <a
+                  <tr key={key} className='cur-roster-center'>
+                    <td
+                      className="cur-roster-table-th-first"
+                      style={{ borderRight: `solid 1px gray` }}
+                    >
+                      <a
                         href={`/player/${player._id}`}
-                        style={{ textDecoration: "none" }}
+                        className='cur-roster-no-decor'
                       >
-                      {player.firstName} {player.lastName}
+                        {player.firstName} {player.lastName}
                       </a>
-                      </td>
+                    </td>
                     {!isMobile &&
                       <>
                         <td>{player.jerseyNumber}</td>
-                        <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.handedness}</td>
+                        <td style={{ borderRight: `solid 1px gray` }}>{player.handedness}</td>
                       </>
                     }
                     <td>{player.goaliestats.sp}</td>
@@ -452,7 +452,7 @@ export default function CurrentRosterTable() {
                     <td>{player.goaliestats.ga}</td>
                     <td>{player.goaliestats.gaa}</td>
                     <td>{player.goaliestats.shutouts}</td>
-                    <td style={{ borderRight: `solid 1px ${fColor2}` }}>{player.goaliestats.shutoutpercent}</td>
+                    <td style={{ borderRight: `solid 1px gray` }}>{player.goaliestats.shutoutpercent}</td>
                   </tr>
                 )
               }

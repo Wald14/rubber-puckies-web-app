@@ -1,0 +1,22 @@
+.cur-roster-center {
+  text-align: center
+}
+
+.cur-roster-table-th-first {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  text-align: left;
+}
+
+.cur-roster-a {
+  text-decoration: "underline";
+}
+
+.cur-roster-a:hover {
+  cursor: pointer;
+}
+
+.cur-roster-no-decor {
+  text-decoration: none;
+}
