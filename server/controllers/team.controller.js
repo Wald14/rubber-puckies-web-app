@@ -42,6 +42,14 @@ async function getMostRecentTeam() {
   }
 }
 
+async function getChampion(seasonId) {
+  try {
+    return await Team.findOne({ season: seasonId, playoffPlace: 1}); 
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
 
 async function getTeamById(id) {
   try {
@@ -85,6 +93,7 @@ module.exports = {
   getTeamsbySeasonId,
   getAllTeamsbyName,
   getMostRecentTeam,
+  getChampion,
   getTeamById,
   createTeam,
   updateTeamById,

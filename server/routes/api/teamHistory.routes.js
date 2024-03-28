@@ -1,5 +1,5 @@
 // Import any controllers needed here
-const { getAllTeamsbyName } = require('../../controllers/team.controller');
+const { getAllTeamsbyName, getChampion } = require('../../controllers/team.controller');
 const { getAllGamesByTeamId } = require('../../controllers/game.controller');
 
 // Declare the routes that point to the controllers above
@@ -12,7 +12,10 @@ router.get("/:teamName", async (req, res) => {
     const teamSeasonInfo = await getAllTeamsbyName(req.params.teamName)
 
     const payload = await Promise.all(
-      teamSeasonInfo.map(async (season) => {
+      teamSeasonInfo.map(async (season) => { 
+        const selectedSeasonId = season.season._id.toString()
+        let seasonChamp = await getChampion(selectedSeasonId)
+
         let wins = 0,
           loses = 0,
           ties = 0,
@@ -28,7 +31,7 @@ router.get("/:teamName", async (req, res) => {
           playoffGamesPlayed = 0,
           playoffGoalsFor = 0,
           playoffGoalsAgainst = 0,
-          champion = null,
+          champion = seasonChamp.name ? seasonChamp.name : null,
           championshipOpp = null,
           championshipScore = null,
           semiRoundOpp = null,
@@ -156,7 +159,6 @@ router.get("/:teamName", async (req, res) => {
 
       })
     )
-
     res.status(200).json({ result: "success", payload, teamSeasonInfo })
   } catch (err) {
     res.status(500).json({ result: "Error", payload: err.message })

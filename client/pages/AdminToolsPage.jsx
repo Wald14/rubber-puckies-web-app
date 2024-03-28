@@ -17,7 +17,7 @@ export default function AdminTools() {
 
 
   return (
-    <>
+    <div style={{minHeight: "80vh"}}>
       <h1>Admin Tools</h1>
 
       <Row xs={1} md={2} lg={4} className="g-4">
@@ -279,6 +279,6 @@ export default function AdminTools() {
         </Col>
 
       </Row>
-    </>
+    </div>
   )
 }
