@@ -51,9 +51,9 @@ export default function TeamHistoryBySeason() {
             <th style={{ borderRight: `solid 1px ${fColor2}` }}>Diff/G</th>
             <th>Finish-S</th>
             <th style={{ borderRight: `solid 1px ${fColor2}` }}>Finish-P</th>
-            <th>Captain</th>
             <th>Champions</th>
             <th>Rink</th>
+            <th>Captain</th>
           </tr>
         </thead>
         <tbody>
@@ -81,9 +81,9 @@ export default function TeamHistoryBySeason() {
                   <td style={{ color: fColor, borderRight: `solid 1px ${fColor2}` }}>{season.regular.diff_per_game}</td>
                   <td style={{ color: fColor }}>{season.regular.finish}</td>
                   <td style={{ color: fColor, borderRight: `solid 1px ${fColor2}` }}>{season.playoff.finish}</td>
-                  <td style={{ color: fColor }}>{season.captain}</td>
                   <td style={{ color: setChampStyle(season.playoff.champion) }}>{season.playoff.champion}</td>
                   <td style={{ color: fColor }}>{season.rink}</td>
+                  <td style={{ color: fColor }}>{season.captain}</td>
                 </tr>
               )
             })}
