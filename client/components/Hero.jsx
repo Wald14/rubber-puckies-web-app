@@ -58,12 +58,12 @@ export default function Hero() {
         }
       </div>
 
-      <img 
-      src="/assets/images/championship_winter_2024.jpg"
-      style={{maxWidth: "80vw"}}
+      <img
+        src="/assets/images/03_24_2024_winter_champions.jpeg"
+      // style={{maxWidth: "80vw"}}
       />
 
-      <div style={{borderBottom: "solid goldenrod 1px"}}>
+      <div style={{ borderBottom: "solid goldenrod 1px" }}>
         <div style={{ maxWidth: "400px" }}>
           <p style={{ textAlign: "center", margin: "16px 0px 4px 0px", fontWeight: "bold", color: "goldenrod" }}>Last Game</p>
           <Table>
