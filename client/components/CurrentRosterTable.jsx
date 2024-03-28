@@ -452,7 +452,7 @@ export default function CurrentRosterTable() {
                     <td>{player.goaliestats.ga}</td>
                     <td>{player.goaliestats.gaa}</td>
                     <td>{player.goaliestats.shutouts}</td>
-                    <td style={{ borderRight: `solid 1px gray` }}>{player.goaliestats.shutoutpercent}</td>
+                    <td style={{ borderRight: `solid 1px gray` }}>{new Number(player.goaliestats.shutoutspercent).toFixed(2)}</td>
                   </tr>
                 )
               }
