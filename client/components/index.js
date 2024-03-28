@@ -22,3 +22,5 @@ export { default as GoalieChart } from "./GoalieChart";
 export { default as BarChart } from "./BarChart";
 export { default as Hero } from "./Hero";
 export { default as Footer } from "./Footer";
+export { default as LastGameTable } from "./LastGameTable";
+export { default as HeroMobileLinksTable } from "./HeroMobileLinksTable";
