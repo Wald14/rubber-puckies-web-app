@@ -9,7 +9,7 @@ export default function UncontrolledExample() {
 
       <Carousel.Item>
         <img src="/assets/images/championship_winter_2024.jpeg" className='carousel-img' />
-        <Carousel.Caption style={{fontSize: "8px"}}>
+        <Carousel.Caption>
           <h3 className="carousel-h2">Winter 2024 Champions</h3>
         </Carousel.Caption>
       </Carousel.Item>

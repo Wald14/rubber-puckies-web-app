@@ -1,0 +1,43 @@
+.hero-logo {
+  width: 40px; 
+  height: 40px;
+  margin: 0px 10px;
+}
+
+.hero-zero-margin {
+  margin: 0px
+}
+
+.hero-center-container {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+}
+
+.hero-carousel-container {
+  display: flex;
+  justify-content: center;
+  border-bottom: solid goldenrod 1px;
+  padding: 32px 0px;
+}
+
+.hero-break-line {
+  border-bottom: solid goldenrod 1px; 
+  margin: 16px 0px
+}
+
+/* TABLET */
+@media screen and (max-width: 600px) {
+  .hero-logo {
+    width: 30px; 
+    height: 30px;
+    margin: 0px 8px;
+  }
+}
+
+/* MOBILE */
+@media screen and (max-width: 400px) {
+  .hero-logo {
+    margin: 0px;
+  }
+}
