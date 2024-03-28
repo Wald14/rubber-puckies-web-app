@@ -59,8 +59,8 @@ export default function Hero() {
       </div>
 
       <img
-        src="/assets/images/03_24_2024_winter_champions.jpeg"
-      // style={{maxWidth: "80vw"}}
+        src="/assets/images/03_24_2024_Winter_Championship.jpeg"
+        style={{ maxWidth: "80vw" }}
       />
 
       <div style={{ borderBottom: "solid goldenrod 1px" }}>
