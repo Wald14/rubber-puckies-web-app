@@ -59,7 +59,8 @@ export default function Hero() {
       </div>
 
       <img
-        src="/assets/images/03_24_2024_Winter_Championship.jpeg"
+        src="/assets/images/03_24_2024_winter_championship.jpg"
+        alt="Team photo"
         style={{ maxWidth: "80vw" }}
       />
 
