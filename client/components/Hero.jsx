@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 
+import capitalizeString from '../utils/stringAdjustments.js';
+
 
 import Table from "react-bootstrap/esm/Table";
 
 
 export default function Hero() {
   const isMobile = window.screen.width < 425
+  const displayLinks = window.screen.width < 450
 
   const [lastGame, setLastGame] = useState()
   const [caption, setCaption] = useState("")
@@ -64,12 +67,85 @@ export default function Hero() {
           alt="Team photo"
           style={{ width: "90vw", maxWidth: "900px", margin: "16px 0px 32px 0px" }}
         />
-        
+
       </div>
+
+
+      {displayLinks &&
+        <div style={{ borderBottom: "solid goldenrod 1px", margin: "16px 0px" }}>
+          <Table
+            borderless
+            style={{
+              textAlign: "center",
+              fontSize: "16px"
+            }}
+          >
+            <tbody>
+              <tr>
+                <td>
+                  <a
+                    href='/roster'
+                    style={{ color: "goldenrod" }}
+                  >
+                    Current Roster
+                  </a>
+                </td>
+                <td>
+                  <a
+                    href='/teamhistory'
+                    style={{ color: "goldenrod" }}
+                  >
+                    Team History
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a
+                    href='/roster'
+                    style={{ color: "goldenrod" }}
+                  >
+                    All Players
+                  </a>
+                </td>
+                <td>
+                  <a
+                    href='/teamhistory'
+                    style={{ color: "goldenrod" }}
+                  >
+                    Season & Game Logs
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+        </div>
+      }
+
+
+
 
       <div style={{ borderBottom: "solid goldenrod 1px", display: "flex", justifyContent: "center" }}>
         <div style={{ width: "400px", maxWidth: "90vw", margin: "16px 0px 8px 0px" }}>
-          <p style={{ textAlign: "center", margin: "0px 0px 12px 0px", fontWeight: "bold", color: "goldenrod" }}>Last Game</p>
+          <p
+            style={{
+              textAlign: "center",
+              margin: "0px 0px 0px 0px",
+              fontWeight: "bold",
+              fontSize: "18px"
+            }}
+          >
+            Last Game
+          </p>
+          <p
+            style={{
+              textAlign: "center",
+              margin: "0px 0px 12px 0px",
+              color: "goldenrod"
+            }}
+          >
+            {capitalizeString(lastGame.gameType)} Game
+          </p>
 
           <Table>
             <caption style={{ fontSize: "12px", paddingLeft: "8px" }}>{caption}</caption>

@@ -68,7 +68,7 @@ export default function Header() {
                 <NavDropdown.Divider />
                 <NavDropdown.Item style={{ color: "darkorange" }} href={`/player/allplayers`}>All Players</NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link href="/seasonlog" className="text-warning">Season Log</Nav.Link>
+              <Nav.Link href="/seasonlog" className="text-warning">Season  & Game Logs</Nav.Link>
 
               {user?._id !== undefined &&
                 <>
