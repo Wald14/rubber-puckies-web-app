@@ -58,15 +58,19 @@ export default function Hero() {
         }
       </div>
 
-      <img
-        src="/assets/images/03_24_2024_winter_championship.jpg"
-        alt="Team photo"
-        style={{ maxWidth: "80vw" }}
-      />
+      <div style={{ display: "flex", justifyContent: "center", borderBottom: "solid goldenrod 1px" }}>
+        <img
+          src="/assets/images/championship_winter_2024.jpeg"
+          alt="Team photo"
+          style={{ width: "90vw", maxWidth: "900px", margin: "16px 0px 32px 0px" }}
+        />
+        
+      </div>
 
-      <div style={{ borderBottom: "solid goldenrod 1px" }}>
-        <div style={{ maxWidth: "400px" }}>
-          <p style={{ textAlign: "center", margin: "16px 0px 4px 0px", fontWeight: "bold", color: "goldenrod" }}>Last Game</p>
+      <div style={{ borderBottom: "solid goldenrod 1px", display: "flex", justifyContent: "center" }}>
+        <div style={{ width: "400px", maxWidth: "90vw", margin: "16px 0px 8px 0px" }}>
+          <p style={{ textAlign: "center", margin: "0px 0px 12px 0px", fontWeight: "bold", color: "goldenrod" }}>Last Game</p>
+
           <Table>
             <caption style={{ fontSize: "12px", paddingLeft: "8px" }}>{caption}</caption>
             <thead>
@@ -77,15 +81,16 @@ export default function Hero() {
             </thead>
             <tbody>
               <tr>
-                <td>{lastGame.homeTeam.name}</td>
+                <td>Home - {lastGame.homeTeam.name}</td>
                 <td style={{ textAlign: "center" }}>{lastGame.homeGoals}</td>
               </tr>
               <tr>
-                <td>{lastGame.awayTeam.name}</td>
+                <td>Away - {lastGame.awayTeam.name}</td>
                 <td style={{ textAlign: "center" }}>{lastGame.awayGoals}</td>
               </tr>
             </tbody>
           </Table>
+
         </div>
       </div>
 
