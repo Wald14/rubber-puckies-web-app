@@ -1,4 +1,4 @@
-import { Carousel } from '../components';
+import { Carousel, Hero } from '../components';
 
 
 
@@ -6,7 +6,8 @@ export default function HomePage(){
 
   return (
     <>
-      <Carousel/>
+      <Hero/>
+      {/* <Carousel/> */}
     </>
   )
 }
