@@ -8,6 +8,14 @@ export default function TeamHistoryBySeason() {
   const fColor = "#D6D6DE"
   const fColor2 = "gray"
 
+  function setChampStyle(champName){
+    if (champName === "Rubber Puckies") {
+      return "goldenrod"
+    } else {
+      return fColor
+    }
+  }
+
   async function getRegSeaInfo() {
     const query = await fetch("/api/teamHistory/Rubber Puckies");
     const result = await query.json();
@@ -119,7 +127,7 @@ export default function TeamHistoryBySeason() {
                   <td style={{ color: fColor }}>{season.playoff.semiRoundOpp === null ? "N/A" : season.playoff.semiRoundOpp}</td>
                   <td style={{ color: fColor }}>{season.playoff.championshipOpp === null ? "N/A" : season.playoff.championshipOpp}</td>
                   <td style={{ color: fColor }}>{season.playoff.championshipOpp === null ? "N/A" : season.playoff.championshipScore}</td>
-                  <td style={{ color: fColor }}>{season.playoff.champion}</td>
+                  <td style={{ color: setChampStyle(season.playoff.champion) }}>{season.playoff.champion}</td>
                 </tr>
               )
             })}
