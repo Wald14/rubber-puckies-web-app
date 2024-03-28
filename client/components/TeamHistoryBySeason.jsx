@@ -80,8 +80,8 @@ export default function TeamHistoryBySeason() {
                   <td style={{ color: fColor }}>{season.regular.goals_against_per_game}</td>
                   <td style={{ color: fColor, borderRight: `solid 1px ${fColor2}` }}>{season.regular.diff_per_game}</td>
                   <td style={{ color: fColor }}>{season.regular.finish}</td>
-                  <td style={{ color: fColor, borderRight: `solid 1px ${fColor2}` }}>{season.playoff.finish}</td>
-                  <td style={{ color: setChampStyle(season.playoff.champion) }}>{season.playoff.champion}</td>
+                  <td style={{ color: fColor, borderRight: `solid 1px ${fColor2}` }}>{season.playoff.finish ? season.playoff.finish : (season.season === "Winter 2020" ? "X" : "")}</td>
+                  <td style={{ color: setChampStyle(season.playoff.champion) }}>{season.playoff.champion ? season.playoff.champion : (season.season === "Winter 2020" ? "COVID" : "")}</td>
                   <td style={{ color: fColor }}>{season.rink}</td>
                   <td style={{ color: fColor }}>{season.captain}</td>
                 </tr>
