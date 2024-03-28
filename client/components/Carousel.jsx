@@ -36,12 +36,12 @@ export default function UncontrolledExample() {
         </Carousel.Caption>
       </Carousel.Item>
 
-      <Carousel.Item>
+      {/* <Carousel.Item>
         <img src="/assets/images/03_23_2022_rp_scrimmage_vs_mn_sentinels.JPG" className='carousel-img' />
         <Carousel.Caption>
           <h3 className="carousel-h2">March 2022 - Scrimmage vs Minnesota Sentinels</h3>
         </Carousel.Caption>
-      </Carousel.Item>
+      </Carousel.Item> */}
 
     </Carousel>
 
