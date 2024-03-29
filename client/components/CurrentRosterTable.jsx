@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 
 import Table from 'react-bootstrap/Table';
 
+import { LoadingSpinner } from "../components";
+
 import './currentRosterTable.css'
 
 export default function CurrentRosterTable() {
@@ -74,7 +76,7 @@ export default function CurrentRosterTable() {
     getCurRosInfo()
   }, [])
 
-  if (curRosInfo === null) return <></>
+  if (curRosInfo === null) return (<LoadingSpinner />)
 
   return (
 
