@@ -138,8 +138,17 @@ router.get("/:teamName", async ({ params: { teamName } }, res) => {
 
               // Track how many different seasons the goalie played at least one game in
               const goalieGamesSeaon = game.season.toString()
-              if (goaliePlayedSeasonArr.indexOf(goalieGamesSeaon) === -1) {
-                goaliePlayedSeasonArr.push(goalieGamesSeaon)
+              // if (goaliePlayedSeasonArr.indexOf(goalieGamesSeaon) === -1) {
+              //   goaliePlayedSeasonArr.push(goalieGamesSeaon)
+              // }
+
+              const homeTeamCheck = game.homeTeam._id.toString()
+              const awayTeamCheck = game.awayTeam._id.toString()
+
+              if (player.teams.indexOf(homeTeamCheck) > -1 || player.teams.indexOf(awayTeamCheck) > -1){
+                if (goaliePlayedSeasonArr.indexOf(goalieGamesSeaon) === -1) {
+                  goaliePlayedSeasonArr.push(goalieGamesSeaon)
+                }
               }
 
               // Track number of games played as goalie
