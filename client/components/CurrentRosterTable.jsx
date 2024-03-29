@@ -436,26 +436,34 @@ export default function CurrentRosterTable() {
                 // player.pos === "F, D, G"
 
                 player.pos === "G" && player.goaliestats.gp > 0
-                || 
+                ||
                 player.pos === "F, G" && player.goaliestats.gp > 0
-                || 
+                ||
                 player.pos === "D, G" && player.goaliestats.gp > 0
-                || 
+                ||
                 player.pos === "F, D, G" && player.goaliestats.gp > 0
-                ) {
+              ) {
                 return (
                   <tr key={key} className='cur-roster-center'>
                     <td
                       className="cur-roster-table-th-first"
                       style={{ borderRight: `solid 1px gray` }}
                     >
-                      <a
-                        href={`/player/${player._id}`}
-                        className='cur-roster-no-decor'
-                      >
-                        {player.firstName} {player.lastName}
-                      </a>
+                      {player.goaliestats.sp > 0 &&
+                        <a
+                          href={`/player/${player._id}`}
+                          className='cur-roster-no-decor'
+                        >
+                          {player.firstName} {player.lastName}
+                        </a>
+                      }
+                      {player.goaliestats.sp === 0 &&
+                        <>
+                          {player.firstName} {player.lastName}
+                        </>
+                      }
                     </td>
+
                     {!isMobile &&
                       <>
                         <td>{player.jerseyNumber}</td>
