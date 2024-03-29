@@ -25,14 +25,14 @@ export default function CurrentRosterTable() {
       return 0;
     })
 
-    // Find the index of the object with firstName 'Tom' and lastName 'Haroldson'
-    let index = players.findIndex(player => player.firstName === 'Tom' && player.lastName === 'Haroldson');
+    // // Find the index of the object with firstName 'Tom' and lastName 'Haroldson'
+    // let index = players.findIndex(player => player.firstName === 'Tom' && player.lastName === 'Haroldson');
 
-    // If the object is found, move it to the front of the array
-    if (index !== -1) {
-      let tomHaroldson = players.splice(index, 1)[0]; // Remove the object from its current position
-      players.unshift(tomHaroldson); // Add it to the beginning of the array
-    }
+    // // If the object is found, move it to the front of the array
+    // if (index !== -1) {
+    //   let tomHaroldson = players.splice(index, 1)[0]; // Remove the object from its current position
+    //   players.unshift(tomHaroldson); // Add it to the beginning of the array
+    // }
 
     setSortedByColumn("firstName")
     setSortOrder("ASC")
@@ -83,9 +83,25 @@ export default function CurrentRosterTable() {
     setCurRosInfo({ ...curRosInfo, playerInfo: players })
   }
 
+  const [showGoalies, setShowGaolies] = useState(false)
+  function displayGoalies(firstName, lastName) {
+    if (firstName === "Tom" && lastName === "Haroldson") {
+      return false
+    } else if (showGoalies) {
+      return false
+    } else {
+      return true
+    }
+  }
+  function toggleGoalies() {
+    showGoalies ? setShowGaolies(false) : setShowGaolies(true)
+  }
+
   useEffect(() => {
     getCurRosInfo()
   }, [])
+
+  useEffect(() => {}, [showGoalies])
 
   if (curRosInfo === null) return (<LoadingSpinner />)
 
@@ -400,6 +416,20 @@ export default function CurrentRosterTable() {
               style={{ borderRight: `solid 1px gray`, fontSize: "24px" }}
             >
               Goalies
+              <span 
+              style={{
+                marginLeft: "15px",
+                padding: "2px 5px",
+                fontSize: "12px",
+                backgroundColor: "grey",
+                color: "black",
+                borderRadius: "25%",
+                cursor: "pointer"
+              }}
+              onClick={() => toggleGoalies()}
+              >
+                  Show All
+              </span>
             </th>
             {!isMobile &&
               <th colSpan={2} style={{ borderRight: `solid 1px gray` }}></th>
@@ -454,7 +484,7 @@ export default function CurrentRosterTable() {
                 player.pos === "F, D, G" && player.goaliestats.gp > 0
               ) {
                 return (
-                  <tr key={key} className='cur-roster-center'>
+                  <tr key={key} className='cur-roster-center' hidden={displayGoalies(player.firstName, player.lastName)}>
                     <td
                       className="cur-roster-table-th-first"
                       style={{ borderRight: `solid 1px gray` }}
