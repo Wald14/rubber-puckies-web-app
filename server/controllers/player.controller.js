@@ -17,6 +17,14 @@ async function getAllPlayersByTeamId(teamId) {
   }
 }
 
+async function getAllGoalies() {
+  try {
+    return await Player.find({positions: 'G'});
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
 
 async function getPlayerById(id) {
   try {
@@ -58,6 +66,7 @@ async function deletePlayerById(id) {
 
 module.exports = {
   getAllPlayers,
+  getAllGoalies,
   getAllPlayersByTeamId,
   getPlayerById,
   createPlayer,

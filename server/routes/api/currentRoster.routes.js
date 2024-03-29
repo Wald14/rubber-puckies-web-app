@@ -1,12 +1,11 @@
 // Import any controllers needed here
-const { getAllTeams, getTeamsbyNameAndSeasonId, getAllTeamsbyName, getTeamById, createTeam, updateTeamById, deleteTeamById } = require('../../controllers/team.controller');
-const { getAllGames, getAllGamesByTeamId, getGameById, createGame, updateGameById, deleteGameById, getAllGamesByPlayerId, } = require('../../controllers/game.controller');
-const { getAllSeasons, getCurrentSeason, getSeasonById, createSeason, updateSeasonById, deleteSeasonById } = require('../../controllers/season.controller');
-const { getAllPlayers, getAllPlayersByTeamId, getPlayerById, createPlayer, updatePlayerById, deletePlayerById } = require('../../controllers/player.controller');
+const { getTeamsbyNameAndSeasonId } = require('../../controllers/team.controller');
+const { getAllGamesByPlayerId } = require('../../controllers/game.controller');
+const { getCurrentSeason } = require('../../controllers/season.controller');
+const { getAllPlayersByTeamId, getAllGoalies } = require('../../controllers/player.controller');
 
 // Declare the routes that point to the controllers above
 const router = require('express').Router();
-
 
 
 router.get("/:teamName", async ({ params: { teamName } }, res) => {
@@ -34,7 +33,21 @@ router.get("/:teamName", async ({ params: { teamName } }, res) => {
     }
 
     // Grab players from that team
+    const allGoalies = await getAllGoalies()
     const curPlayers = await getAllPlayersByTeamId(curTeam._id)
+
+
+    allGoalies.map(async (goalie) => {
+      if (!curPlayers.some(player => player._id.toString() === goalie._id.toString())) {
+        curPlayers.push(goalie)
+      }
+    })
+
+    // -----------------------------------------------------------
+    // OLD METHOD THAT WON'T INCLUDE ALL GOALIES BUT JUST THE CURRENT SEASON GOALIES
+    // -----------------------------------------------------------
+    // const curPlayers = await getAllPlayersByTeamId(curTeam._id)
+    // -----------------------------------------------------------
 
     // players.map(async (player) => { return player info })
     // const playerInfo = await getAllGamesByPlayerId("658b4fab700cb48ab31b2eaa")

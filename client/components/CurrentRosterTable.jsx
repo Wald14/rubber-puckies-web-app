@@ -32,6 +32,7 @@ export default function CurrentRosterTable() {
 
   async function sortCurRosInfo(e) {
     const players = curRosInfo.playerInfo
+
     if (e.target.name !== sortedByColumn) {
       players.sort(function (a, b) {
         let x = a.firstName.toLowerCase();
@@ -48,6 +49,7 @@ export default function CurrentRosterTable() {
         return 0;
       })
       setSortOrder(e.target.getAttribute("defaultsort"))
+
     } else if (e.target.name === sortedByColumn) {
       players.sort(function (a, b) {
         let x = a.firstName.toLowerCase();
@@ -63,14 +65,13 @@ export default function CurrentRosterTable() {
         if (x > y) { return (sortOrder === "ASC" ? -1 : 1); }
         return 0;
       })
+
       setSortOrder(sortOrder === "ASC" ? "DEC" : "ASC")
     }
 
     setSortedByColumn(e.target.name)
     setCurRosInfo({ ...curRosInfo, playerInfo: players })
   }
-
-
 
   useEffect(() => {
     getCurRosInfo()
