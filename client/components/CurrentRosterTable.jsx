@@ -427,13 +427,21 @@ export default function CurrentRosterTable() {
           {curRosInfo &&
             curRosInfo.playerInfo.map((player, key) => {
               if (
-                player.pos === "G" && player.goaliestats.gp > 0
+                player.pos === "G"
                 || 
-                player.pos === "F, G" && player.goaliestats.gp > 0
+                player.pos === "F, G"
                 || 
-                player.pos === "D, G" && player.goaliestats.gp > 0
+                player.pos === "D, G"
                 || 
-                player.pos === "F, D, G" && player.goaliestats.gp > 0
+                player.pos === "F, D, G"
+
+                // player.pos === "G" && player.goaliestats.gp > 0
+                // || 
+                // player.pos === "F, G" && player.goaliestats.gp > 0
+                // || 
+                // player.pos === "D, G" && player.goaliestats.gp > 0
+                // || 
+                // player.pos === "F, D, G" && player.goaliestats.gp > 0
                 ) {
                 return (
                   <tr key={key} className='cur-roster-center'>

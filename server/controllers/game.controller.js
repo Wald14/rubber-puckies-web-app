@@ -48,7 +48,11 @@ async function getAllGamesByPlayerId(playerId) {
   try {
     return await Game.find({
       completed: true,
-      "players.player": playerId
+      // "players.player": playerId
+      $or: [
+        {"players.player": playerId},
+        {goalie: playerId}
+      ]
     })
     .populate({path: "homeTeam awayTeam", select: "_id name"});
   } catch (err) {
