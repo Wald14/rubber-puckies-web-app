@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 
+import { LoadingSpinner } from "../components";
+
 import Table from 'react-bootstrap/Table';
 
 export default function TeamHistoryBySeason() {
@@ -8,7 +10,7 @@ export default function TeamHistoryBySeason() {
   const fColor = "#D6D6DE"
   const fColor2 = "gray"
 
-  function setChampStyle(champName){
+  function setChampStyle(champName) {
     if (champName === "Rubber Puckies") {
       return "goldenrod"
     } else {
@@ -21,15 +23,13 @@ export default function TeamHistoryBySeason() {
     const result = await query.json();
     const payload = result.payload;
     setTeamArr(payload)
-    console.log(payload)
-    console.log(payload[1].season.toLowerCase().replace(' ', ''))
   }
 
   useEffect(() => {
     getRegSeaInfo()
   }, [])
 
-  if (teamArr === null) return <></>
+  if (teamArr === null) return (<LoadingSpinner />)
 
   return (
 

@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { PlayerPageStats, PlayerPageSplits, PlayerPageGameLog } from '../components'
+import { PlayerPageStats, PlayerPageSplits, PlayerPageGameLog, LoadingSpinner } from '../components'
 
 import { getPlayer } from '../utils/queries.js';
 import captializeString from '../utils/stringAdjustments.js';
@@ -33,7 +33,7 @@ export default function PlayerPage() {
     setSelectedSplit("stats")
   }, [])
 
-  if (!player) return <></>
+  if (!player) return (<LoadingSpinner />)
 
   return (
     <>

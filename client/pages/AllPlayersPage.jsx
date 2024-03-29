@@ -1,16 +1,10 @@
 import { useEffect, useState } from "react"
 
-import { getPlayer } from '../utils/queries.js';
-import captializeString from '../utils/stringAdjustments.js';
+import { LoadingSpinner } from "../components";
 
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Table from 'react-bootstrap/Table';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 import '../assets/css/buttons.css'
-
 
 export default function PlayerPage() {
 
@@ -28,7 +22,7 @@ export default function PlayerPage() {
     getPlayers()
   }, [])
 
-  if (!playerList) return <></>
+  if (!playerList) return (<LoadingSpinner />)
 
   return (
     <>

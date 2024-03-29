@@ -24,3 +24,4 @@ export { default as Hero } from "./Hero";
 export { default as Footer } from "./Footer";
 export { default as LastGameTable } from "./LastGameTable";
 export { default as HeroMobileLinksTable } from "./HeroMobileLinksTable";
+export { default as LoadingSpinner } from "./LoadingSpinner";

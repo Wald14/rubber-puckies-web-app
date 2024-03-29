@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { LoadingSpinner } from "../components";
 import Table from "react-bootstrap/esm/Table";
 import capitalizeString from '../utils/stringAdjustments.js';
 
@@ -29,7 +30,7 @@ export default function LastGameTable() {
     getLastGame()
   }, [])
 
-  if (!lastGame) return <></>
+  if (!lastGame) return (<LoadingSpinner />)
 
 
   return (

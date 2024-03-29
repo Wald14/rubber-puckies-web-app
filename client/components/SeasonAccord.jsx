@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
 import { GamesAccord } from '../components';
 import Accordion from 'react-bootstrap/Accordion';
-import Table from 'react-bootstrap/Table';
 import capitalizeString from '../utils/stringAdjustments.js';
 import '../assets/css/accordion.css'
+
+// React Loader Spinner Import
+import { BallTriangle } from 'react-loader-spinner'
 
 export default function SeasonAccord() {
   const [seasonArr, setSeasonArr] = useState(null)
@@ -23,7 +25,13 @@ export default function SeasonAccord() {
     getSeasonLogs()
   }, [])
 
-  if (!seasonArr) return <></>
+  if (!seasonArr) return (
+    <div style={{ minHeight: "90vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+    <BallTriangle
+      color="goldenrod"
+    />
+  </div>
+  )
 
   return (
     <>

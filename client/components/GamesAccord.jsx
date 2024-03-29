@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
+import { LoadingSpinner } from "../components";
 import Accordion from 'react-bootstrap/Accordion';
 import Table from 'react-bootstrap/Table';
-import capitalizeString from '../utils/stringAdjustments.js';
-import { convertToUTC, convertUTCtoLocal, convertUTCtoCT, grabDateFromISO, grabTimeFromISO, splitDateApart } from '../utils/time.js';
+import { grabTimeFromISO } from '../utils/time.js';
 
 
 export default function GamesAccord(props) {
@@ -18,7 +18,6 @@ export default function GamesAccord(props) {
     const payload = result.payload;
     setGames(payload)
     determimeTeamStats(payload)
-    // console.log(payload)
   }
 
   function determineOutcome(endedIn, homeGoals, awayGoals, homeTeamName, gameType) {
@@ -99,8 +98,7 @@ export default function GamesAccord(props) {
     getGames()
   }, [])
 
-  if (!games) return <></>
-
+  if (!games) return (<LoadingSpinner />)
 
   return (
     <>
