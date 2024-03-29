@@ -145,7 +145,7 @@ router.get("/:teamName", async ({ params: { teamName } }, res) => {
               const homeTeamCheck = game.homeTeam._id.toString()
               const awayTeamCheck = game.awayTeam._id.toString()
 
-              if (player.teams.indexOf(homeTeamCheck) > -1 || player.teams.indexOf(awayTeamCheck) > -1){
+              if (player.teams.indexOf(homeTeamCheck) > -1 || player.teams.indexOf(awayTeamCheck) > -1) {
                 if (goaliePlayedSeasonArr.indexOf(goalieGamesSeaon) === -1) {
                   goaliePlayedSeasonArr.push(goalieGamesSeaon)
                 }

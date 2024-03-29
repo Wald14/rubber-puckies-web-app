@@ -24,6 +24,16 @@ export default function CurrentRosterTable() {
       if (x > y) { return 1; }
       return 0;
     })
+
+    // Find the index of the object with firstName 'Tom' and lastName 'Haroldson'
+    let index = players.findIndex(player => player.firstName === 'Tom' && player.lastName === 'Haroldson');
+
+    // If the object is found, move it to the front of the array
+    if (index !== -1) {
+      let tomHaroldson = players.splice(index, 1)[0]; // Remove the object from its current position
+      players.unshift(tomHaroldson); // Add it to the beginning of the array
+    }
+
     setSortedByColumn("firstName")
     setSortOrder("ASC")
     setCurRosInfo(result)
