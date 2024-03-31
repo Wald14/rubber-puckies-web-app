@@ -14,7 +14,7 @@ export default function Header() {
   const [curPlayers, setCurPlayers] = useState()
 
   async function getCurPlayers() {
-    const query = await fetch("/api/currentroster/Rubber Puckies");
+    const query = await fetch("/api/currentrosterstrict/Rubber Puckies");
     const result = await query.json();
     const players = result.playerInfo
     players.sort(function (a, b) {
