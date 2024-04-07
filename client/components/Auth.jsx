@@ -3,11 +3,12 @@ import { useEffect, useState } from "react"
 import { useAppCtx } from "../utils/AppProvider"
 
 
-export default function Auth({usage="signup"}){
+export default function Auth(){
 
   const appCtx = useAppCtx()
 
   const [ userData, setUserData ] = useState({ username: "", password: "" })
+  const [ errorMsg, setErrorMsg] = useState(false)
 
   function handleInputChange(e){
     setUserData({...userData, [e.target.name]: e.target.value })
@@ -24,10 +25,16 @@ export default function Auth({usage="signup"}){
         }
       })
       const response = await query.json()
-      console.log(response)
+
       if( response.result === "success" ){
         window.location.href = "/admintools"
       }
+
+      if( response.result === "error" ){
+        setErrorMsg(true)
+        console.log("Yo you entered the wrong info!")
+      }
+
     } catch(err){
       console.log(err.message)
     }
@@ -36,6 +43,12 @@ export default function Auth({usage="signup"}){
   useEffect(() => {
     setUserData({...userData, username: appCtx.user.username || "" })
   },[appCtx])
+
+  useEffect(() => {
+    if (errorMsg) {
+      setTimeout(() => setErrorMsg(false), 2500)
+    }
+  },[errorMsg])
 
 
   return (
@@ -54,6 +67,10 @@ export default function Auth({usage="signup"}){
               <input type="password" name="password" value={userData.password} onChange={handleInputChange} />
             </div>
           </div>
+
+          {errorMsg &&
+            <p style={{color: 'lightcoral'}}>Login Failed</p>
+          }
 
           <button className="mt-2 btn btn-outline-warning">Login</button>
         </div>

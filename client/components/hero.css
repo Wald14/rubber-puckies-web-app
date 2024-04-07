@@ -11,7 +11,8 @@
 .hero-center-container {
   display: flex;
   justify-content: center;
-  align-items: end;
+  align-items: center;
+  flex-direction: column;
 }
 
 .hero-carousel-container {

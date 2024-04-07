@@ -19,6 +19,16 @@ async function getLastPlayed(){
   }
 }
 
+async function getNextGame(){
+  try {
+    return await Game.findOne().sort({startTime: 1}).where('completed').equals(false)
+    .populate({path: "homeTeam awayTeam", select: "_id name"})
+    .populate({path: "goalie players.player", select: "_id firstName lastName"});
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
 async function getAllGamesByTeamId(teamId) {
   try {
     return await Game.find({
@@ -100,6 +110,7 @@ async function deleteGameById(id) {
 module.exports = {
   getAllGames,
   getLastPlayed,
+  getNextGame,
   getAllGamesByPlayerId,
   getAllGamesByTeamId,
   getAllGamesBySeasonId,

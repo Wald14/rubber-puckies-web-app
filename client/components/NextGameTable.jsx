@@ -3,14 +3,14 @@ import { LoadingSpinner } from "../components";
 import Table from "react-bootstrap/esm/Table";
 import capitalizeString from '../utils/stringAdjustments.js';
 
-export default function LastGameTable() {
+export default function NextGameTable() {
 
   const [lastGame, setLastGame] = useState()
   const [caption, setCaption] = useState("")
 
 
   async function getLastGame() {
-    const query = await fetch('/api/game/lastPlayed')
+    const query = await fetch('/api/game/next')
     const result = await query.json()
 
     setCaption(formatDate(result.payload.startTime))
@@ -38,7 +38,7 @@ export default function LastGameTable() {
       style={{
         width: "400px",
         maxWidth: "90vw",
-        margin: "16px 5px 8px 0px",
+        margin: "16px 5px 8px 5px",
       }}>
       <p
         style={{
@@ -48,7 +48,7 @@ export default function LastGameTable() {
           fontSize: "18px"
         }}
       >
-        Last Game
+        Next Game
       </p>
       <p
         style={{
@@ -57,24 +57,21 @@ export default function LastGameTable() {
           color: "goldenrod"
         }}
       >
-        {capitalizeString(lastGame.gameType)} Game
+        {caption}
       </p>
       <Table>
-        <caption style={{ fontSize: "12px", paddingLeft: "8px" }}>{caption}</caption>
+        <caption style={{ fontSize: "12px", paddingLeft: "8px" }}>{capitalizeString(lastGame.gameType) === "Regular" ? "Regular Season Game" : capitalizeString(lastGame.gameType) + " Game"}</caption>
         <thead>
           <tr>
             <th className="bg-warning" style={{ color: "black" }}>TEAM</th>
-            <th className="bg-warning" style={{ color: "black", textAlign: "center" }}>Goals</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>Home - {lastGame.homeTeam.name}</td>
-            <td style={{ textAlign: "center" }}>{lastGame.homeGoals}</td>
           </tr>
           <tr>
             <td>Away - {lastGame.awayTeam.name}</td>
-            <td style={{ textAlign: "center" }}>{lastGame.awayGoals}</td>
           </tr>
         </tbody>
       </Table>

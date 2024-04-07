@@ -1,5 +1,5 @@
 // Components
-import { LastGameTable, HeroMobileLinksTable, Carousel } from "../components";
+import { LastGameTable, HeroMobileLinksTable, Carousel, NextGameTable } from "../components";
 
 // CSS
 import './hero.css'
@@ -47,6 +47,7 @@ export default function Hero() {
       }
 
       <div className="hero-center-container">
+        <NextGameTable />
         <LastGameTable />
       </div>
 
