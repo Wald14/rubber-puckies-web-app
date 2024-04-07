@@ -38,7 +38,6 @@ export default function TeamHistoryBySeason() {
           third: 0,
           fourth: 0,
           fifth: 0,
-          sixth: 0,
         }
       },
       playoff: {
@@ -54,7 +53,6 @@ export default function TeamHistoryBySeason() {
           third: 0,
           fourth: 0,
           fifth: 0,
-          sixth: 0,
         },
         sow: 0,
         sol: 0,
@@ -87,9 +85,6 @@ export default function TeamHistoryBySeason() {
         case 5: 
           total.regular.finish.fifth++ 
           break;
-        case 6: 
-          total.regular.finish.sixth++ 
-          break;
       }
       total.playoff.gp += season.playoff.gamesPlayed
       total.playoff.record.wins += season.playoff.wins
@@ -114,9 +109,6 @@ export default function TeamHistoryBySeason() {
           break;
         case 5: 
           total.playoff.finish.fifth++ 
-          break;
-        case 6: 
-          total.playoff.finish.sixth++ 
           break;
       }
 
@@ -210,8 +202,8 @@ export default function TeamHistoryBySeason() {
                   <td style={{ color: fColor }}>{(totals.regular.gf / totals.regular.gp).toFixed(1)}</td>
                   <td style={{ color: fColor }}>{(totals.regular.ga / totals.regular.gp).toFixed(1)}</td>
                   <td style={{ color: fColor, borderRight: `solid 1px ${fColor2}` }}>{((totals.regular.gf - totals.regular.ga) / totals.regular.gp).toFixed(1)}</td>
-                  <td style={{ color: fColor }}>{totals.regular.finish.first}-{totals.regular.finish.second}-{totals.regular.finish.third}-{totals.regular.finish.fourth}-{totals.regular.finish.fifth}-{totals.regular.finish.sixth}</td>
-                  <td style={{ color: fColor, borderRight: `solid 1px ${fColor2}` }}>{totals.playoff.finish.first}-{totals.playoff.finish.second}-{totals.playoff.finish.third}-{totals.playoff.finish.fourth}-{totals.playoff.finish.fifth}-{totals.playoff.finish.sixth}</td>
+                  <td style={{ color: fColor }}>{totals.regular.finish.first}-{totals.regular.finish.second}-{totals.regular.finish.third}-{totals.regular.finish.fourth}-{totals.regular.finish.fifth}</td>
+                  <td style={{ color: fColor, borderRight: `solid 1px ${fColor2}` }}>{totals.playoff.finish.first}-{totals.playoff.finish.second}-{totals.playoff.finish.third}-{totals.playoff.finish.fourth}-{totals.playoff.finish.fifth}</td>
                 </tr>
         </tbody>
       </Table>
