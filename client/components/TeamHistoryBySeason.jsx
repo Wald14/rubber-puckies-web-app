@@ -5,10 +5,128 @@ import { LoadingSpinner } from "../components";
 import Table from 'react-bootstrap/Table';
 
 export default function TeamHistoryBySeason() {
-  const [teamArr, setTeamArr] = useState(null)
-
   const fColor = "#D6D6DE"
   const fColor2 = "gray"
+
+
+  const [teamArr, setTeamArr] = useState(null)
+  const [totals, setTotals] = useState(null)
+
+  async function getRegSeaInfo() {
+    const query = await fetch("/api/teamHistory/Rubber Puckies");
+    const result = await query.json();
+    const payload = result.payload;
+    calcTotals(payload)
+    setTeamArr(payload)
+  }
+
+  function calcTotals(seasonArr) {
+    const total = {
+      regular: {
+        gp: 0,
+        record: {
+          wins: 0,
+          loses: 0,
+          ties: 0,
+        },
+        pts: 0,
+        gf: 0,
+        ga: 0,
+        finish: {
+          first: 0,
+          second: 0,
+          third: 0,
+          fourth: 0,
+          fifth: 0,
+          sixth: 0,
+        }
+      },
+      playoff: {
+        gp: 0,
+        record: {
+          wins: 0,
+          loses: 0,
+          ties: 0,
+        },
+        finish: {
+          first: 0,
+          second: 0,
+          third: 0,
+          fourth: 0,
+          fifth: 0,
+          sixth: 0,
+        },
+        sow: 0,
+        sol: 0,
+        gf: 0,
+        ga: 0,
+      }
+    }
+    console.log(seasonArr)
+    seasonArr.map(season => {
+      total.regular.gp += season.regular.gamesPlayed
+      total.regular.record.wins += season.regular.wins
+      total.regular.record.loses += season.regular.loses
+      total.regular.record.ties += season.regular.ties
+      total.regular.pts += season.regular.points
+      total.regular.gf += season.regular.goals_for
+      total.regular.ga += season.regular.goals_against
+      switch(season.regular.finish){
+        case 1: 
+          total.regular.finish.first++ 
+          break;
+        case 2: 
+          total.regular.finish.second++ 
+          break;
+        case 3: 
+          total.regular.finish.third++ 
+          break;
+        case 4: 
+          total.regular.finish.fourth++ 
+          break;
+        case 5: 
+          total.regular.finish.fifth++ 
+          break;
+        case 6: 
+          total.regular.finish.sixth++ 
+          break;
+      }
+      total.playoff.gp += season.playoff.gamesPlayed
+      total.playoff.record.wins += season.playoff.wins
+      total.playoff.record.loses += season.playoff.loses
+      total.playoff.record.ties += season.playoff.ties
+      total.playoff.sow += season.playoff.sow
+      total.playoff.sol += season.playoff.sol
+      total.playoff.gf += season.playoff.gf
+      total.playoff.ga += season.playoff.ga
+      switch(season.playoff.finish){
+        case 1: 
+          total.playoff.finish.first++ 
+          break;
+        case 2: 
+          total.playoff.finish.second++ 
+          break;
+        case 3: 
+          total.playoff.finish.third++ 
+          break;
+        case 4: 
+          total.playoff.finish.fourth++ 
+          break;
+        case 5: 
+          total.playoff.finish.fifth++ 
+          break;
+        case 6: 
+          total.playoff.finish.sixth++ 
+          break;
+      }
+
+
+
+
+    })
+    console.log(total)
+    setTotals(total)
+  }
 
   function setChampStyle(champName) {
     if (champName === "Rubber Puckies") {
@@ -16,13 +134,6 @@ export default function TeamHistoryBySeason() {
     } else {
       return fColor
     }
-  }
-
-  async function getRegSeaInfo() {
-    const query = await fetch("/api/teamHistory/Rubber Puckies");
-    const result = await query.json();
-    const payload = result.payload;
-    setTeamArr(payload)
   }
 
   useEffect(() => {
@@ -87,6 +198,21 @@ export default function TeamHistoryBySeason() {
                 </tr>
               )
             })}
+                <tr style={{textAlign: 'center' }}>
+                  <td style={{ textAlign: "left", borderRight: `solid 1px ${fColor2}`, position: "sticky", left: 0, zIndex: 1 }}>Totals</td>
+                  <td style={{ color: fColor }}>{totals.regular.gp}</td>
+                  <td style={{ color: fColor }}>{totals.regular.record.wins} - {totals.regular.record.loses} - {totals.regular.record.ties}</td>
+                  <td style={{ color: fColor }}>{totals.regular.pts}</td>
+                  <td style={{ color: fColor, borderRight: `solid 1px ${fColor2}` }}>{(totals.regular.pts / totals.regular.gp).toFixed(3)}</td>
+                  <td style={{ color: fColor }}>{totals.regular.gf}</td>
+                  <td style={{ color: fColor }}>{totals.regular.ga}</td>
+                  <td style={{ color: fColor, borderRight: `solid 1px ${fColor2}` }}>{totals.regular.gf - totals.regular.ga}</td>
+                  <td style={{ color: fColor }}>{(totals.regular.gf / totals.regular.gp).toFixed(1)}</td>
+                  <td style={{ color: fColor }}>{(totals.regular.ga / totals.regular.gp).toFixed(1)}</td>
+                  <td style={{ color: fColor, borderRight: `solid 1px ${fColor2}` }}>{((totals.regular.gf - totals.regular.ga) / totals.regular.gp).toFixed(1)}</td>
+                  <td style={{ color: fColor }}>{totals.regular.finish.first}-{totals.regular.finish.second}-{totals.regular.finish.third}-{totals.regular.finish.fourth}-{totals.regular.finish.fifth}-{totals.regular.finish.sixth}</td>
+                  <td style={{ color: fColor, borderRight: `solid 1px ${fColor2}` }}>{totals.playoff.finish.first}-{totals.playoff.finish.second}-{totals.playoff.finish.third}-{totals.playoff.finish.fourth}-{totals.playoff.finish.fifth}-{totals.playoff.finish.sixth}</td>
+                </tr>
         </tbody>
       </Table>
 
