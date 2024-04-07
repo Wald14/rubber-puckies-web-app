@@ -46,7 +46,7 @@ export default function Hero() {
         </div>
       }
 
-      <div className="hero-center-container">
+      <div className="hero-center-container2">
         <NextGameTable />
         <LastGameTable />
       </div>

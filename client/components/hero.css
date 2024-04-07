@@ -12,6 +12,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.hero-center-container2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
 }
 
