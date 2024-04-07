@@ -361,7 +361,7 @@ export default function CurrentRosterTable() {
         {/* Skater Table - Stats */}
         <tbody>
           {curRosInfo &&
-            curRosInfo.playerInfo.map((player, key) => {
+            curRosInfo.playerInfo.filter(player => player.teams.includes(curRosInfo.teamInfo._id)).map((player, key) => {
               if (player.pos !== "G") {
                 return (
                   <tr key={key} className='cur-roster-center'>

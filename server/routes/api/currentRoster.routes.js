@@ -264,7 +264,8 @@ router.get("/:teamName", async ({ params: { teamName } }, res) => {
             shutouts: shutouts,
             winpercent: winpercent,
             shutoutspercent: shutoutspercent
-          }
+          },
+          teams: player.teams
         }
       })
     )
