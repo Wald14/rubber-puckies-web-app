@@ -13,9 +13,10 @@ export default function TeamHistoryBySeason() {
   const [totals, setTotals] = useState(null)
 
   async function getRegSeaInfo() {
-    const query = await fetch("/api/teamHistory/Rubber Puckies");
+    const query = await fetch("/api/teamHistory/bySeason/Rubber Puckies");
     const result = await query.json();
     const payload = result.payload;
+    console.log(result)
     calcTotals(payload)
     setTeamArr(payload)
   }
@@ -60,7 +61,7 @@ export default function TeamHistoryBySeason() {
         ga: 0,
       }
     }
-    console.log(seasonArr)
+
     seasonArr.map(season => {
       total.regular.gp += season.regular.gamesPlayed
       total.regular.record.wins += season.regular.wins
@@ -111,12 +112,7 @@ export default function TeamHistoryBySeason() {
           total.playoff.finish.fifth++ 
           break;
       }
-
-
-
-
     })
-    console.log(total)
     setTotals(total)
   }
 

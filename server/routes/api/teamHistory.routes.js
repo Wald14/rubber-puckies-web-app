@@ -7,14 +7,118 @@ const router = require('express').Router();
 
 
 
-router.get("/:teamName", async (req, res) => {
+router.get("/bySeason/:teamName", async (req, res) => {
   try {
     const teamSeasonInfo = await getAllTeamsbyName(req.params.teamName)
 
+    const splits = {
+      homeAway: {
+        home: {
+          gp: 0,
+          wins: 0,
+          loses: 0,
+          ties: 0,
+          gf: 0,
+          ga: 0
+        },
+        away: {
+          gp: 0,
+          wins: 0,
+          loses: 0,
+          ties: 0,
+          gf: 0,
+          ga: 0
+        },
+      },
+      seasonType:{
+        winter: {
+          sp: 0,
+          gp: 0,
+          wins: 0,
+          loses: 0,
+          ties: 0,
+          gf: 0,
+          ga: 0
+        },
+        spring: {
+          sp: 0,
+          gp: 0,
+          wins: 0,
+          loses: 0,
+          ties: 0,
+          gf: 0,
+          ga: 0
+        },
+        summer: {
+          sp: 0,
+          gp: 0,
+          wins: 0,
+          loses: 0,
+          ties: 0,
+          gf: 0,
+          ga: 0
+        },
+        fall: {
+          sp: 0,
+          gp: 0,
+          wins: 0,
+          loses: 0,
+          ties: 0,
+          gf: 0,
+          ga: 0
+        },
+      },
+      startHour: {
+        18: {
+          gp: 0,
+          wins: 0,
+          loses: 0,
+          ties: 0,
+          gf: 0,
+          ga: 0
+        },
+        19: {
+          gp: 0,
+          wins: 0,
+          loses: 0,
+          ties: 0,
+          gf: 0,
+          ga: 0
+        },
+        20: {
+          gp: 0,
+          wins: 0,
+          loses: 0,
+          ties: 0,
+          gf: 0,
+          ga: 0
+        },
+        21: {
+          gp: 0,
+          wins: 0,
+          loses: 0,
+          ties: 0,
+          gf: 0,
+          ga: 0
+        },
+        22: {
+          gp: 0,
+          wins: 0,
+          loses: 0,
+          ties: 0,
+          gf: 0,
+          ga: 0
+        },
+      },
+      opponent: [],
+    }
+
     const payload = await Promise.all(
-      teamSeasonInfo.map(async (season) => { 
+      teamSeasonInfo.map(async (season) => {
         const selectedSeasonId = season.season._id.toString()
         let seasonChamp = await getChampion(selectedSeasonId)
+
+        splits.seasonType[(season.season.seasonType).toLowerCase()].sp++
 
         let wins = 0,
           loses = 0,
@@ -50,28 +154,72 @@ router.get("/:teamName", async (req, res) => {
           const completed = game.completed
           const gameType = game.gameType
 
+          // REGULAR ///////////////////////////
           if (completed && gameType === "regular") {
-            gamesPlayed++
-
             const teamName = req.params.teamName;
             const isHomeTeam = game.homeTeam.name === teamName;
             const isAwayTeam = game.awayTeam.name === teamName;
             const homeGoals = game.homeGoals;
             const awayGoals = game.awayGoals;
+            const homeOraway = isHomeTeam ? 'home' : 'away'
+            const startHour = game.startTime.getHours()
+            const opponent = isHomeTeam ? game.awayTeam.name : game.homeTeam.name
+
+            let oppIndex = splits.opponent.findIndex(obj => obj.teamName === opponent)
+            if (oppIndex === -1){
+              splits.opponent.push({
+                teamName: opponent,
+                sp: [],
+                gp: 0,
+                wins: 0,
+                loses: 0,
+                ties: 0,
+                gf: 0,
+                ga: 0
+              })
+            }
+            oppIndex = splits.opponent.findIndex(obj => obj.teamName === opponent)
+
+            gamesPlayed++
+            splits.seasonType[season.season.seasonType].gp++
+            splits.homeAway[homeOraway].gp++
+            splits.startHour[startHour].gp++
+            splits.opponent[oppIndex].gp++
 
             goalsFor += isHomeTeam ? homeGoals : awayGoals;
             goalsAgainst += isHomeTeam ? awayGoals : homeGoals;
+            splits.seasonType[season.season.seasonType].gf += isHomeTeam ? homeGoals : awayGoals
+            splits.seasonType[season.season.seasonType].ga += isHomeTeam ? awayGoals : homeGoals
+            splits.homeAway[homeOraway].gf += isHomeTeam ? homeGoals : awayGoals
+            splits.homeAway[homeOraway].ga += isHomeTeam ? awayGoals : homeGoals
+            splits.startHour[startHour].gf += isHomeTeam ? homeGoals : awayGoals
+            splits.startHour[startHour].ga += isHomeTeam ? awayGoals : homeGoals
+            splits.opponent[oppIndex].gf += isHomeTeam ? homeGoals : awayGoals
+            splits.opponent[oppIndex].ga += isHomeTeam ? awayGoals : homeGoals
 
             if ((isHomeTeam && homeGoals > awayGoals) || (isAwayTeam && awayGoals > homeGoals)) {
               wins++;
+              splits.homeAway[homeOraway].wins++
+              splits.seasonType[season.season.seasonType].wins++
+              splits.startHour[startHour].wins++
+              splits.opponent[oppIndex].wins++
             } else if ((isHomeTeam && homeGoals < awayGoals) || (isAwayTeam && awayGoals < homeGoals)) {
               loses++;
+              splits.homeAway[homeOraway].loses++
+              splits.seasonType[season.season.seasonType].loses++
+              splits.startHour[startHour].loses++
+              splits.opponent[oppIndex].loses++
             } else if (awayGoals === homeGoals) {
               ties++;
+              splits.homeAway[homeOraway].ties++
+              splits.seasonType[season.season.seasonType].ties++
+              splits.startHour[startHour].ties++
+              splits.opponent[oppIndex].ties++
             }
-          }
 
-          // PLAYOFF
+            
+          }
+          // PLAYOFF ///////////////////////////
           if (completed && (gameType === "semifinal" || gameType === "championship")) {
             playoffGamesPlayed++
 
@@ -111,7 +259,7 @@ router.get("/:teamName", async (req, res) => {
 
               case "shootout":
                 if (gameType === "semifinal") {
-                  season.playoffPlace > 2 ? (sol++, playoffLoses++)  : (sow++, playoffWins++)
+                  season.playoffPlace > 2 ? (sol++, playoffLoses++) : (sow++, playoffWins++)
                 }
                 if (gameType === "championship") {
                   season.playoffPlace === 2 ? (sol++, playoffLoses++) : (sow++, playoffWins++)
@@ -164,7 +312,7 @@ router.get("/:teamName", async (req, res) => {
 
       })
     )
-    res.status(200).json({ result: "success", payload, teamSeasonInfo })
+    res.status(200).json({ result: "success", payload, teamSeasonInfo, splits})
   } catch (err) {
     res.status(500).json({ result: "Error", payload: err.message })
   }
