@@ -184,7 +184,7 @@ router.get("/bySeason/:teamName", async (req, res) => {
             gamesPlayed++
 
             splits.seasonType[season.season.seasonType].gp++
-            // splits.homeAway[homeOraway].gp++
+            splits.homeAway[homeOraway].gp++
             // splits.startHour[startHour].gp++
             // splits.opponent[oppIndex].gp++
 
@@ -192,8 +192,8 @@ router.get("/bySeason/:teamName", async (req, res) => {
             goalsAgainst += isHomeTeam ? awayGoals : homeGoals;
             splits.seasonType[season.season.seasonType].gf += isHomeTeam ? homeGoals : awayGoals
             splits.seasonType[season.season.seasonType].ga += isHomeTeam ? awayGoals : homeGoals
-            // splits.homeAway[homeOraway].gf += isHomeTeam ? homeGoals : awayGoals
-            // splits.homeAway[homeOraway].ga += isHomeTeam ? awayGoals : homeGoals
+            splits.homeAway[homeOraway].gf += isHomeTeam ? homeGoals : awayGoals
+            splits.homeAway[homeOraway].ga += isHomeTeam ? awayGoals : homeGoals
             // splits.startHour[startHour].gf += isHomeTeam ? homeGoals : awayGoals
             // splits.startHour[startHour].ga += isHomeTeam ? awayGoals : homeGoals
             // splits.opponent[oppIndex].gf += isHomeTeam ? homeGoals : awayGoals
@@ -201,19 +201,19 @@ router.get("/bySeason/:teamName", async (req, res) => {
 
             if ((isHomeTeam && homeGoals > awayGoals) || (isAwayTeam && awayGoals > homeGoals)) {
               wins++;
-              // splits.homeAway[homeOraway].wins++
+              splits.homeAway[homeOraway].wins++
               splits.seasonType[season.season.seasonType].wins++
               // splits.startHour[startHour].wins++
               // splits.opponent[oppIndex].wins++
             } else if ((isHomeTeam && homeGoals < awayGoals) || (isAwayTeam && awayGoals < homeGoals)) {
               loses++;
-              // splits.homeAway[homeOraway].loses++
+              splits.homeAway[homeOraway].loses++
               splits.seasonType[season.season.seasonType].loses++
               // splits.startHour[startHour].loses++
               // splits.opponent[oppIndex].loses++
             } else if (awayGoals === homeGoals) {
               ties++;
-              // splits.homeAway[homeOraway].ties++
+              splits.homeAway[homeOraway].ties++
               splits.seasonType[season.season.seasonType].ties++
               // splits.startHour[startHour].ties++
               // splits.opponent[oppIndex].ties++
