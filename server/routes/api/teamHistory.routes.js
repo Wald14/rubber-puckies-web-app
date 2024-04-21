@@ -165,21 +165,21 @@ router.get("/bySeason/:teamName", async (req, res) => {
             const startHour = game.startTime.getHours()
             const opponent = isHomeTeam ? game.awayTeam.name : game.homeTeam.name
 
-            // let oppIndex = splits.opponent.findIndex(obj => obj.teamName === opponent)
-            // if (oppIndex === -1){
-            //   splits.opponent.push({
-            //     teamName: opponent,
-            //     sp: [],
-            //     gp: 0,
-            //     wins: 0,
-            //     loses: 0,
-            //     ties: 0,
-            //     gf: 0,
-            //     ga: 0
-            //   })
-            // } 
-            // oppIndex = splits.opponent.findIndex(obj => obj.teamName === opponent)
-            // console.log(oppIndex)
+            let oppIndex = splits.opponent.findIndex(obj => obj.teamName === opponent)
+            if (oppIndex === -1){
+              splits.opponent.push({
+                teamName: opponent,
+                sp: [],
+                gp: 0,
+                wins: 0,
+                loses: 0,
+                ties: 0,
+                gf: 0,
+                ga: 0
+              })
+            } 
+            oppIndex = splits.opponent.findIndex(obj => obj.teamName === opponent)
+            console.log(oppIndex)
 
             gamesPlayed++
 
