@@ -4,21 +4,20 @@ import { LoadingSpinner } from "../components";
 
 import Table from 'react-bootstrap/Table';
 
-export default function TeamHistoryBySeason() {
+export default function TeamHistoryBySeason(payload) {
   const fColor = "#D6D6DE"
   const fColor2 = "gray"
-
 
   const [teamArr, setTeamArr] = useState(null)
   const [totals, setTotals] = useState(null)
 
   async function getRegSeaInfo() {
-    const query = await fetch("/api/teamHistory/bySeason/Rubber Puckies");
-    const result = await query.json();
-    const payload = result.payload;
-    console.log(result)
-    calcTotals(payload)
-    setTeamArr(payload)
+    // const query = await fetch("/api/teamHistory/bySeason/Rubber Puckies");
+    // const result = await query.json();
+    // const payload = result.payload;
+    // console.log(result)
+    calcTotals(payload.payload)
+    setTeamArr(payload.payload)
   }
 
   function calcTotals(seasonArr) {

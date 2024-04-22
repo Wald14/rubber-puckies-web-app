@@ -26,3 +26,4 @@ export { default as LastGameTable } from "./LastGameTable";
 export { default as NextGameTable } from "./NextGameTable";
 export { default as HeroMobileLinksTable } from "./HeroMobileLinksTable";
 export { default as LoadingSpinner } from "./LoadingSpinner";
+export { default as TeamHistorySplits } from "./TeamHistorySplits";

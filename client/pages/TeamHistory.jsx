@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 
-import { TeamHistoryBySeason } from '../components';
+import { TeamHistoryBySeason, TeamHistorySplits } from '../components';
+
+import { LoadingSpinner } from "../components";
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -12,16 +14,30 @@ export default function TeamHistory() {
 
 
   const [selectedSplit, setSelectedSplit] = useState()
+  const [teamInfo, setTeamInfo] = useState()
 
   const handleChange = (e) => { setSelectedSplit(e.target.name) }
+
+  async function getRegSeaInfo() {
+    const query = await fetch("/api/teamHistory/Rubber Puckies");
+    const result = await query.json();
+    setTeamInfo(result);
+  }
 
   useEffect(() => {
     setSelectedSplit("bySeason")
   }, [])
 
+  useEffect(() => {
+    getRegSeaInfo()
+  }, [])
+
+  
+  if (teamInfo === null || teamInfo === undefined) return (<LoadingSpinner />)
+
   return (
     <>
-      <Container>
+      <Container style={{marginBottom: '16px', padding: '0px'}}>
         <div style={{
           borderBottom: "solid gold 1px",
           paddingBottom: "2px",
@@ -30,7 +46,7 @@ export default function TeamHistory() {
           flexDirection: 'row'
         }}
         >
-          <div style={{ paddingRight: '16px' }}>
+          <div style={{ padding: '0px 16px' }}>
             <a
               name="bySeason"
               className={`headerBtnA ${selectedSplit === "bySeason" ? 'selected' : ''}`}
@@ -51,7 +67,10 @@ export default function TeamHistory() {
         </div>
       </Container>
       {selectedSplit === 'bySeason' &&
-        <TeamHistoryBySeason />
+        <TeamHistoryBySeason payload={teamInfo.payload}/>
+      }
+      {selectedSplit === 'splits' &&
+        <TeamHistorySplits splits={teamInfo.splits}/>
       }
     </>
   )

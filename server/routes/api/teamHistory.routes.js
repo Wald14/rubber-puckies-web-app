@@ -7,7 +7,7 @@ const router = require('express').Router();
 
 
 
-router.get("/bySeason/:teamName", async (req, res) => {
+router.get("/:teamName", async (req, res) => {
   try {
     const teamSeasonInfo = await getAllTeamsbyName(req.params.teamName)
 
@@ -143,6 +143,10 @@ router.get("/bySeason/:teamName", async (req, res) => {
             } 
             oppIndex = splits.opponent.findIndex(obj => obj.teamName === opponent)
 
+            oppSeasonIndex = splits.opponent[oppIndex].sp.findIndex(string => string === game.season.toString())
+            if (oppSeasonIndex === -1){
+              splits.opponent[oppIndex].sp.push(game.season.toString())
+            }
 
             let hourIndex = splits.startHour.findIndex(obj => obj.startHour === startHour)
             if (hourIndex === -1){
@@ -219,13 +223,6 @@ router.get("/bySeason/:teamName", async (req, res) => {
             if (gameType === "semifinal") {
               semiRoundOpp = isHomeTeam ? game.awayTeam.name : game.homeTeam.name
             }
-
-            // if ((isHomeTeam && homeGoals > awayGoals) || (isAwayTeam && awayGoals > homeGoals)) {
-            //   playoffWins++;
-            // } else if ((isHomeTeam && homeGoals < awayGoals) || (isAwayTeam && awayGoals < homeGoals)) {
-            //   playoffLoses++;
-            // }
-
 
             switch (game.endedIn) {
               case "regulation" || "overtime":
