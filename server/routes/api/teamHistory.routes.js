@@ -122,7 +122,11 @@ router.get("/bySeason/:teamName", async (req, res) => {
             const awayGoals = game.awayGoals;
             const homeOraway = isHomeTeam ? 'home' : 'away'
             const opponent = isHomeTeam ? game.awayTeam.name : game.homeTeam.name
-            const startHour = new Date(game.startTime).getHours()
+            const gameDate = new Date(game.startTime)
+            const startHour = gameDate.toLocaleTimeString('en-US', {
+              hour: 'numeric',
+              timeZone: 'America/Chicago',
+            });
 
             let oppIndex = splits.opponent.findIndex(obj => obj.teamName === opponent)
             if (oppIndex === -1){
