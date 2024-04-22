@@ -68,48 +68,7 @@ router.get("/bySeason/:teamName", async (req, res) => {
           ga: 0
         },
       },
-      startHour: {
-        18: {
-          gp: 0,
-          wins: 0,
-          loses: 0,
-          ties: 0,
-          gf: 0,
-          ga: 0
-        },
-        19: {
-          gp: 0,
-          wins: 0,
-          loses: 0,
-          ties: 0,
-          gf: 0,
-          ga: 0
-        },
-        20: {
-          gp: 0,
-          wins: 0,
-          loses: 0,
-          ties: 0,
-          gf: 0,
-          ga: 0
-        },
-        21: {
-          gp: 0,
-          wins: 0,
-          loses: 0,
-          ties: 0,
-          gf: 0,
-          ga: 0
-        },
-        22: {
-          gp: 0,
-          wins: 0,
-          loses: 0,
-          ties: 0,
-          gf: 0,
-          ga: 0
-        },
-      },
+      startHour: [],
       opponent: [],
     }
 
@@ -179,13 +138,27 @@ router.get("/bySeason/:teamName", async (req, res) => {
               })
             } 
             oppIndex = splits.opponent.findIndex(obj => obj.teamName === opponent)
-            console.log(oppIndex)
+
+
+            let hourIndex = splits.startHour.findIndex(obj => obj.startHour === startHour)
+            if (hourIndex === -1){
+              splits.startHour.push({
+                startHour: startHour,
+                gp: 0,
+                wins: 0,
+                loses: 0,
+                ties: 0,
+                gf: 0,
+                ga: 0
+              })
+            } 
+            hourIndex = splits.startHour.findIndex(obj => obj.startHour === startHour)
 
             gamesPlayed++
 
             splits.seasonType[season.season.seasonType].gp++
             splits.homeAway[homeOraway].gp++
-            // splits.startHour[startHour].gp++
+            splits.startHour[hourIndex].gp++
             splits.opponent[oppIndex].gp++
 
             goalsFor += isHomeTeam ? homeGoals : awayGoals;
@@ -194,8 +167,8 @@ router.get("/bySeason/:teamName", async (req, res) => {
             splits.seasonType[season.season.seasonType].ga += isHomeTeam ? awayGoals : homeGoals
             splits.homeAway[homeOraway].gf += isHomeTeam ? homeGoals : awayGoals
             splits.homeAway[homeOraway].ga += isHomeTeam ? awayGoals : homeGoals
-            // splits.startHour[startHour].gf += isHomeTeam ? homeGoals : awayGoals
-            // splits.startHour[startHour].ga += isHomeTeam ? awayGoals : homeGoals
+            splits.startHour[hourIndex].gf += isHomeTeam ? homeGoals : awayGoals
+            splits.startHour[hourIndex].ga += isHomeTeam ? awayGoals : homeGoals
             splits.opponent[oppIndex].gf += isHomeTeam ? homeGoals : awayGoals
             splits.opponent[oppIndex].ga += isHomeTeam ? awayGoals : homeGoals
 
@@ -203,19 +176,19 @@ router.get("/bySeason/:teamName", async (req, res) => {
               wins++;
               splits.homeAway[homeOraway].wins++
               splits.seasonType[season.season.seasonType].wins++
-              // splits.startHour[startHour].wins++
+              splits.startHour[hourIndex].wins++
               splits.opponent[oppIndex].wins++
             } else if ((isHomeTeam && homeGoals < awayGoals) || (isAwayTeam && awayGoals < homeGoals)) {
               loses++;
               splits.homeAway[homeOraway].loses++
               splits.seasonType[season.season.seasonType].loses++
-              // splits.startHour[startHour].loses++
+              splits.startHour[hourIndex].loses++
               splits.opponent[oppIndex].loses++
             } else if (awayGoals === homeGoals) {
               ties++;
               splits.homeAway[homeOraway].ties++
               splits.seasonType[season.season.seasonType].ties++
-              // splits.startHour[startHour].ties++
+              splits.startHour[hourIndex].ties++
               splits.opponent[oppIndex].ties++
             }
 
