@@ -30,7 +30,7 @@ export default function NextGameTable() {
     getLastGame()
   }, [])
 
-  if (!lastGame) return (<LoadingSpinner />)
+  if (!lastGame) return (<></>)
 
 
   return (
