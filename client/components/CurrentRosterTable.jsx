@@ -87,6 +87,8 @@ export default function CurrentRosterTable() {
   function displayGoalies(firstName, lastName) {
     if (firstName === "Tom" && lastName === "Haroldson") {
       return false
+    } else if (firstName === "Nathan" && lastName === "Lloyd") {
+      return false
     } else if (showGoalies) {
       return false
     } else {

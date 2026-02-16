@@ -188,13 +188,13 @@ export default function PlayerPageStats({ player }) {
               opponent: game.opponent,
               gp: 1,
               goals: game.playerGoals ? game.playerGoals : 0,
-              hats: game.playerHats ? game.playerHats : 0,
+              hats: game.playerHat ? game.playerHat : 0,
               teamGoals: game.homeOrAway === "home" ? game.homeGoals : game.awayGoals,
             })
           } else {
             opponents[idx].gp++
             opponents[idx].goals += game.playerGoals
-            game.playerHats ? opponents[idx].hats += game.playerHats : opponents[idx].hats
+            game.playerHats ? opponents[idx].hats += game.playerHat : opponents[idx].hats
             opponents[idx].teamGoals += game.homeOrAway === "home" ? game.homeGoals : game.awayGoals
           }
         }
