@@ -194,7 +194,7 @@ export default function PlayerPageStats({ player }) {
           } else {
             opponents[idx].gp++
             opponents[idx].goals += game.playerGoals
-            game.playerHats ? opponents[idx].hats += game.playerHat : opponents[idx].hats
+            game.playerHat ? opponents[idx].hats += game.playerHat : opponents[idx].hats
             opponents[idx].teamGoals += game.homeOrAway === "home" ? game.homeGoals : game.awayGoals
           }
         }
